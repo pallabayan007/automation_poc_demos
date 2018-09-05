@@ -1,0 +1,20 @@
+{
+    "automata-integrations": {
+        "IPSoft": [
+            {
+                "ipsoft_base_url": "",
+                "ipsoft_user": "",
+                "ipsoft_pass": "",
+                "ipsoft_account": ""
+            }
+        ],
+        "Blue Prism": [
+            {
+                "blueprism_base_url": "",
+                "blueprism_user": "",
+                "blueprism_pass": "",
+                "blueprism_account": ""
+            }
+        ]
+    }
+}

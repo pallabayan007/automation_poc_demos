@@ -1,0 +1,774 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+<div class="container-fluid ama-container-style" >
+<style>
+	.ta-editor{ min-height: 50px; height: auto; overflow: auto; font-family: inherit; font-size: 100%;	}
+</style>
+	<h4>Create Ticket</h4>
+		<div ng-controller="TabbedFormCtrl">
+		<form class="form-horizontal" id="createSOPForm" ng-submit="createsop.processForm()" name="createSOPForm">
+			<tabset justified="true">						
+				<tab>
+					<tab-heading id="tab-ticket-text">
+						
+					</tab-heading>	
+					 <div class="panel panel-info">
+							<div class="panel-heading">Enter Alert Details</div>										  
+							  <div class="panel-body ama-panel-style">
+								<div style="min-height: 270px; max-height: 270px; overflow-y: scroll;  overflow-x: hidden;">	
+									<div class="form-group">
+									  <label class="col-sm-2 control-label">Requester : </label>
+									  <div class="col-sm-10">
+										<!--<select ng-model="createticket.requester" id="ticketRequester" style="width:150px;">
+											<option selected disabled value="">Select Application</option>							
+										</select>
+										<span style="color:red;"> * required</span>-->
+											<label>
+												<input type="radio" name="requester" ng-model="createticket.requester" ng-value="Name" />
+												Name
+											 </label>
+											 <input type="text" ng-model="createticket.requestername" id="ticketrequester" placeholder="Enter Requester Name"  />
+											 <label>
+												<input type="radio" name="requester" ng-model="createticket.requester" ng-value="system" ng-check="checked" />
+												System
+											 </label>										
+									  </div> 														    
+									</div>
+									<div class="form-group">															
+									  <label class="col-sm-2 control-label">Assignee : </label>
+									  <div class="col-sm-10">
+										<input type="text" ng-model="createticket.assignee" id="ticketAssigne" placeholder="Enter assignee name" ng-blur="createsop.searchAlert();"  /> <span style="color:red;"> * required</span>
+										<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+											Required
+										</span>	
+									  </div>
+									</div>							
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="type-text">Type</span> : </label>
+									  <div class="col-sm-10">
+										<select ng-model="createticket.tickettype" placeholder="Alert type">
+											<option value="ServiceRequest">Service Request</option>
+											<option value="Problem">Problem</option>
+											<option value="Incident">Incident</option>
+											<option value="WorkOrder">Work Order</option>
+											<option value="ChangeRequest">Change Request</option>
+										</select>
+									  </div> 														    
+									</div>						
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="type-text">Associate Type ID </span> : </label>
+									  <div class="col-sm-10">
+										<input type="text" ng-model="createticket.associateTypeID" placeholder="Associate Type ID" />
+										<span ng-show="createticket.cause.$dirty && createticket.associateTypeID.$error.required" class="help-inline">Required
+	        							</span>
+									  </div> 														    
+									</div>							
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="type-text">Priority</span> : </label>
+									  <div class="col-sm-10">
+										<select ng-model="createticket.tickettype" placeholder="Tciket Priority">
+											<option value="High">High</option>
+											<option value="Medium">Medium</option>
+											<option value="Low">Low</option>
+										</select>
+									  </div> 														    
+									</div>
+									<div class="form-group">
+									  <label class="col-sm-2 control-label">Severity : </label>
+									  <div class="col-sm-10">
+										<select ng-model="createsop.alertseverity" placeholder="Alert severity">
+											<option value="High">High</option>
+											<option value="Medium">Medium</option>
+											<option value="Low">Low</option>
+										</select>
+									  </div> 												    
+									</div>
+									
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="description-text">Subject</span> : </label>
+									  <div class="col-sm-10">
+										<input type="text" ng-model="createticket.subject" placeholder="Subject" />
+										<span ng-show="createticket.cause.$dirty && createticket.subject.$error.required" class="help-inline">Required
+	        							</span>
+									  </div> 
+									</div> 
+									
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="description-text">SLA</span> : </label>
+									  <div class="col-sm-10">
+										<input type="text" ng-model="createticket.cause" placeholder="Enter Cause" />
+										<span ng-show="createticket.cause.$dirty && createticket.cause.$error.required" class="help-inline">Required
+	        							</span>
+									  </div> 
+									</div> 
+									
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="ticketNumber-text">Ticket Number</span> : </label>
+									  <div class="col-sm-10">
+										<input type="text" ng-model="createticket.ticketnumber" placeholder="Ticket Number" />
+										<span ng-show="createticket.cause.$dirty && createticket.cause.$error.required" class="help-inline">Required
+	        							</span>
+									  </div> 
+									</div> 
+									
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="effectedService-text">Effected Service</span> : </label>
+									  <div class="col-sm-10">
+										<input type="text" ng-model="createticket.cause" placeholder="Effected Service" />
+										<span ng-show="createticket.cause.$dirty && createticket.cause.$error.required" class="help-inline">Required
+	        							</span>
+									  </div> 
+									</div> 
+									
+									<div class="form-group">
+									  <label class="col-sm-2 control-label"><span id="cause-text">Cause</span> : </label>
+									  <div class="col-sm-10">
+										<!--<textarea ng-model="createticket.cause" placeholder="Cause" style="width: 25em; height: 3em;"></textarea>-->
+										<input type="text" ng-model="createticket.cause" placeholder="Cause" />
+										<span ng-show="createticket.cause.$dirty && createticket.cause.$error.required" class="help-inline">Required
+	        							</span>
+									  </div> 
+									</div> 	
+							  </div>
+							</div>
+					  </div>
+				</tab>
+				<tab>
+					<tab-heading id="tab-sop-text">
+						
+					</tab-heading>				
+					 <div class="panel panel-info">
+							<div class="panel-heading">Enter SOP Details</div>										  
+								  <div class="panel-body ama-panel-style">
+									<div style="min-height: 270px; max-height: 270px; overflow-y: scroll;  overflow-x: hidden;">
+												<div class="form-group">
+												  <label class="col-sm-2 control-label"><span id="name-text"> </span> :</label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.sopuserName" id="createsopuserid" placeholder="Sop Name" /><span style="color:red;"> * required</span>
+													
+												  </div>
+												</div>																						
+												<div class="form-group">
+												  <label class="col-sm-2 control-label"><span id="automation-provider-text"></span> :</label>
+												  <div class="col-sm-10">
+													<span id="automationProviderListPlaceholder"></span>	<!--  style="float: left; position: relative; top: 7px;" -->
+												  	<span style="color:red;">&nbsp;&nbsp; * required</span>	&nbsp;&nbsp;									
+												 	<span id="autoProcessContainer" style="display:none;">
+													   	<label class="control-label">Process :</label>												
+														 <select ng-model="createsop.autoProcess" id="selectProcessValue" ng-change="refreshAutomataRequest();">
+														 	<option disabled value="" label="">Select Automation Process</option>
+													  	</select>	
+													  	<a title="" href="javascript:void(0);" class="glyphicon glyphicon-info-sign" style="text-decoration:none;" id="autoProcessOpShortDesc"  ng-mouseover="showProcessTip();"></a>
+												 	</span>							
+												  </div>					 							  
+												</div>
+												<div class="form-group" id="autoReqInfo" style="display:none">
+												  <label class="col-sm-2 control-label">Automation Request Info :</label>
+												  <div class="col-sm-10" style="top:20px; position:relative;">
+													<a href="javascript:void(0);" id="createAutoReq" ng-click="createAutoReqInfo();" class="glyphicon glyphicon-list-alt" title="Click to create 'Automation request info'"></a> &nbsp;&nbsp;| &nbsp;&nbsp;<a href="javascript:void(0);" id="editAutoReq" ng-click="editAutoReqInfo();" class="disableClass glyphicon glyphicon-edit" title="Click to edit 'Automation request info'"></a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" id="viewAutoReq" ng-click="viewAutoReqInfo();" title="Click to view 'Automation request info'" class="disableClass glyphicon glyphicon-eye-open"></a>	
+												  </div>						 							  
+												</div>	
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Execute Automation :</label>
+												  <div class="col-sm-10" style="top:6px;">
+													<input type="radio" name="executeAutomation" value="realTime" checked>&nbsp;As Real Time
+													&nbsp;&nbsp;&nbsp;<input type="radio" name="executeAutomation" value="scheduled">&nbsp;As Scheduled Job									
+												  </div>						 							  
+												</div>
+												<div style="border:1px solid #d9edf7; margin:10px; padding:10px; display:none;" id="scheduleAutoContainer">
+													<div class="form-group">
+													  <label class="col-sm-2 control-label">Application : </label>
+													  <div class="col-sm-10" style="top:8px;">
+															<span id="applicationAutomation" style="top:6px;"></span>
+													  </div> 														    
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-2 control-label">Job Name : </label>
+													  <div class="col-sm-10">
+														<input type="text" ng-model="createsop.jobname" placeholder="Job Name" /><span style="color:red;"> * required</span>											
+													  </div>
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-2 control-label">Details : </label>
+													  <div class="col-sm-10">
+														<textarea type="text" ng-model="createsop.scheduleDetails" placeholder="Enter Details"  style="width: 25em; height: 3em;"></textarea>											
+													  </div>
+													</div>	
+													<div class="form-group">
+													  <label class="col-sm-2 control-label">Trigger On : </label>
+													  <div class="col-sm-10">
+													  	<textarea type="text" id="triggerOnValText" style="width: 25em; height: 6em;" disabled></textarea>
+														<input type="text" ng-model="createsop.triggeron" id="triggerOnVal" style="width:350px; display:none;" placeholder="Trigger On" disabled />&nbsp;&nbsp;&nbsp;<span class="btn btn-info" style="cursor:pointer; top: -9px; position:relative; " onclick="dialogCronExpModel.dialog('open');$('#cronGenResult').val('');"><a href="javascript:void(0);" style="color:#fff;  text-decoration: none; font:12px Helvetica;" class="glyphicon glyphicon-qrcode">&nbsp;Generate</a></span><span style="color:red;"> * required</span>											
+													  </div>		  
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-2 control-label">Time Zone : </label>
+													  <div class="col-sm-10">
+													  	<select ng-model="createsop.timezone" id="createTimeZone" >	
+													  		<option selected disabled value="" label="">Select Time Zone</option>																
+														</select>
+													  </div>
+													</div>
+													<div class="form-group">
+												  		<label class="col-sm-2 control-label">Active :</label>
+														  <div class="col-sm-10" style="top:6px;">
+															<input type="radio" id="jobActiveYes" ng-model="createsop.active" name="timeZone" value="y">&nbsp;Yes
+															&nbsp;&nbsp;&nbsp;<input type="radio" ng-model="createsop.active" name="timeZone" value="n">&nbsp;No								
+														  </div>						 							  
+													</div>																			
+												</div>												
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Description : </label>
+												  <div class="col-sm-10">
+													<textarea ng-model="createsop.sopDescription" placeholder="Enter short description" style="width: 25em; height: 3em;"></textarea>
+													<span ng-show="basicsForm.sopDescription.$dirty && basicsForm.sopDescription.$error.required" class="help-inline">Required
+           									 		</span>
+												  </div> 
+												</div>  
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Purpose : </label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.purpose" id="puropseCreateSOP" placeholder="Purpose" /><span style="color:red;"> * required</span>
+													
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Classification : </label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.classification" placeholder="Classification" />
+													
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Expected Input : </label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.expectedInput" placeholder="ExpectedInput" />
+													
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Expected Output : </label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.expectedOutput" placeholder="ExpectedOutput" />
+													
+												  </div>
+												</div>
+												<div class="form-group">
+												  <!--<label class="col-sm-2 control-label">Task duration:</label>-->
+												  <div class="col-sm-12" style="padding-left:190px;">															
+													<!-- <input type="checkbox" ng-model="createsop.soprule" ng-true-value="yes" ng-false-value="no" > Rule -->
+													<input type="checkbox" id="sopcognitiveboxcheckbox" onclick="showsopcognitivebox()"> Cognitive Info
+													<script>
+														function showsopcognitivebox() {
+															if(document.getElementById("sopcognitiveboxcheckbox").checked){
+														    	document.getElementById("sopcognitivebox").style.display = "block";
+															}
+															else{																	
+														    	document.getElementById("sopcognitivebox").style.display = "none";
+															}
+														}
+													</script>
+												  </div> 														  
+												</div>	
+												<div  id="sopcognitivebox" style="display:none; border: 1px solid #CEECF5 ; border-radius :6px; margin : 10px 0 10px 0; padding:12px 12px; line-height: 10px; text-align:center; height:150px; width:95%">												
+													<div class="form-group">
+														<!--<span><i class="glyphicon glyphicon-chevron-down"></i> Pick up a critical alert for the MDS port</span>	-->	
+														<label class="col-sm-4 control-label">Goal :</label>
+														  <div class="col-sm-8">
+															<select ng-model="createsop.sopgoal" placeholder="Enter Goal">
+																<option value="1">Max</option>
+																<option value="2">Min</option>
+															</select>
+														</div>
+													</div>
+										
+													<div class="form-group">
+														<!--<span><i class="glyphicon glyphicon-chevron-down"></i> Pick up a critical alert for the MDS port</span>	-->	
+														<label class="col-sm-4 control-label">Num Human Tasks :</label>
+														 <div class="col-sm-8">													  
+															<select ng-model="createsop.taskexecutionoder" ng-init="(_Array = []).length = 20;" placeholder="Enter Number of Human Tasks">
+																<option ng-repeat="i in _Array track by $index">{{$index+0}}</option>
+															</select>
+														</div>
+													</div>
+										
+													<div class="form-group">
+														<!--<span><i class="glyphicon glyphicon-chevron-down"></i> Pick up a critical alert for the MDS port</span>	-->	
+														<label class="col-sm-4 control-label">Num Tasks in Flows :</label>
+														  <div class="col-sm-8">
+												  
+															<select ng-model="createsop.taskexecutionoder" ng-init="(_Array = []).length = 20;" placeholder="Enter Number of Tasks in Flows">
+																<option ng-repeat="i in _Array track by $index">{{$index+0}}</option>
+															</select>
+															
+														</div>
+													</div>
+												</div>
+											</div>
+								  		</div>								
+					  				</div>
+
+				</tab>
+				<tab>
+					<tab-heading id="tab-task-text">
+						
+					</tab-heading>
+					 <div class="panel panel-info">
+							<div class="panel-heading">Enter Task Details</div>
+								  
+								  <div class="panel-body ama-panel-style">
+										<div style="max-height: 270px; overflow-y: scroll;  overflow-x: hidden;">
+										<div class="appTable" ng-hide="appTaskTable">
+												<table  class="table table-bordered">
+												  <thead>
+												    <tr>
+												      <th>Order</th>
+												      <th>Name</th>
+												    </tr>
+												  </thead>
+												  <tbody>
+												    <tr ng-repeat="rowContentName in rows">
+												      <td>{{rowContentName.executionorder}}</td>
+												      <td>{{rowContentName.name}}</td>
+												    </tr>
+												  </tbody>
+												</table>
+										</div>														
+										<div ng-show='messageTask' style="color:#337ab7; font-weight:bold; margin:0 0 10px 20px;">{{messageTask}}</div>												
+												<div class="form-group">													
+												  <label class="col-sm-2 control-label">Name :</label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.taskname" placeholder="Task Name" /> <span style="color:red;">* required</span>															
+													<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+														Required
+												  </div>
+												</div>												
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Description : </label>
+												  	<div class="col-sm-10">
+												  		<div class="btn btn-info" onclick="$('#taskEditor').dialog('open');"><span style="color:#fff;  text-decoration: none; font:12px Helvetica;" class="glyphicon glyphicon-plus-sign">&nbsp;Create Task Description</span></div>
+           									 			<textarea ng-model="createsop.taskdesc" id="taskDescRTE" placeholder="Task Description" style="width: 25em; height: 3em; display:none;"></textarea>
+													</div> 
+												</div>
+												<div class="form-group" id="taskContext" style="display:none;">
+													  <label class="col-sm-2 control-label">Context : </label>
+													  <div class="col-sm-10">
+														<textarea type="text" id="taskContextData" ng-model="createsop.taskcontext" placeholder="Enter the minimal set of data used by a task"  style="width: 25em; height: 3em;"></textarea>											
+													  </div>
+												</div>	
+												<div class="form-group" id="taskScript" style="display:none;">
+													  <label class="col-sm-2 control-label">Script : </label>
+													  <div class="col-sm-10">
+														<textarea type="text" id="teskScriptData" ng-model="createsop.taskscript" placeholder="Enter any specific script to be run for this task"  style="width: 25em; height: 3em;"></textarea>											
+													  </div>
+												</div>	
+												<div class="form-group">													
+												  <label class="col-sm-2 control-label"><span id="owner-text"></span> :</label>
+												  <div class="col-sm-10">
+													<input type="text" ng-model="createsop.taskowner" placeholder="Task Owner Name" /> <span style="color:red;">* required</span>															
+													<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+														Required
+													</span>
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Type : </label>
+												  <div class="col-sm-10">							
+													<select ng-model="createsop.taskexecutiontype" id="createTaskExe" ng-options="execTyp.name for execTyp in execTyps" >										
+														<option selected disabled value="" label="">Select Execution Type</option>
+													</select>
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Order :</label>
+												  <div class="col-sm-10">										  
+													<input type="text" id="autoExeOrder" value="1" style="width:44px; text-align:right;" disabled/>
+													<label class="control-label">&nbsp; &nbsp;&nbsp; &nbsp;Execution UserID : </label> <input type="text" ng-model="createsop.taskexecutionuerId" id="automationuserId" placeholder="UserId" />  
+												 	<label class="control-label">&nbsp; &nbsp;Execution Password :</label> <input type="password" ng-model="createsop.taskexecutionpassword" placeholder="Password" /> 	
+												  </div> 
+												</div>
+												<div class="form-group" style="display:none;">
+												  <label class="col-sm-2 control-label">Upload File :</label>
+												  <div class="col-sm-10" id="taskContainer">										  
+													<input type="file" id="taskFileUpload" name="fileUpload" size="40">
+												  </div> 
+												</div>
+												<a href="javascript:void(0)" ng-click="createsop.addTask()" class="btn btn-primary glyphicon glyphicon-plus-sign" style="float:right; margin-right:10px;"> Add </a> 
+										</div>
+								  </div>									
+					  </div>									  
+				</tab>
+			</tabset>												  													
+			<div class="tab-button-pos">  
+				<button class="btn btn-info" type="Submit"> <!--ng-click="createsop.submitTheForm()"     ng-disabled="error || incomplete" -->
+					<span class="glyphicon glyphicon-save"></span> Save
+				</button>
+				<a href="#home" class="btn btn-info"><!-- ng-disabled="error || incomplete"-->
+					<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+				</a>
+			</div>
+		</form>
+		<div id="duplicateAlert" title="Duplicate Alert">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+				You CANNOT create two different SOPs for same Alert
+			</p>
+		</div>
+		<div id="duplicateExeOrd" title="Duplicate Execution Order">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+				You CANNOT save two different tasks with same execution order
+			</p>
+		</div>
+		<div id="taskEditor" title="Enter Task Description">
+			<div id="editor"></div>				
+			<script>
+				initSample();
+			</script>
+		</div>
+	</div>	
+</div> 
+<div id="waitContainer" style="display:none;height:300px; width:500px; top:110px; left:180px; z-index:3;background-color:#ffffff; position:absolute;color:#000000;"><div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f;">Please Wait.....</div></div>	
+<div id="waitContainerOnGen" style="display:none;height:300px; width:500px; top:110px; left:250px; z-index:4;background-color:#ffffff; position:absolute;color:#000000;border:1px solid gray;"><div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f; padding-left:100px;">Please Wait.....</div></div>
+<div id="alertErrorData" style="background-color: #f2dede; color: #a94442; display: none; height: 268px; left: 376px; position: absolute; top: 160px; width: 450px; z-index: 5; border:1px solid #dca7a7;">
+	<div id="alertAutomataGenerate" style="margin:80px 20px 20px 20px; font:18px verdana;">
+	</div>
+	<div style="margin:50px 20px; float:right;">
+		<button class="btn btn-info" type="button" onclick="$('#alertErrorData').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+		</button>
+	</div>
+</div>						
+<!-- <div id="showAutoBackContainer" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div> -->													  	   
+<div id="showAutomationRequest" style="display:none;height:400px; width:800px; top:110px; left:180px; z-index:3;background-color:#ffffff; position:absolute;">			
+	<div class="panel panel-info" style="height: 42px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font:bold 14px verdana;">Automation Request</div>
+			<div style="text-align:center;">For <span id="accNmAuto"></span> of <span id="clientNmAuto"></span></div>
+			<div style="float:left; top:-27px; position:relative;">
+				<button id="generateInputBtn" class="btn btn-info" type="button" ng-click="generateAutomataServiceRequest();">
+					<span class="glyphicon glyphicon-wrench"></span> Generate Input
+				</button>
+			</div>
+			<div style="float:right; top:-27px; position:relative;">	
+				<button class="btn btn-info" type="button" onclick="closeGenDialog();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div id="blueAutoGen" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:280px; border-radius:9px; overflow:scroll; color:#000000;">		
+	</div>
+	<div id="ipSoftAutoGen" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:280px; border-radius:9px; overflow:scroll;">		
+		<div class="form-group" style="color:#000000;">
+		  		<label class="col-sm-2 control-label" style="padding-right:0px;">Automation Id:</label>
+		  		<div class="col-sm-10">		  	
+					<input type="text" ng-model="createsop.automationId" placeholder="Automation Id" id="automationids" /><span style="color:red;"> * required</span>	 
+		 		</div>
+		 		<br /><br />
+			 	<div id="automation_credentials" style="display:none; ">
+			 		<label class="col-sm-2 control-label" style="float:left;">UserID : </label> 
+			 		<div class="col-sm-10">	
+			 			<input type="text" ng-model="createsop.sopuserId" id="automationuserId" placeholder="Automation UserId"  />  
+			 		</div>
+			 		<br /><br />
+			 		<label class="col-sm-2 control-label" style="float:left;">Password :</label> 
+			 		<div class="col-sm-10">	
+			 			<input type="password" ng-model="createsop.soppassword" id="automationuserpass" placeholder="Automation Password"  /> 	
+					</div>
+					<br /><br />
+				</div>
+		  </div>
+	</div>
+	<div style="float:right; margin-right:10px;">	
+		<button class="btn btn-info" type="button" style="display:none;" id="autoGenDone" ng-click="autoGenerateDone();">
+			<span class="glyphicon glyphicon-thumbs-up"></span> Done
+		</button>	
+	</div>
+			<script>								
+				$(document).ready(function() { 
+				    $('#automation_credentials').hide(); 
+				    $('#automationids').focusout(function(){
+				    	var automationInput = $('#automationids').val();
+				    	var automationReg = /^\d{4}$/;														    	
+				        if(automationInput != '' && automationReg.test(automationInput))  {
+				            $('#automation_credentials').show(100); 
+				            $('#autoGenDone').show();
+				        } else {
+				            $('#automation_credentials').hide(100); 
+				            $('#autoGenDone').hide();
+				            alert('Must be 4 digit integer.');
+				        } 
+				    });
+				});
+			</script>
+</div>
+
+
+<script type="text/javascript">
+var cronResultVar='';
+$(document).ready(function() { 	
+	dialogDepAlert = $("#duplicateAlert").dialog({
+		 closeOnEscape: false,
+		 autoOpen: false,
+		 modal: true,
+		 buttons: {
+		 Ok: function() {
+			 	$( this ).dialog( "close" );
+			 }
+		 }
+	});
+	taskEditor = $("#taskEditor").dialog({
+		 closeOnEscape: false,
+		 autoOpen: false,
+		 modal: false,
+		 width:880,
+		 buttons: {
+		 Ok: function() {
+			 updateDiv();
+			 	//$( this ).dialog( "close" );
+			 }
+		 }
+	});
+	dialogExe = $("#duplicateExeOrd").dialog({
+		 closeOnEscape: false,
+		 autoOpen: false,
+		 modal: true,
+		 buttons: {
+		 	Ok: function() {
+			 	$(this).dialog( "close" );
+			 }
+		 }
+	});
+	
+});
+$(document).on('click','.ui-dialog-titlebar-close',function(){
+	CKupdate();
+});
+$(document).on('change', 'input:radio[name=executeAutomation]', function(event) {
+    if ($("input[name='executeAutomation']:checked").val() == 'realTime') {
+   	 	$('#scheduleAutoContainer').hide();
+   		$('#taskContext').hide();
+    	$('#taskScript').hide();
+    	$("#jobActiveYes").prop( "checked", false );
+    }
+    if ($("input[name='executeAutomation']:checked").val() == 'scheduled') {
+    	var currApplName = $("#applNameCreate option:selected").html();
+        $('#applicationAutomation').html(currApplName);
+        $('#createTimeZone').html('');
+        $('#scheduleAutoContainer').show();
+        $('#taskContext').show();
+        $('#taskScript').show();
+        $("#jobActiveYes").prop( "checked", true );
+        for(var i = 0; i<timezone.length; i++){
+       	 $('#createTimeZone').append('<option value="'+timezone[i]+'">'+timezone[i]+'</option>');
+        }
+    }
+});
+
+$(document).on('change', 'input:radio[name=seccron]', function(event) {
+	 if ($("input[name='seccron']:checked").val() == 'evsec'){
+		 $("#secmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#secmultiple").removeAttr("disabled");		 
+	 }
+});
+$(document).on('change', 'input:radio[name=mincron]', function(event) {
+	 if ($("input[name='mincron']:checked").val() == 'evmin'){
+		 $("#minmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#minmultiple").removeAttr("disabled");		 
+	 }
+});
+$(document).on('change', 'input:radio[name=hourcron]', function(event) {
+	 if ($("input[name='hourcron']:checked").val() == 'evhrs'){
+		 $("#hrsmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#hrsmultiple").removeAttr("disabled");		 
+	 }
+});
+$(document).on('change', 'input:radio[name=daycron]', function(event) {
+	 if ($("input[name='daycron']:checked").val() == 'evday'){
+		 $("#daymultiple").attr("disabled","disabled");
+	 }else{
+		 $("#daymultiple").removeAttr("disabled");		 
+	 }
+});
+$(document).on('change', 'input:radio[name=monthcron]', function(event) {
+	 if ($("input[name='monthcron']:checked").val() == 'evmon'){
+		 $("#monthmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#monthmultiple").removeAttr("disabled");		 
+	 }
+});
+$(document).on('change', 'input:radio[name=weekcron]', function(event) {
+	 if ($("input[name='weekcron']:checked").val() == 'evwkd'){
+		 $("#weekmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#weekmultiple").removeAttr("disabled");		 
+	 }
+});
+$(document).on('change', '#applNameCreate', function(event) {
+	 var applName = $("#applNameCreate option:selected").html();
+	 $('#applicationAutomation').html(applName);
+});
+
+//CKEDITOR.replace('editor');
+
+//timer = setInterval(updateDiv,100);
+function updateDiv(){
+   var editorText = CKEDITOR.instances.editor.getData();
+   $('#taskDescRTE').val(editorText);
+   $("#taskEditor").dialog('close');
+}
+function CKupdate(){
+    for ( instance in CKEDITOR.instances ){
+        CKEDITOR.instances[instance].updateElement();
+    }
+    CKEDITOR.instances[instance].setData('');
+}
+function genarateCron(){
+		var cronSecVar;
+		var cronMinVar;
+		var cronHrsVar;
+		var cronDayVar;
+		var cronMonVar;
+		var cronWkdVar;
+		var cronSecText;
+		var cronMinText;
+		var cronHrsText;
+		var cronDayText;
+		var cronMonText;
+		var cronWkdText;
+		if ($("input[name='seccron']:checked").val() == 'evsec') {
+			cronSecVar = '*';
+			cronSecText = ' Every Second,'
+		}else{
+			var secmulArray = []; 
+			$('#secmultiple :selected').each(function(i, selected){ 
+				secmulArray[i] = $(selected).text(); 
+			});
+			cronSecVar = getRanges(secmulArray);
+			var secStr = cronSecVar.toString();
+			cronSecText = 'At '+secStr.replace('-',' to ')+' Second, ';
+		}
+		if ($("input[name='mincron']:checked").val() == 'evmin') {
+			cronMinVar = '*';
+			cronMinText = ' Every Minute,';
+		}else{
+			var minmulArray = []; 
+			$('#minmultiple :selected').each(function(i, selected){ 
+				minmulArray[i] = $(selected).text(); 
+			});
+			cronMinVar = getRanges(minmulArray);
+			var minStr = cronMinVar.toString();
+			cronMinText = minStr.replace('-',' to ')+' Minute,';
+		}
+		if ($("input[name='hourcron']:checked").val() == 'evhrs') {
+			cronHrsVar = '*';
+			cronHrsText = ' Every Hour,';
+		}else{
+			var hrsmulArray = []; 
+			$('#hrsmultiple :selected').each(function(i, selected){ 
+				hrsmulArray[i] = $(selected).val(); 
+			});
+			cronHrsVar = getRanges(hrsmulArray);
+			var hrsStr = cronHrsVar.toString();
+			cronHrsText = ' at ' + hrsStr.replace('-',' to ') + ' Hour,';
+		}
+		if ($("input[name='daycron']:checked").val() == 'evday') {
+			cronDayVar = '*';
+			cronDayText = ' Every Day,';
+		}else{
+			var daymulArray = []; 
+			$('#daymultiple :selected').each(function(i, selected){ 
+				daymulArray[i] = $(selected).text(); 
+			});
+			cronDayVar = getRanges(daymulArray);
+			var datStr = cronDayVar.toString();
+			cronDayText = ' on '+datStr.replace('-',' to ') + ' Day,';
+		}
+		if ($("input[name='monthcron']:checked").val() == 'evmon') {
+			cronMonVar = '*';
+			cronMonText = ' Every Month,';
+		}else{
+			var monmulArray = []; 
+			var monmulTxtArray = []; 
+			$('#monthmultiple :selected').each(function(i, selected){ 
+				monmulArray[i] = $(selected).val(); 
+				monmulTxtArray[i] = $(selected).text(); 
+			});
+			cronMonVar = getRanges(monmulArray);
+			cronMonText = ' on the month of ' + monmulTxtArray +',';
+		}
+		if ($("input[name='weekcron']:checked").val() == 'evwkd') {
+			cronWkdVar = '*';
+			cronWkdText =  ' Every Week,';
+		}else{
+			var weekmulArray = []; 
+			var weekmulTxtArray = [];
+			$('#weekmultiple :selected').each(function(i, selected){ 
+				weekmulArray[i] = $(selected).val(); 
+				weekmulTxtArray[i] = $(selected).text();
+			});
+			cronWkdVar = getRanges(weekmulArray);
+			cronWkdText = ' on the week of ' + weekmulTxtArray +'.';
+		}
+		cronResultVar = cronSecVar+' '+cronMinVar+' '+cronHrsVar+' '+cronDayVar+' '+cronMonVar+' '+cronWkdVar;
+		cronResultTextVar = cronSecText + cronMinText + cronHrsText + cronDayText + cronMonText + cronWkdText;
+		$('#cronGenResult').val(cronResultVar);
+}
+function fetchCronData(){
+	if($('#cronGenResult').val() !=''){	
+		$('#triggerOnVal').val(cronResultVar);
+		$('#triggerOnValText').val(cronResultTextVar);
+		dialogCronExpModel.dialog('close');
+	}else{
+		alert('Please Create Cron Expression');
+	}	
+}
+function getRanges(array) {
+	  var ranges = [], rstart, rend;
+	  for (var i = 0; i < array.length; i++) {
+	    rstart = array[i];
+	    rend = rstart;
+	    while (array[i + 1] - array[i] == 1) {
+	      rend = array[i + 1]; // increment the index if the numbers sequential
+	      i++;
+	    }
+	    ranges.push(rstart == rend ? rstart+'' : rstart + '-' + rend);
+	  }
+	  return ranges;
+}
+
+function closeGenDialog(){
+	$('#showAutoBackContainer').hide();
+	$('#showAutomationRequest').hide();
+}
+$(function() { 
+	$('#tab-ticket-text').html(uiconfig.SOPEditortab4);
+	$('#tab-sop-text').html(uiconfig.SOPEditortab2);
+	$('#tab-task-text').html(uiconfig.SOPEditortab3);
+	$('#name-text').html(uiconfig.SOPEditorname);
+	$('#cancel-text').html(uiconfig.AdminPortalcancel);
+	$('#automation-provider-text').html(uiconfig.SOPEditorautomationprovider);
+	$('#type-text').html(uiconfig.SOPEditortype);
+	$('#description-text').html(uiconfig.SOPEditordescription);
+	$('#owner-text').html(uiconfig.SOPEditorowner);
+});	
+
+var output='<select ng-model="createsop.autoProvider" id="selectProviderValue"  ng-change="chooseProviderValue();">';
+output+='<option disabled value="">Select Automation Provider</option>';
+for (var i in automationProvidersData.automationProviders) {
+	
+    output+='<option value="' + automationProvidersData.automationProviders[i].value + '">' + automationProvidersData.automationProviders[i].name + '</option>';
+}
+output+='</select>';
+
+document.getElementById("automationProviderListPlaceholder").innerHTML=output;
+
+
+/* $(data.users).each(function() {
+    var output = "<ul><li>" + this.firstName + " " + this.lastName + "</li></ul>";
+    $('#placeholder').append(output);
+}); */
+</script>

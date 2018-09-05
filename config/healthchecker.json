@@ -1,0 +1,76 @@
+{
+
+
+	"checkSchedulerCron": "*/10 * * * * *",
+
+	"CLOUD": {
+		"checker_categories": [{
+			"category": "components",
+			"category_display_name": "Components",
+			"check_points": [{
+				"display_name": "Secure Gateway",
+				"tooltip_description": "",
+				"checker": "SecureGatewayHealthChecker",
+				"username": "aautoma1@in.ibm.com",
+				"password": "goldenbridge16",
+				"enable": true
+			}, {
+				"display_name": "MongoDB",
+				"tooltip_description": "",
+				"checker": "MongoDBHealthChecker",
+				"enable": true
+			}, {
+				"display_name": "RabbitMQ",
+				"tooltip_description": "",
+				"checker": "RabbitMQHealthChecker",
+				"enable": true
+			}]
+		}, {
+			"category": "automation_adapter",
+			"category_display_name": "Service Management System",
+			"check_points": [{
+				"display_name": "IPSoft",
+				"tooltip_description": "",
+				"checker": "IPSoftHealthChecker",
+				"enable": true
+			}, {
+				"display_name": "BluePrism",
+				"tooltip_description": "",
+				"checker": "BluePrismHealthChecker",
+				"enable": true
+			}]
+		}]
+	},
+	"ON_PREM": {
+		"checker_categories": [{
+			"category": "components",
+			"category_display_name": "Components",
+			"check_points": [{
+				"display_name": "MongoDB",
+				"tooltip_description": "",
+				"checker": "MongoDBHealthChecker",
+				"enable": true
+			}, {
+				"display_name": "RabbitMQ",
+				"tooltip_description": "",
+				"checker": "RabbitMQHealthChecker",
+				"enable": true
+			}]
+		}, {
+			"category": "automation_adapter",
+			"category_display_name": "Service Management System",
+			"check_points": [{
+				"display_name": "IPSoft",
+				"tooltip_description": "",
+				"checker": "IPSoftHealthChecker",
+				"enable": true
+			}, {
+				"display_name": "BluePrism",
+				"tooltip_description": "",
+				"checker": "BluePrismHealthChecker",
+				"enable": true
+			}]
+		}]
+
+	}
+}

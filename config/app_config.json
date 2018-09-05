@@ -1,0 +1,20 @@
+{
+    "general-properties": {
+        "monitoringAgentSchedulerCron": "00 */2 * * * *",
+        "notificationRecipients": "dangyb@cn.ibm.com,amitabha.m.mitra@in.ibm.com,ayan_banerjee@in.ibm.com,supal.chowdhury@in.ibm.com",
+        "notificationType": "NoAutomatic"
+    },
+    "deployment-specific-properties": {
+        "CLOUD": {
+            "name": "swarnasetu-db",
+            "label": "user-provided",
+            "credentials": {
+                "uri": "mongodb://admin:passw0rd@ds131942.mlab.com:31942/dixon_camunda_cloud"
+            }
+        },
+        "ON_PREM": {
+            "authenticationProtocol": "",
+            "dbConnectionURL": "mongodb://admin:passw0rd@ds241737.mlab.com:41737/dixondb_local"
+        }
+    }
+}

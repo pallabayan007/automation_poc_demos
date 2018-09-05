@@ -1,0 +1,29 @@
+/**
+ * Automata APIs Client
+ */
+
+var https = require("https");
+var http = require("http");
+var URL = require("url");
+var config_info = require("../../../../../config/workflow_manager_config.json");
+var iPASSClient = require("./iPASSClient.js");
+var system_properties = require("../../../../../config/system_properties.json");
+var SOPConfig = require("../../../../../config/SOPConfig.json");
+var async = require("async");
+var underscore = require("underscore");
+
+var logger = getLogger("WorkflowManager");
+var IOD_Execution_Mapping = {};
+
+var WorkflowManager = function() {
+
+	var self = this;
+	//var iPassClient = new iPASSClient();
+	// start a conversation
+	this.execute = function(IOD, callback) {
+	}
+	
+}
+
+
+module.exports = WorkflowManager;

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AMA">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<title>Application Monitoring Automation - swarnasetu</title>
+	<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="../ama/sop_editor/stylesheets/app.css"  />	
+    <script type="text/javascript" src="../lib/system_properties.js"></script>
+    <script type="text/javascript" src="../ama/sop_editor/js/restAPP.js"></script>
+	<style>
+		.ama-container-style {background-color:#FAFAFA; border-radius: 5px; box-shadow: 5px 5px 5px #D8D8D8; color: #000; }	
+		.welcome_style{font-weight:normal; color: #FFFFFF; font-size:2.5em; text-align: y;} /*color: #337ab7*/
+		.ama-panel-style {  }
+	</style>
+</head>
+
+<body> 
+	<div>
+		<div class="col-sm-12 main-content" style="top:180px;">
+		  <div class="container-fluid">
+				<div style="text-align:center;">
+				  <h2><img style="padding:0;" src="../images/setu.png" alt="swarnasetu" height="55" width="45" /></h2>
+				  <p style="vertical-align: middle; text-align: center; color: #ffffff; font: 2em Arial,sans-serif;">You have been logged out</p>
+				</div>	
+				<div style="text-align:center;"><a href="javascript:void(0);" style="vertical-align: middle; color: #87CEFA; font: 1.2em verdana;" onclick="redirectHomePage();">Click here to Login Again</a></div>									
+			</div>		
+       	</div>             
+	   <footer class="footer navbar-fixed-bottom" style="background-color:#000;">
+		     <div class="container">
+		       <p class="text-muted">Swarnasetu  &copy; 2015, 2016. All Rights Reserved.</p>
+		     </div>
+	   </footer> 
+	</div>
+</body>
+</html>
+
+<script type="text/javascript">
+function redirectHomePage(){
+	window.location.href = docDomain;	
+}
+</script>

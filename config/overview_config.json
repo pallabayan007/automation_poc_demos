@@ -1,0 +1,132 @@
+{
+			  "Contents": {
+					"FirstQuadrant": {
+				      "Contents": [
+						
+				      ]
+				    },
+				    "SecondQuadrant": {
+				      "Contents": [
+						{
+				          "Type": "Header",
+				          "Value": "<h4 align = \"left\"><b>At a glance</b></h4>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Golden Bridge - a unidirectional channel on which enterprise events ( problem, incidents, alert, work order, service request) are marched and healed towards automation ecosystem for better business</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Fast, secure and lightweight Golden bridge offers an efficient and flexible connection to all your automation needs using existing and matured Standard Operating Procedure already defined.</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Customers now have an alternative to costly integration solutions that provide limited functionality for event automation. With Golden Bridge, you can allow event from event systems (e.g. problem/work-order/monitoring/service request tool or conversional dialog or any web portal or Scheduler) to be detected and  automated by leveraging multiple automation systems within a hybrid atmosphere.</p>"
+				        }
+				      ]
+				    },
+				    "ThirdQuadrant": {
+				      "Contents": [
+				        
+						{
+				          "Type": "Header",
+				          "Value": "<h4 align = \"left\"><b>Why Golden Bridge is Better</b></h4>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Automatically sense enterprise events and heal for automation</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Supports integration between all market leading enterprise event generation tools and automation tools</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Adapter based framework supports various industry standard protocols for integration.</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Offers Orchestration for  complex automation in hybrid automation ecosystem</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Standard uni-directional integration &#45 sense events to heal them</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Ties together Cognitive and Automation</p>"
+				        }
+				        
+				      ]
+				    },
+					"FourthQuadrant": {
+				      "Contents": [
+				        
+						{
+				          "Type": "Header",
+				          "Value": "<h4 align = \"left\"><b>Business Context</b></h4>"
+				        }
+				      ]
+				    },
+					"FifthQuadrant": {
+				      "Contents": [
+						{
+				          "Type": "Header",
+				          "Value": "<p align = \"left\"><b>Ease & Flexible:</b></p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Unified dashboard for real-time automation process</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Hassle free deployment on hybrid environment (off-prem/on-prem )</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Link multiple enterprise IT systems and automation systems</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Customers can easily configure changes as their needs evolve</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = 'left'>Salient way of managing Standard Operating Procedure</p>"
+				        }
+				      ]
+				    },
+					"SixthQuadrant": {
+				      "Contents": [
+						{
+				          "Type": "Header",
+				          "Value": "<h5 align = \"left\"><b>Business Benefits</b></h5>"
+				        },
+						{
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Low cost, Light-weight, but powerful bridging proficiency</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Rapid implementation in a factory mode</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Reduced costs. Support low-level automation for reducing  higher-level event volume and increasing  business productivity by reducing FTE</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Easy adopt of existing/on-boarded Event/ Automation system framework</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = \"left\">Effort reduced to almost 90% on repetitive jobs for event&#39s SOP</p>"
+				        },
+				        {
+				          "Type": "Text",
+				          "Value": "<p align = 'left'>Support risk free automation for events detected- without human intervention</p>"
+				        }
+				      ]
+				    }
+				  }
+				}

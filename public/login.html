@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AMA">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Application Monitoring</title>
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="ama/sop_editor/stylesheets/app.css">
+	
+</head>
+<body>
+	<div class="clearfix"></div>
+    <div class="container-fluid" style="margin-top:30px;"  ng-controller="onpremiseLoginController">
+
+	    <div class="login-state-page">
+		  <div class="header">
+		  	<h2>Sign In to Swarnasetu</h2>
+		  </div>
+		  <div class="login-section" style="background-color:#eee;">
+		  	<ul class="login-providers" style="list-style:none;">
+	
+				<li><a href="#" id="enterprise">Sign in with <b>Enterprise</b></a></li>
+	
+				<li><a href="#" id="ibmbluepages">Sign in with <b>IBM Bluepages</b></a></li>
+	
+			</ul>
+		  </div>
+		</div> 		
+	
+	
+		<div id="login-box" class="jumbotron" style="width:40%; margin-left:auto; margin-right:auto; display:none;">
+			<h2 class="loginHead" style="color:#000; text-align:left;"><!--<img src="../../../images/setu.png" alt="swarnasetu" height="55" weidth="45"/>--> Login</h2>
+			<form  class="form-accounts" name='accountForm'>
+			  <input name='accId' class="form-control" placeholder="User ID" ng-model='user.userid' required>
+			  <input type="password"  class="form-control" placeholder="Password" ng-model='user.password' required>
+			  <input id="authenticationFrom" type="hidden" ng-model='user.authenticationFrom'>
+			  <button ng-click='submitLogin()' ng-disabled='!accountForm.$valid' class="btn  btn-info btn-sm btn-block">Submit</button>
+			  <button ng-click='cancelLogin()' class="btn  btn-info btn-sm btn-block">Cancel</button><!-- ng-disabled='!accountForm.$valid'  -->
+			</form>
+		</div>
+
+		<div id="showAutoBackContainerDL" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>
+		<div id="initialDataLoad" style="display:none; border:1px solid #dca7a7; height:162px; width:500px; top:180px; left:504px; z-index:3;background-color:#ffffff; position:absolute;color:#000000;">
+			<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle" style="padding:10px; background-image: linear-gradient(to bottom, #f2dede 0px, #e7c3c3 100%); background-repeat: repeat-x; border-bottom-color: #dca7a7; border-left-color: #dca7a7; border-right-color: #dca7a7; border-top-color: #dca7a7; color: #a94442; font-weight:bold;">Initial Data Load
+			</div>
+			<p style="margin:10px;">
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 70px 0;"></span>
+				<span id="" style="color: #a94442; font-weight:bold;">
+					Required Initial Data Load to set up the Client/Account. <br />
+					Inital data load will erase all existing data. <br />
+					Do you want to proceed?
+				</span>
+			</p>
+			<div style="float:right; padding-right:10px;">
+				<button class="btn btn-info" type="button" ng-click="callInitialDataLoad();" >
+						<span class="glyphicon glyphicon-save"></span> Yes
+				</button>
+				<button class="btn btn-info" type="button" ng-click="cancelInitialDataLoad();">
+						<span class="glyphicon glyphicon-remove-circle"></span> No
+				</button>
+			</div>
+		</div> 
+
+    </div>
+
+    
+
+	<footer style="color:#FFF;" class="footer navbar-fixed-bottom">
+      <div class="container">
+        <p>Swarnasetu  &copy; 2015, 2016. All Rights Reserved.</p>
+      </div>
+    </footer>
+	<script type="text/javascript" src="lib/angular/angular.min.js"></script>
+	<script type="text/javascript" src="lib/angular-messages/angular-messages.min.js"></script>
+	<script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="lib/system_properties.js"></script>
+	<script type="text/javascript" src="ama/sop_editor/js/ui-bootstrap-tpls-0.12.1.js"></script>
+	<script type="text/javascript" src="ama/sop_editor/js/restAPP.js"></script>
+
+	<script type="text/javascript">
+	var authenticationFrom;
+	$(document).ready(function(){
+		$("#enterprise").click(function(){
+			$("#login-box").show();
+			$("#ibmbluepages").hide();
+			authenticationFrom = "enterprise"
+			
+		});
+		$("#ibmbluepages").click(function(){
+			$("#login-box").show();
+			$("#enterprise").hide();
+			authenticationFrom = "ibmbluepages"
+		});
+	});
+	function getURLVar(urlVarName) {
+		var urlVars = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		for(i=0; i<=(urlVars.length); i++) {
+			if(urlVars[i]) {
+				var urlVarPair = urlVars[i].split('=');
+				if (urlVarPair[0] && urlVarPair[0] == urlVarName) {
+					return urlVarPair[1];
+				}
+			}
+		}
+		return "";
+	}
+	var previous = getURLVar("previous");
+	</script>
+	<script>
+	var app = angular.module('AMA',[]);
+	app.controller('onpremiseLoginController', function($location, $scope, $http) {
+	$scope.submitLogin=function(){		
+		  //  localStorage.setItem("username", sop_username);				
+		 var dataObject =  {							  
+				   "userName":$scope.user.userid,
+				   "password":$scope.user.password,
+				   "authenticationFrom":authenticationFrom			   
+			 };
+		 	var testDBExistsToken = {
+					"UserId" : localStorage.getItem("TestUserID")
+			}		 	
+		 	$http.defaults.headers.common.Authorization = "Basic UW5yY2g4TVdreW1zODVuaw==";	
+			var responsePromisetestDBExists = $http.get(testDBExists, testDBExistsToken, {});
+			responsePromisetestDBExists.success(function(dataFromServer, status, headers, config) {
+				$("#showAutoBackContainerDL").hide();
+				$("#initialDataLoad").hide();
+				var responsePromise = $http.post(LoginPrem, dataObject, {});				
+		   		responsePromise.success(function(dataFromServer, status, headers, config) {
+				    console.log(dataFromServer);
+			      	if(status=='200')
+			      	{
+						localStorage.setItem("username", $scope.user.userid);
+						localStorage.setItem("TestUserID", $scope.user.userid);
+			      		if (!previous) {
+			      			window.location.href = "ama/index.html?token="+dataFromServer;
+			      		} else {
+			      			window.location.href = decodeURIComponent(previous);
+			      		}
+			      	}
+			   	});		   
+   				responsePromise.error(function(data, status, headers, config) {			
+		    		alert("Incorrect username or password !");
+		    		console.log("Login failed!");
+		   		});
+		});
+		responsePromisetestDBExists.error(function(dataFromServer, status, headers, config) {
+			console.log("testDB: "+dataFromServer);
+			if(dataFromServer != false){	
+				$("#showAutoBackContainerDL").show();
+				$("#initialDataLoad").show();
+			}
+		});
+	}; 
+	$scope.cancelLogin=function (){
+		document.getElementById("enterprise").style.display = 'block';
+		document.getElementById("ibmbluepages").style.display = 'block';
+		document.getElementById("login-box").style.display = 'none';
+	};
+
+
+	$scope.callInitialDataLoad = function(){
+		console.log('INITIAL Data Loading.....')
+		var initialDataLoadParam = {
+				"UserId" : localStorage.getItem("TestUserID")
+		}
+		var responsePromiseinitialDataLoad = $http.post(initialDataLoad, initialDataLoadParam, {});
+		responsePromiseinitialDataLoad.success(function(dataFromServer, status, headers, config) {
+			console.log("Initial data load: "+dataFromServer);		
+			$http.get(getAuthorization+'?userID='+localStorage.getItem("TestUserID")).success(function(data) {
+				$("#showAutoBackContainerDL").hide();
+				$("#initialDataLoad").hide();
+				alert("Intial data load successfully completed. ");
+				setTimeout(function(){
+					console.log("Authorization successful!" + data.response);
+					var ls_serviceCode = data.serviceCode;
+					var userMessage = data.userMessage;		
+					if(ls_serviceCode==0){
+						var authData = data.response;
+						var authRole = data.response.Roles;					
+						var _iduser = authData._id;
+						var userName = authData.userName;
+						globalUName = authData.userName;
+						var userID = authData.userID;
+						var roleName = authData.roleName;
+						var accountID = authData.accountID;
+						var type = authData.type;
+						var active = authData.active;
+						var typeGlobal = authData.type;
+						var accountName = authData.accountName;
+						var roleName = authRole.roleName;
+						var roleDescription = authRole.roleDescription;
+						var capabilityNameList = authRole.capabilityNameList;
+						var Capabilities = authRole.Capabilities;
+				
+						localStorage.setItem("_iduser", _iduser);
+						localStorage.setItem("servicecode", ls_serviceCode);
+						localStorage.setItem("usermessage", userMessage);
+						localStorage.setItem("username", userName);
+						localStorage.setItem("userID", userID);
+						localStorage.setItem("roleName", roleName);
+						localStorage.setItem("accountID", accountID);
+						localStorage.setItem("type", type);
+						localStorage.setItem("active", active);
+						localStorage.setItem("accountName", accountName);
+						localStorage.setItem("roleName", roleName);
+						localStorage.setItem("roleDescription", roleDescription);
+						localStorage.setItem("capabilityNameList", capabilityNameList);
+						localStorage.setItem("Capabilities",JSON.stringify(Capabilities));		
+						console.log("Global User type and Name : "+typeGlobal+" - "+globalUName);
+						if(typeGlobal =='Normal'){
+							$('#adminLink').hide();
+						}else if(typeGlobal =='Admin' ){
+							$('#adminLink').show();
+						}else if(typeGlobal == 'SuperAdmin'){
+							$('#adminLink').show();
+						} 
+					
+						$("#homepage-username").html(localStorage.getItem("username")); 
+						var active_user = (localStorage.getItem("active")).toLowerCase();
+						var auth_servicecode = localStorage.getItem("servicecode");
+						var auth_usermessage = localStorage.getItem("usermessage");
+						console.log("active_user :" + active_user);
+						console.log("auth_servicecode :" + auth_servicecode);
+						console.log("auth_usermessage :" + auth_usermessage);
+						 if (typeof(active_user) != 'undefined' && active_user != null){
+					          if(active_user != "y"){
+					        	  //$("#welcome_message").html("Your access on swaransetu portal has been revoked");	
+					        	  $('#homepage_content').hide();
+					        	  window.location.href = docDomain;	
+					         }else{
+					     		$http.defaults.headers.common.Authorization = "Basic UW5yY2g4TVdreW1zODVuaw==";
+					    		$http.get(GetUserAccess + '?userID='+localStorage.getItem("userID")).success(function(data) { 
+					    		//$http.get(GetUserAccess + '?userID=sauser').success(function(data) { 
+					    			var dataArray = data.response;
+					    			var accountArray = dataArray.account;
+					    	     	for (var i = 0; i < accountArray.length; i++){      		    		
+					    	     		//$('#accountSelOps').append("<option value='"+accountArray[i].accountId+"'>"+accountArray[i].accountName+"</option>");
+					    	     		firstAccountId = accountArray[0].accountId;
+					    	     		firstAccountName = accountArray[0].accountName;
+					    	     	} 
+					    	     	//$("#accountSelOps option[value='"+firstAccountId+"']").attr("selected","selected");
+					    	     	//$("#accountNameNav").html(firstAccountName);
+					    	     	localStorage.setItem("accountName", firstAccountName);
+					    	     	localStorage.setItem("accountId", firstAccountId);
+					    	     	var currClientName;
+					    	     	var currClientId;
+					    	 		$http.defaults.headers.common.Authorization = "Basic UW5yY2g4TVdreW1zODVuaw==";
+					    	 		var responsePromise = $http.get(getClientfromAccount + '?accountName='+firstAccountName, {});
+					    	 		responsePromise.success(function(data) { 
+					    					var currObj = data.response;
+					    	    			currClientName = currObj.clientName;
+					    	    			currClientId = currObj.clientid;
+					    	    			console.log("currClientName: "+currClientName);
+					    	    			$("#clientNameNav").html(currClientName.toUpperCase());
+					    	    			localStorage.setItem("clientName", currClientName);
+					    	    			localStorage.setItem("clientId", currClientId);
+					    			});	
+					    	 		responsePromise.error(function(data) { 
+					    	 			alert(data.userMessage);
+					    	 		});	
+					    	     });
+					    		$('#sop-username').html(localStorage.getItem("username"));
+					         }
+				        }else{
+				       	 	alert('User is not active, please contact Administrator');
+				        }
+					   }else if(ls_serviceCode==1){
+						   $("#welcome_message").html(userMessage); 	    	 	
+			      	  	 	$('#homepage_content').hide(); 
+			      	  	 	$('#aboutDialogButton').hide();       	  
+			        	}
+			    	}, 800);
+			
+				});
+			
+			
+		});
+		responsePromiseinitialDataLoad.error(function(dataFromServer, status, headers, config) {
+			alert("Intial data load not possible. ");
+		});
+	};
+
+});
+	</script>
+
+
+
+</body>
+</html>

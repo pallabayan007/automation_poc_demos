@@ -1,0 +1,1442 @@
+	<div id="alterMessageBoxCreateUser" class="alert alert-success"  role="alert" style="border-radius:0px;display:none;margin:0px 25%;width:50%;position:fixed;top:0px;left:0px;z-index:9999999;">
+		<button type="button" class="close" aria-label="Close" onclick="$('#alterMessageBoxCreateUser').hide();"><span aria-hidden="true">&times;</span></button>
+		<div>
+			<strong>Success Message :</strong>
+			<div style="max-height:200px;overflow:auto;">
+				<div class="updateMsg"></div>
+			</div>
+		</div>
+	</div>
+	<div id="messageBoxError" class="alert alert-danger"  role="alert" style="border-radius:0px;display:none;margin:0px 25%;width:50%;position:fixed;top:0px;left:0px;z-index:9999999;">
+		<button type="button" class="close" aria-label="Close" onclick="$('#messageBoxError').hide();"><span aria-hidden="true">&times;</span></button>
+		<div>
+			<strong>Error Message :</strong>
+			<div style="max-height:200px;overflow:auto;">
+				<div class="errorAdminMsg"></div>
+			</div>
+		</div>
+	</div>
+    <div class="container-fluid" style="padding-top:50px;" id="administratorPage">	
+		<div class="col-sm-12 main-content ama-right-pane"> 
+			<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+		 	      	<!-- <ul class="nav navbar-nav" style="padding-left: 20px; padding-top: 22px; color: #00b299; font-weight: bold;"><li id="accountNameNav"></li></ul> -->
+					<ul class="nav navbar-nav navbar-right" style="margin: 5px 5px;">
+					  <li><span class="navbar-brand brand-client" id="clientNameNav" style="position: relative; left: -207px;"></span></li>
+					  <li class="dropdown">
+					  <button class="dropdown-toggle btn btn-success" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></span></button>
+						  <ul class="dropdown-menu">
+							<li class="dropdown-header" style="font-weight:bold;">User Account</li>
+							<li id="loggedUserName" style="cursor:pointer; padding-left:20px; font: bold 12px arial;"></li>
+							<li onclick="window.open('../../file/v1/transactionAuditLog/download?user_id=' + localStorage.getItem('username'), '_blank')"><a href="#">Export Audit</a></li>
+							<li onclick="window.close();"><a href="#">Close</a></li>
+						  </ul>
+					   </li>				
+					</ul>					  				  
+			</div>  
+        	<p id="messg" style="height:60px;color:lightblue;"></p>		    													  
+			<div class="container-fluid ama-container-style" ng-controller = "createArchiveController" ng-cloak>
+				<h4><span id="administration-text"></span>Administration</h4>
+				<div>
+					<tabset justified="true">
+						<tab>	
+							<tab-heading id="manage-roles-text">
+								Access Control
+							</tab-heading>	
+							<div class="panel panel-primary">
+								<!--<div class="panel-heading">Access Control Details</div>-->
+								<div class="panel-body ama-panel-style">
+							
+							
+									<tabset justified="true">
+										<tab>
+											<tab-heading id="manage-roles-text">
+												Manage Roles & Capabilities
+											</tab-heading>						
+										<!-- <tab heading="Manage Roles & Capabilities"> -->
+											 <div class="panel panel-primary">
+													<!--<div class="panel-heading">Manage Roles & Capabilities Details</div>										  -->
+													  <div class="panel-body ama-panel-style">
+													  
+														<div class="form-group" id="RoleSearch">
+															<label class="col-sm-3 control-label"><span id="search-text1"></span>Search : </label>
+															<div class="col-sm-5">														    	
+																	<div  style="height:300px;" ng-app="instantUserSearch" ng-controller="InstantRoleSearchController">
+																		<input class="form-control" type="text" ng-model="searchString" placeholder="Enter Role" id="searchRole" onkeypress="roleKeypress(event,this.value);" ng-change="changeRoleSearch();" style="color:#000;"/>
+																		<ul class="serachAdminData" id="roleDataList" style="display:none;">
+																			<li ng-repeat="i in items | searchFor:searchString">
+																				<span id="{{i._id}}" ng-click="showRoleData(i.roleName);">{{i.roleName}}</span>
+																			</li>
+																		</ul>
+																	</div>
+															</div>
+															<div class="col-sm-4">
+																<button class="btn btn-info" id="definerolebutn" onclick="defineRole();">
+																	<span class="glyphicon glyphicon-plus-sign"></span> <span id="define-role-text"></span>Define Role
+																</button>
+															</div>
+														  </div>	
+														
+														<div id="createRole"  ng-controller="createRoleUser" style="display:none;">
+															<button class="btn btn-info" id="deleterolebutton" ng-click="createrole.deleteRoleData();" style="display:none; float:right; position:relative;">
+																	<span class="glyphicon glyphicon-plus-sign"></span> <span id="delete-role-text"></span>Delete Role
+															</button>
+															<button class="btn btn-info" id="amendrolebutton" ng-click="createrole.amendRoleData();" style="display:none; float:right; position:relative;">
+																	<span class="glyphicon glyphicon-plus-sign"></span> <span id="amend-role-text">Amend Role</span>
+															</button>
+															<div style="clear: both;"></div>
+															<form role="form" class="form-horizontal" name="createUserForm" ng-submit="createrole.submitForm()">
+																								
+																<div class="form-group" id="choose_section" style="display:none;">
+																  <label class="col-sm-3 control-label">Choose section :</label>
+																		<div class="col-sm-10">										
+																		<select class="form-control" ng-model="createrole.select_section" id="select_section" placeholder="Select Section">
+																			<option value="Dashboard">Dashboard</option>
+																			<option value="SOP Editor">SOP Editor</option>
+																		</select> 															
+																	  </div>
+																</div>
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">Role Name :</label>
+																  <div class="col-sm-5">
+																	<input class="form-control" type="text" ng-model="createrole.rolename" id="createrolename" placeholder="Enter role name" required />
+																  </div> 					
+																  <div class="col-sm-2"> 
+																	
+																	<span id="role_required" style="color:red;">  * required</span>				
+																  </div>
+																</div>
+																							
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">Short Description :</label>
+																  <div class="col-sm-5">
+																	<input class="form-control" type="text" ng-model="createrole.roledescription" id="createroledesciption" placeholder="Enter role description" />		
+																  </div>
+																</div>
+																							
+																<div style="border:1px solid #d9edf7; margin:10px; padding:10px;">
+																	<div class="appTable" id="appTable" style="width:270px; display:none;">
+																	<table  class="table-responsive table table-bordered">
+																	  <thead>
+																		<tr>
+																		  <th>Capability Name</th>
+																		</tr>
+																	  </thead>
+																	  <tbody id="roleCapList">
+																	  </tbody>
+																	</table>
+																	</div>
+																	
+																	<div class="appTable">
+																		<table id="capabilityUpdateTable" style="display:none;" class="table-responsive table table-striped">
+																		  <thead>
+																			<tr>
+																			  <th style="display:none;"  data-override="_id">Order</th>
+																			  <th style="width:120px;" data-override="capName">Capability Name</th>
+																			   <th style="width:120px;" data-override="accessPanel">Access Panel</th>
+																			  <th style="width:320px; display:none;" data-override="capRegStr">Permission Allowed</th>
+																			  <th style="width:100px;" ignoreColumns>Action</th>
+																			</tr>
+																		  </thead>
+																		  <tbody id="capAmendRecord">														    
+																		  </tbody>
+																		</table>
+																		<span><a href="javascript:void(0)" id="addCaplUpdate" style="display:none;"> <span id="add-capability-text"></span>Add Capability</a></span>
+																	</div>
+																																
+																	<div class="form-group" id="capabilityname" style="display:none;">
+																	  <label class="col-sm-3 control-label">Capability Name :</label>
+																	  <div class="col-sm-5">
+																		<input class="form-control" type="text" ng-model="createrole.capabilityname" id="createcapabilityname" placeholder="" disabled/>		
+																	  </div>
+																	</div>
+																	<div class="form-group" id="accessFrmGp">
+																	  <label class="col-sm-3 control-label">Access Panel :</label>
+																		  <div class="col-sm-5">										
+																			<select class="form-control" ng-model="createrole.accessPanel" id="useraccessPanel" ng-change="createrole.changeAccessPanel();" >
+																				<option selected disabled value="">Select Access Panel</option>
+																				<option value="dashboard">Dashboard</option>
+																				<option value="sopeditor">SOP Editor</option>
+																				<option value="adminportal">Admin Portal</option>
+																			</select> 
+																		  </div>
+																	</div>					
+																	<div class="form-group" id="capstring" style="display:none;">
+																	  <label class="col-sm-3 control-label">Permission Allowed :</label>
+																			<div class="col-sm-5">										
+																				<select class="form-control" multiple="multiple" ng-model="createrole.supportlevel" id="usersupportLevel" placeholder="Enter Support Level">
+																				</select> 
+																			</div>
+																			<div class="col-sm-4">
+																				<span id="genCapLink"><a href="javascript:void(0)" id="addRoleCapabilities" ng-click="createrole.addGeneratedCapability()"> Generate Capability Name</a></span>	
+																		  </div>
+																	</div>
+																</div>
+																	<button class="btn btn-info" id="createrolesubmit" type="Submit">
+																		<span class="glyphicon glyphicon-save"></span> <span id="save-text1"></span>Save
+																	</button>	
+																	<button class="btn btn-info" id="createroleupdate" style="display:none;" type="Submit">
+																		<span class="glyphicon glyphicon-save"></span> <span id="update-text"></span>Update
+																	</button>	
+																	<button class="btn btn-info" type="button"  onclick="javascript:showRoleSearch();">
+																		<span class="glyphicon glyphicon-remove-circle"></span><span id="cancel-text1"></span>Cancel
+																	</button>
+																				
+															</form>
+															<div id="capblUpdate" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>													  
+															<div id="capblEditor" style="display:none;height:270px; width:800px; top:150px; left:160px; z-index:2; color:black; padding: 30px; background-color:#ffffff; position:absolute;">
+																<div class="form-horizontal">
+																<div class="form-group">
+																	  <label class="col-sm-3 control-label">Access Panel</label>
+																			<div class="col-sm-5">										
+																			<select class="form-control" ng-model="createrole.accessPanelu" id="useraccessPanelu" ng-change="createrole.changeUpdateAccessPanel();" >
+																				<option selected disabled value="">Select Access Panel</option>
+																				<option value="dashboard">Dashboard</option>
+																				<option value="sopeditor">SOP Editor</option>
+																				<option value="adminportal">Admin Portal</option>
+																			</select> 
+																		  </div>
+																	</div>					
+																	<div class="form-group" style="display:none;" id="capstringu">
+																	  <label class="col-sm-3 control-label">Permission Allowed</label>
+																		  <div class="col-sm-5">										
+																			<select class="form-control" multiple ng-model="createrole.supportlevelu" id="usersupportLevelu" placeholder="Enter Support Level">
+																			</select> 
+																		  </div>
+																		  <div class="col-sm-4">
+																			<span id=""><a href="javascript:void(0)" id="addRoleCapabilitiesu" ng-click="createrole.addGeneratedCapabilityUpdate()"> Generate Capability Name</a></span>
+																		  </div>
+																	</div>
+																	<div style="float:right;">
+																		 <a href="javascript:void(0);" class="updateCapCancel btn btn-info" style="float:right; margin-left:10px;"> <span id="cancel-text2"></span> Cancel</a>	
+																	</div>	
+																</div>
+															</div>
+														</div>		
+														<script>
+															function showRoleSearch(){
+																$('#createRole').hide(); 
+																$('#RoleSearch').show(); 
+																$('#definerolebutn').show();
+																$('#amenduserbutton').hide();
+																$('#roleCapList').html('');
+																$('#addCaplUpdate').hide();
+																$('#createroleupdate').hide();
+															}
+														</script>							
+													 </div>								
+											  </div>
+										</tab>
+									
+										<!-- <tab heading="Manage Users Access"> -->
+										<tab>
+											<tab-heading id="manage-users-text">
+												Manage Users Access
+											</tab-heading>						
+											 <div class="panel panel-primary">
+												<!--<div class="panel-heading">Manage Users Access</div>										  -->
+												  <div class="panel-body ama-panel-style">
+													  <form role="form" class="form-horizontal">
+															<div class="form-group" id="UserSearch">
+																<label class="col-sm-3 control-label"><span id="search-text2"></span>Search : </label>
+																<div class="col-sm-5">														    	
+																	<div style="height:300px;" ng-app="instantSearch" ng-controller="InstantUserSearchController">	
+																			<input class="form-control" type="text" ng-model="searchString" placeholder="Enter User Name" id="searchUser" ng-change="changeSearch();" style="color:#000;"/>
+																		<ul class="serachAlertData" id="alertUserList" style="display:none;">
+																			<li ng-repeat="j in items | searchFor:searchString">
+																				<span id="{{j._id}}" ng-click="showUserData(j.userID,j._id);">{{j.userName}}</span>
+																			</li>
+																		</ul>
+																	</div>
+																</div>
+																<div class="col-sm-4">
+																	<button class="btn btn-info" id="defineuserbutton" onclick="javascript:showUserAdd();">
+																		<span class="glyphicon glyphicon-plus-sign"></span> <span id="define-user-text"></span>Define User
+																	</button>
+																</div>
+														  </div>	
+													</form>
+															
+														<div id="createUser" ng-controller="createAdminUser" style="display:none;">
+															<button class="btn btn-info" id="deleteuserbutton" ng-click="createuser.deleteUserData();" style="display:none; float:right; position:relative;">
+																	<span class="glyphicon glyphicon-plus-sign"></span> <span id="delete-user-text"></span>Delete User
+															</button>
+															<button class="btn btn-info" id="amenduserbutton" ng-click="createuser.amendUserData();" style="display:none; float:right; position:relative;">
+																	<span class="glyphicon glyphicon-plus-sign"></span><span id="amend-user-text"></span>Amend User
+															</button>
+															<div style="clear: both;"></div>
+															<form role="form" class="form-horizontal" name="createUserForm" ng-submit="createuser.submitForm()">
+																<div ng-show='message' style="color:#337ab7; font-weight:bold; padding:10px 0;">{{message}}</div>							
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">User Name :</label>
+																  <div class="col-sm-5">
+																	<input class="form-control" type="text" ng-model="createuser.username" id="createusername" placeholder="Enter user name" required /> 			
+																  </div>
+																  <div class="col-sm-2">																	
+																	<span id="user_required" style="color:red;" ngBlur="checkduplicateusers()"> * required</span>				
+																  </div>
+																</div>
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">UserID :</label>
+																  <div class="col-sm-5">
+																	<input class="form-control" type="text" ng-model="createuser.userid" id="createuserid" placeholder="Enter userid" required/>  			
+																  </div>
+																  <div class="col-sm-2">																																	
+																	<span style="color:red;"> * required</span>											
+																  </div>									  
+																</div>	
+																<div style="border:1px solid #d9edf7; margin:10px; padding:10px;">
+																	<div style="font-weight:bold;">Account and Application Info:</div>
+																	<div class="appTable">
+																		<table id="applicationTable" style="display:none; border:1px solid #f2f2f2;" class="table-responsive table table-striped">
+																		  <thead>
+																			<tr>
+																			  <th style="display:none; width:220px;"  data-override="accountId">Acc Id</th>
+																			  <th style="width:120px;" data-override="accountName">Account Name</th>
+																			  <th style="display:none; width:220px;" data-override="applicationIdList">Application ID</th>
+																			  <th style="width:120px;" data-override="applicationName">Application Name</th>
+																			</tr>
+																		  </thead>
+																		  <tbody id="applicationRecord">														    
+																		  </tbody>
+																		</table>
+																	</div>	
+																	<div class="appTable">
+																		<table id="applicationUpTable" style="display:none; border:1px solid #f2f2f2;" class="table-responsive table table-striped">
+																		  <thead>
+																			<tr>
+																			  <th style="display:none; width:220px;"  data-override="accountId">Acc Id</th>
+																			  <th style="width:120px;" data-override="accountName">Account Name</th>
+																			  <th style="display:none; width:220px;"ooo data-override="applicationIdList">Application ID</th>
+																			  <th style="width:120px;" data-override="applicationName">Application Name</th>
+																			  <th style="width:120px;" >Action</th>
+																			</tr>
+																		  </thead>
+																		  <tbody id="applicationUpRecord">														    
+																		  </tbody>
+																		</table>
+																		<span><a href="javascript:void(0)" id="addAccUpdate" style="display:none;"> Add Account</a></span>
+																	</div>											
+																	<div class="form-group" id="accContent">
+																	  <label class="col-sm-3 control-label">Account :</label>
+																	  <div class="col-sm-5">
+																	  <select class="form-control" ng-model="createuser.accountid" id="createaccountid" ng-change="createuser.getApplication()">
+																		<option selected disabled value="">Select Account</option>											
+																		<option ng-repeat="application in applications" value="{{application._id}}" label="{{application.accountName}}">{{application.accountName}}</option>
+																	  </select>
+																	  </div>
+																	  <div class="col-sm-4">
+																	  <span style="color:red;"> * required</span>
+																	  </div>									  
+																	</div>	
+																	<div class="form-group" id="applicationContent" style="display:none;">
+																	  <label class="col-sm-3 control-label">Application :</label>
+																		<div class="col-sm-5">										
+																			<select class="form-control" multiple ng-model="createuser.applicationlist" id="applicationList">
+																			</select> 
+																	    </div>
+																		<div class="col-sm-4">
+																			<span><a href="javascript:void(0)" id="addApplication" ng-click="createuser.addApplication()"> Add Application</a></span>
+																		</div>									  
+																	</div>	
+																</div>								
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">User Type :</label>
+																  <div class="col-sm-5">										
+																	<select class="form-control" ng-model="createuser.userType" placeholder="Enter User Type" id="adminUserType">
+																		<option selected value="">Select</option>
+																		<option value="Normal">Normal</option>
+																		<option value="Admin">Admin</option>
+																		<option value="SuperAdmin">SuperAdmin</option>
+																	</select>
+																  </div>
+																</div>
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">Email :</label>
+																  <div class="col-sm-5">										
+																	<input class="form-control" type="text"  ng-model="createuser.email" placeholder="Enter Email" id="adminUserEmail" />
+																  </div>
+																</div>
+																<div class="form-group">
+																  <label class="col-sm-3 control-label">Role :</label>
+																  <div class="col-sm-5">										
+																	<select class="form-control" ng-model="createuser.role" id="createuserrole" placeholder="" required>
+																		<option selected disabled value="">Select Role</option>											
+																		<option ng-repeat="Roleitem in Roleitems" value="{{Roleitem.roleName}}">{{Roleitem.roleName}}</option>
+																	</select>
+																  </div>
+																  <div class="col-sm-4">
+																	<span style="color:red;"> * required</span>	
+																  </div>
+																</div>	
+																<div class="form-group" id="activeContent">
+																  <label class="col-sm-3 control-label">User Status :</label>
+																  <div class="col-sm-5">										
+																	<select class="form-control" ng-model="createuser.activeuser" id="createuseractive">
+																		<option value="">Select</option>
+																		<option value="Y" selected="selected">Active</option>
+																		<option value="N">In-active</option>
+																	</select>																	
+																  </div>												   
+																</div>
+
+																								
+																<button class="btn btn-info" id="createusersubmit" type="Submit">
+																	<span class="glyphicon glyphicon-save"></span>  <span id="save-text2"></span>Save
+																</button>
+																<button class="btn btn-info" id="createuserupdate" style="display:none;" type="Submit">
+																	<span class="glyphicon glyphicon-save"></span> Update
+																</button>	
+																<button class="btn btn-info" type="button" id="createusercancel"  onclick="javascript:showUserSearch();">
+																	<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+																</button>
+																				
+														</form>
+															<div id="applicationUpdate" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>													  
+															<div id="applicationEditor" style="display:none;height:270px; width:800px; top:150px; left:160px; z-index:2; color:black; padding: 30px; background-color:#ffffff; position:absolute;">
+																<div>
+																	<label class="col-sm-3 control-label">Account: </label>
+																    <div class="col-sm-5">								
+																	  <select class="form-control" ng-model="createuser.accountid" id="updateaccountid" ng-change="createuser.getUpApplication()">
+																		<option  class="ng-binding ng-scope" selected value="select">Select Account</option>											
+																		<option ng-repeat="application in applications" value="{{application._id}}" label="{{application.accountName}}">{{application.accountName}}</option>
+																	  </select>
+																	</div>
+																</div>
+																<div style="padding-top:20px;">
+																	<label class="col-sm-3 control-label">Application :	</label>
+																  <div class="col-sm-5">															
+																	<select class="form-control" multiple ng-model="createuser.applicationlist" id="updateapplicationList" style="display:none;">
+																	</select> 
+																  </div>
+																	
+																 </div>	
+																 <div style="padding-top:20px; float:right;">
+																	<a href="javascript:void(0);" class="updateApplClose btn btn-info" style="float:right; margin-left:10px;">  <span id="save-text3"></span>Save </a>
+																	<a href="javascript:void(0);" class="updateApplCancel btn btn-info" style="float:right; margin-left:10px;"> <span id="cancel-text3"></span> Cancel</a>	
+																 </div>								  
+															</div>
+													</div>
+												</div>
+											</div>								
+
+										</tab>						
+									</tabset>						
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							</div>
+						</div>							
+						</tab>					
+						<tab>	
+							<tab-heading id="manage-roles-text">
+								System Configuration
+							</tab-heading>	
+						<div class="panel panel-primary">
+							<!--<div class="panel-heading">System Configuration Details</div>-->
+							<div class="panel-body ama-panel-style">
+							
+								<tabset>	
+									<tab>	
+										<tab-heading id="manage-roles-text">
+											Message Queue
+										</tab-heading>	
+										<div class="panel panel-primary" ng-controller="MqConfigController">
+											<!--<div class="panel-heading">Message Queue Details</div>-->
+											<div class="panel-body ama-panel-style">
+												<div class="ama-panel-in">
+												<h4><p style="color:#797272;">Message Queue Config</p></h4>
+													<div id="mainView">
+														<div class="jsonView">
+															<jsonconfig child="mqconfigdata" default-collapsed="false" type="object"></jsonconfig>
+														</div>																											
+													</div>
+												</div>
+											</div>
+											<div class="modal fade" id="mqConfigModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">Are you sure you want to save the configuration file?</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" ng-click = "savethefile('mq_config',mqconfigdata);" data-toggle="modal" data-target="#mqConfigModalResult" data-dismiss="modal">OK</button>
+																		  <button type="button" class="btn btn-info" ng-click = "getjsondata('mq_config');" data-dismiss="modal">Cancel</button>
+																		</div>
+																	  </div>  
+																	</div>
+											</div>
+											<div class="modal fade" id="mqConfigModalResult" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">{{mqconfigtstatus}}</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+																		</div>
+																	  </div>  
+																	</div>
+											</div>
+											<div>
+												
+													<button type="button" style="" id="mqDetailsUpdate" class="btn btn-info" data-toggle="modal" data-target="#mqConfigModal"> 
+																	<span class="glyphicon glyphicon-save"></span> 
+																	<span id="update-text"></span>
+																	Update
+													</button>
+													<button class="btn btn-info" type="button" id="mqDetailscancel" ng-click="getjsondata('mq_config');">
+																<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+													</button>
+											</div>
+										</div>									
+									</tab>	
+									<tab>	
+										<tab-heading id="manage-roles-text">
+											Application
+										</tab-heading>	
+										<div class="panel panel-primary" ng-controller="AppConfigController">
+											<!--<div class="panel-heading">Application Details</div>-->
+											<div class="panel-body ama-panel-style">
+												<div class="ama-panel-in">
+												<h4><p style="color:#797272;">Application Config</p></h4>
+													<div id="mainView">
+														<div class="jsonView">
+															<jsonconfig child="appconfigdata" default-collapsed="false" type="object"></jsonconfig>
+														</div>																											
+													</div>
+												</div>										
+											</div>
+											<div class="modal fade" id="appConfigModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">Are you sure you want to save the configuration file?</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" ng-click = "savethefile('app_config',appconfigdata);" data-toggle="modal" data-target="#appConfigModalResult" data-dismiss="modal">OK</button>
+																		  <button type="button" class="btn btn-info" ng-click = "getjsondata('app_config');" data-dismiss="modal">Cancel</button>
+																		</div>
+																	  </div>  
+																	</div>
+											</div>
+											<div class="modal fade" id="appConfigModalResult" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">{{appconfigtstatus}}</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+																		</div>
+																	  </div>  
+																	</div>
+											</div>
+											<div>
+												
+													<button type="button" style="" id="appDetailsUpdate" class="btn btn-info" data-toggle="modal" data-target="#appConfigModal"> 
+																	<span class="glyphicon glyphicon-save"></span> 
+																	<span id="update-text"></span>
+																	Update
+													</button>
+													<button class="btn btn-info" type="button" id="appDetailscancel" ng-click="getjsondata('app_config');">
+																<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+													</button>
+											</div>
+										</div>									
+									</tab>	
+									<tab>	
+										<tab-heading id="manage-roles-text">
+											Monitor Adapter
+										</tab-heading>	
+										<div class="panel panel-primary" ng-controller="MonitorAdapterCtrl">
+											<!--<div class="panel-heading">Monitor Adapter Details</div>-->
+											<div class="panel-body ama-panel-style">
+												<div class="ama-panel-in">
+												<h4><p style="color:#797272;">Monitor Adapter Config</p></h4>
+													<div id="mainView">
+														<div class="jsonView">
+															<jsonconfig child="monitoradaptdata" default-collapsed="false" type="object"></jsonconfig>
+														</div>	
+																										
+													</div>													
+												</div>														
+											</div>
+											<div class="modal fade" id="monitorAdaptModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">Are you sure you want to save the configuration file?</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" ng-click = "savethefile('adapter_config',monitoradaptdata);" data-toggle="modal" data-target="#monitorAdaptModalResult" data-dismiss="modal">OK</button>
+																		  <button type="button" class="btn btn-info" ng-click = "getjsondata('adapter_config');" data-dismiss="modal">Cancel</button>
+																		</div>
+																	  </div>  
+																	</div>
+											</div>
+											<div class="modal fade" id="monitorAdaptModalResult" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">{{monitoradaptstatus}}</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+																		</div>
+																	  </div>  
+																	</div>
+											</div>
+											<div>
+												
+													<button type="button" style="" id="monitorDetailsUpdate" class="btn btn-info" data-toggle="modal" data-target="#monitorAdaptModal"> 
+																	<span class="glyphicon glyphicon-save"></span> 
+																	<span id="update-text"></span>
+																	Update
+													</button>
+													<button class="btn btn-info" type="button" id="monitordetailscancel" ng-click="getjsondata('adapter_config');">
+																<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+													</button>
+												</div>
+										</div>									
+									</tab>	
+									<tab>	
+										<tab-heading id="manage-roles-text">
+											Automation Adapter
+										</tab-heading>	
+										<div class="panel panel-primary" ng-controller="AutomationAdapterCtrl">
+											<!--<div class="panel-heading">Automation Adapter Details</div>-->
+											<div class="panel-body ama-panel-style">
+												<div class="ama-panel-in">
+															<h4><p style="color:#797272;">Automation Adapter Config</p></h4>
+															<!--form role="form" name="mq_config" class="form-horizontal"-->
+														<div id="mainView">
+																<div class="jsonView">
+																	<jsonconfig child="autoadaptdata" default-collapsed="false" type="object"></jsonconfig>
+																</div>	
+																										
+														 </div>
+														<!--/form-->
+	
+
+													</div>
+													
+											</div>
+												<div class="modal fade" id="autoAdaptModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">Are you sure you want to save the configuration file?</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" ng-click = "savethefile('automation_adapter_config',autoadaptdata);" data-toggle="modal" data-target="#autoAdaptModalResult" data-dismiss="modal">OK</button>
+																		  <button type="button" class="btn btn-info" ng-click = "getjsondata('automation_adapter_config');" data-dismiss="modal">Cancel</button>
+																		</div>
+																	  </div>  
+																	</div>
+													</div>
+													<div class="modal fade" id="autoAdaptModalResult" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">{{autoadaptstatus}}</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+																		</div>
+																	  </div>  
+																	</div>
+													</div>
+												<div>
+												
+													<button type="button" style="" id="mqDetailsUpdate" class="btn btn-info" data-toggle="modal" data-target="#autoAdaptModal"> 
+																	<span class="glyphicon glyphicon-save"></span> 
+																	<span id="update-text"></span>
+																	Update
+													</button>
+													<button class="btn btn-info" type="button" id="mqdetailscancel" ng-click="getjsondata('automation_adapter_config');">
+																<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+													</button>
+												</div>
+
+										</div>	
+										
+									</tab>	
+									<tab>	
+										<tab-heading id="manage-roles-text">
+											Mapper
+										</tab-heading>	
+											<div class="panel panel-primary" ng-controller="MapperController">
+											<!--<div class="panel-heading">Mapper Details</div>-->
+												<div class="panel-body ama-panel-style">
+													<div class="ama-panel-in">
+													<h4><p style="color:#797272;">Mapper Config</p></h4>
+														<div id="mainView">
+																	<div class="jsonView">
+																		<jsonconfig child="mapperdata" default-collapsed="false" type="object"></jsonconfig>
+																	</div>	
+																											
+														</div>											
+													</div>														
+											</div>
+											<div class="modal fade" id="mapperModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">Are you sure you want to save the configuration file?</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" ng-click = "savethefile('mapper_config',mapperdata);" data-toggle="modal" data-target="#mapperModalResult" data-dismiss="modal">OK</button>
+																		  <button type="button" class="btn btn-info" ng-click = "getjsondata('mapper_config');" data-dismiss="modal">Cancel</button>
+																		</div>
+																	  </div>  
+																	</div>
+													</div>
+													<div class="modal fade" id="mapperModalResult" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">{{mapperstatus}}</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+																		</div>
+																	  </div>  
+																	</div>
+													</div>
+												<div>
+												
+													<button type="button" style="" id="mapperDetailsUpdate" class="btn btn-info" data-toggle="modal" data-target="#mapperModal"> 
+																	<span class="glyphicon glyphicon-save"></span> 
+																	<span id="update-text"></span>
+																	Update
+													</button>
+													<button class="btn btn-info" type="button" id="mapperdetailscancel" ng-click="getjsondata('mapper_config');">
+																<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+													</button>
+												</div>
+										</div>	
+										
+									</tab>
+									<tab>	
+										<tab-heading id="manage-roles-text">
+											Whitelist
+										</tab-heading>	
+										<div class="panel panel-primary">
+											<div class="panel-body ama-panel-style">
+												<div class="ama-panel-in">
+													<form role="form" class="form-horizontal" name="">
+														<div class="form-group">
+															<label class="col-sm-4 control-label">Account</label>
+															<div class="col-sm-5" ng-controller="accountPannel">
+																<span class="account-selection">
+																	<select ng-model="accountSlection.account" id="accountSelOps">
+																		<option disabled value="" label="">Select Account</option>
+																	</select>
+																</span>
+															</div>
+														</div>
+														<div class="form-group" ng-controller="addEmailWhiteList">
+															<label class="col-sm-4 control-label">Email ID's</label> 
+															<div class="col-sm-5">
+																<input class="form-control" id="emailIdWhiteList" type="text" value="" placeholder="Enter Email IDs" />
+															</div>
+															<a title="Add multiple EMail ID's with a comma" href="javascript:void(0);" class="glyphicon glyphicon-info-sign" style="text-decoration:none;"></a>
+															<button ng-click="createEmailWhitelist();" id="" type="button" class="btn btn-info">
+																<span class="glyphicon glyphicon-plus-sign"></span> Add
+															</button>
+														</div>
+														<div class="form-group" ng-controller="addedEmailWhiteList" id="whitelistTableContent" style="padding:0; height:0;">
+															<label class="col-sm-4 control-label">Email ID's</label> <br />
+															<table  class="table-responsive table table-bordered" id="tableWhiteListed" style="width:80%; display:none;">
+																  <thead>
+																    <tr>
+																      <th width="90%">Email</th>
+																      <th width="10%">Action</th>
+																    </tr>
+																  </thead>
+																  <tbody id="addedEmailList">
+																  </tbody>
+															</table>
+														</div>
+													</form>												
+												</div>														
+											</div>
+										</div>	
+										
+									</tab>
+								</tabset>										
+							</div>
+						</div>									
+						</tab>
+						
+						<tab ng-style="{'background-color':tabcolor}">	
+							<tab-heading id="manage-roles-text">
+								Archive Audit Log
+							</tab-heading>	
+							<div class="panel panel-primary">
+								<!--<div class="panel-heading">Access Control Details</div>-->
+								<div class="panel-body ama-panel-style">
+							
+							
+									<tabset justified="true">
+										<tab>
+											<tab-heading id="create-archive-text">
+												<blink>Create Archive</blink>
+											</tab-heading>						
+											 <div class="panel panel-primary">
+													  <div class="panel-body ama-panel-style">													  
+														<div align="center" style="display:inline-block; width: 100%" class="form-group" id="TicketArchive">
+															<label class="col-sm-3 control-label"><span id="ticket-archive"></span>Ticket Audit Log Status </label>
+															<div class="col-sm-3" >
+																<span class="col-sm-2" ng-bind-html = "imgmessage"></span>															
+																<div  ng-hide = "isShow">
+																	<button id = "ticketarchivebutndis" class="btn btn-info" disabled>Archive Now</button>	
+																</div>
+																<div  ng-show = "isShow">
+																	<button id = "ticketarchivebutn" class="btn btn-info" ng-click = "crtarchservice()" data-toggle="modal" data-target="#archivingModal">Archive Now</button>
+																</div>																
+															</div>
+															 <div class="modal fade" id="archivingModal" role="dialog">
+																<div class="modal-dialog">
+																
+																  <!-- Modal content-->
+																  <div class="modal-content">
+																	<div class="modal-header">
+																	  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																	  <h4 class="modal-title">{{modaltitle}}</h4>
+																	</div>																	
+																	 <div class="progress">
+																	  <div class="progress-bar" role="progressbar" 
+																	  aria-valuemin="0" aria-valuemax="100" ng-style="{'width':progressbarvalue,'background-color':barcolor}">
+																		{{statusofarchive}}
+																	  </div>
+																	</div>
+																	<div class="modal-footer" ng-show = "showModalClose">
+																	  <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+																	</div>
+																  </div>																  
+																</div>
+																</div>
+														  </div>
+
+														<div align="center" style="display:inline-block; width: 100%;" class="form-group" id="AlertArchive">
+															<label class="col-sm-3 control-label"><span id="alert-archive"></span>Alert Audit Log Status </label>
+															
+															<div class="col-sm-3" >
+																<span class="col-sm-2" ng-bind-html = "imgalertmessage"></span>
+																<div  ng-hide = "isShowAlertAudit">
+																	<button id = "alertarchivebutndis" class="btn btn-info" disabled>Archive Now</button>	
+																</div>
+																<div  ng-show = "isShowAlertAudit">
+																	<button id = "alertarchivebutn" class="btn btn-info" ng-click = "crtalertarchservice()" data-toggle="modal" data-target="#archivingModal">Archive Now</button>
+																</div>																
+															</div>
+														  </div>
+														 <div align="center" style="display:inline-block; width: 100%;" class="form-group" id="TrxArchive">
+															<label class="col-sm-3 control-label"><span id="trx-archive"></span>Transaction Audit Log Status </label>
+															
+															<div class="col-sm-3" >
+																<span class="col-sm-2" ng-bind-html = "imgtrxmessage"></span>
+																<div  ng-hide = "isShowTrxAudit">
+																	<button id = "trxtarchivebutndis" class="btn btn-info" disabled>Archive Now</button>	
+																</div>
+																<div  ng-show = "isShowTrxAudit">
+																	<button id = "trxtarchivebutn" class="btn btn-info" ng-click = "crttrxarchservice()" data-toggle="modal" data-target="#archivingModal">Archive Now</button>
+																</div>																
+															</div>
+														  </div>
+																												
+														<script type="text/javascript" src="/lib/socket.io-client/socket.io.js"></script>
+														<script>
+															var alertsforticketarchival = false;
+															var alertsforalertarchival = false;
+															var alertsfortrxarchival = false;
+															//var socket = io();															
+														</script>							
+													 </div>								
+											  </div>
+										</tab>
+									
+										
+										<tab>
+											<tab-heading id="manage-archive">
+												Manage Archive
+											</tab-heading>						
+											 <div class="panel panel-primary">
+												<!--<div class="panel-heading">Manage Users Access</div>										  -->
+												  <div class="panel-body ama-panel-style">
+													  <form role="form" class="form-horizontal">
+															<div class="form-group" id="ArchiveViewDelete">
+																<label class="col-sm-4 control-label"><span id="search-text2"></span>Select Archive : </label>
+																<div class="col-sm-4">
+																	<select ng-model="selectedName.file"  ng-options="files.file for files in listofarchives.Results">
+																	</select>
+																</div>
+																
+																<div class="col-sm-1">
+																	<button class="btn btn-info" id="deletebutton" ng-disabled="currentState === 'Not ready'" data-toggle="modal" data-target="#cnfModal">
+																		<span class="glyphicon glyphicon-minus-sign"></span> <span id="delete-btn-text"></span>Delete
+																	</button>
+																</div>
+																<div class="col-sm-1">
+																	<button class="btn btn-info" id="viewbutton" ng-click = "viewacrhive(selectedName.file.file)" ng-disabled="currentState === 'Not ready'">
+																		<span class="glyphicon glyphicon-plus-sign"></span> <span id="view-btn-text"></span>View
+																	</button>
+																</div>
+																 <div class="modal fade" id="deleteModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">{{delmodaltitle}}</h4>
+																		</div>																	
+																		 <div class="progress">
+																		  <div class="progress-bar" role="progressbar" 
+																		  aria-valuemin="0" aria-valuemax="100" ng-style="{'width':delprogressbarvalue,'background-color':delbarcolor}">
+																			{{statusofdelarchive}}
+																		  </div>
+																		</div>
+																		<!--div class="modal-body">
+																		  <p>{{dynamic}}</p>
+																		</div-->
+																		<div class="modal-footer" ng-show = "showdelModalClose">
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+																		</div>
+																	  </div>
+																	  
+																	</div>
+																</div>
+																 <div class="modal fade" id="cnfModal" role="dialog">
+																	<div class="modal-dialog">
+																	
+																	  <!-- Modal content-->
+																	  <div class="modal-content">
+																		<div class="modal-header">
+																		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+																		  <h4 class="modal-title">The archive file is less than 3 years old. Are you sure you want to delete?</h4>
+																		</div>																											
+																		<div class="modal-footer">
+																		  <button type="button" class="btn btn-info" ng-click = "deleteacrhive(selectedName.file.file)" data-toggle="modal" data-target="#deleteModal" data-dismiss="modal">OK</button>
+																		  <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+																		</div>
+																	  </div>  
+																	</div>
+																</div>
+														  </div>	
+													</form>																											
+												</div>
+											</div>								
+
+										</tab>
+									</tab>
+									
+					</tabset>	
+			
+				<div class="tab-button-pos" style="top: 8px;">
+					<!-- <button class="btn btn-success btn-sm" onclick="window.open('../../file/v1/transactionAuditLog/download?user_id=' + localStorage.getItem('username'), '_blank')">
+						<span class="glyphicon glyphicon-download"></span> <span id="exportaudit-text"></span>Export Audit 
+					</button>
+					<button class="btn btn-success btn-sm" onclick="window.close();">
+						<span class="glyphicon glyphicon-remove-circle"></span> Close
+					</button> -->
+				</div>
+			</div>									
+		</div>    
+    </div>
+ </div>
+<div id="waitAlertContainer" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>													    
+<div id="WaitAlertMsg" style="display:none;height:270px; width:400px; top:110px; left:300px; z-index:2;background-color:#ffffff; position:absolute;">
+		<div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f;">Please Wait.....</div>
+</div>
+							    
+ 		<script type="text/javascript">
+			function showUserSearch(){
+			    $('#createUser').hide(); 
+				$('#UserSearch').show(); 
+				$('#defineuserbutton').show();
+				$('#addAccUpdate').hide();
+			}
+ 			var checkUserType='';
+        	$(document).ready(function() { 
+        		checkUserType = localStorage.getItem("type");
+        		console.log("Administrator type : "+checkUserType);
+    			if(checkUserType =='Normal'){
+    				$('#administratorPage').hide();
+    			}else if(checkUserType =='Admin' ){
+    				$('#administratorPage').show();
+    				$('#activeContent').hide();
+    			}else if(checkUserType == 'SuperAdmin'){
+    				$('#administratorPage').show();
+    				$("#adminUserType").append('<option value="3">Super Admin</option>');
+    				$('#activeContent').show();
+    				$('#deleterolebutton').addClass('saAdmin');
+    				$('#deleteuserbutton').addClass('saAdmin');
+    			}			
+        	});
+        	function roleKeypress(event,currVal){
+        		if ( event.which == 13 ) {
+        			  roleSearchKeypress(currVal);
+        		  }
+        	}
+        	
+        	function roleSearchKeypress(obj) {        		
+        		 $.ajax({
+        			 beforeSend: function(xhrObj){
+        	             xhrObj.setRequestHeader("Authorization","Basic UW5yY2g4TVdreW1zODVuaw==");
+        			 },
+        			 contentType: 'application/json',
+        			 url: SearchRole +'?roleName='+obj,
+        			 header: { 'Authorization':'Basic UW5yY2g4TVdreW1zODVuaw=='},		
+        			 type: "GET",
+        			 success: function(data) {
+        					currRoleNameId = obj;
+        					var roleAccessData = data.response;
+        					//console.log(roleAccessData);
+        					currRoleNameId = roleAccessData._id;
+        					currRoleTimestamp = roleAccessData.updateTimestamp;
+        					var roleCapabilities = roleAccessData.Capabilities;
+        					for(var i=0;i<roleCapabilities.length; i++){
+        						capabilityId.push(roleCapabilities[i]._id);
+        						capabilityName.push(roleCapabilities[i].capName);
+        						capabilityRegStr.push(roleCapabilities[i].capRegStr);
+        						capabilityaccessPanel.push(roleCapabilities[i].accessPanel);
+        						
+        					}
+        					$('#roleDataList').hide();
+        					$('#accessFrmGp').hide();
+        					$('#capstring').hide();
+        					$('#createRole').show();
+        					$('#createrolename').val(roleAccessData.roleName).attr("disabled","disabled");
+        					$('#createroledesciption').val(roleAccessData.roleDescription).attr("disabled","disabled");
+        					$('#capAmendRecord').html('');
+        					//$('#capabilityname').hide();
+        					$('#capabilityUpdateTable').show();
+        					for(var l=0; l<capabilityId.length; l++){
+        						$('#capAmendRecord').append('<tr><td id="capbl'+l+'" style="display:none;">'+capabilityId[l]+'</td><td id="capblname'+l+'">'+capabilityName[l]+'</td><td id="capblAccPanel'+l+'">'+capabilityaccessPanel[l]+'</td><td id="capblRegStr'+l+'" style="display:none;">'+capabilityRegStr[l]+'</td><td style="text-align:center;" align="center"><a href="javascript:void(0)" class="editCapbl disableamend" title="Edit Capability"><span class="glyphicon glyphicon-edit" style="font-size:20px;"></span></a>&nbsp;&nbsp;<a href="javascript:void(0)" class="saveCapbl" style="display:none;" title="Save Capability"><span class="glyphicon glyphicon-floppy-disk" style="font-size:20px;"></span></a>&nbsp;&nbsp;<a href="javascript:void(0)" class="deleteCapbl disableamend" title="Delete Capabiiltity"><span class="glyphicon glyphicon-remove-sign" style="font-size:20px;"></span></a></tr>');				
+        					}
+        					capabilityId.length=0;
+        					capabilityName.length=0;
+        					capabilityRegStr.length=0;
+        					capabilityaccessPanel.length=0;
+        					
+        					//$('#capstring').hide();
+        					$('#createrolesubmit').hide().addClass('amendState');
+        					$('#createroleupdate').hide();
+        				 	$('#commentSection').remove();
+        					$('#definerolebutn').hide();
+        					$('#amendrolebutton').show();
+        					if($('#deleterolebutton').hasClass('saAdmin')){
+        						$('#deleterolebutton').show();
+        					}
+        					$('#RoleSearch').hide();
+        					$('#addRoleCapabilities').hide();		
+        					$('#role_required').hide();
+        					$('#appTable').hide();
+        					$('#alterMessageBoxCreateUser').hide();
+
+        			 },
+        			 error: function() { 
+        				 alert('No Data Avaliable');
+        			 }
+        		});
+        		
+        	}
+        	
+        	$(document).mouseup(function (e){
+    			    var container = $("#alertUserList");
+    			    if (!container.is(e.target)&& container.has(e.target).length === 0) 
+     			    {
+     			        container.hide();
+     			    }
+    			    var container1 = $("#roleDataList");
+    			    if (!container1.is(e.target)&& container1.has(e.target).length === 0) 
+     			    {
+     			        container1.hide();
+     			    }
+        	});
+        	
+			$(document).on('click', '.editCapbl', function(event) {
+					if($('.editCapbl').hasClass('disableamend') == true){
+						return false;
+					}else{
+						
+						var tr = $(this).closest('tr');	
+						currTableIndex = $(tr).index();
+						console.log("dd "+currTableIndex);
+						var capbName = $(tr).find('td').eq(1).html();
+						$('#capblUpdate').show();
+						$('#capblEditor').show();
+					}
+			});
+			
+			$(document).on('click', '.saveCapbl', function(event) {
+				
+				if($(this).hasClass('clicked') == false){
+					var tr = $(this).closest('tr');
+					var capbName = $(tr).find('td').eq(1).find('input').val();			
+					$(tr).find('td').eq(1).html(capbName);	
+					var supportLevelOptions = $(tr).find('td').eq(2).find('select').val() || [];
+					var supportLevelValue = supportLevelOptions.join( "|" )
+					var supportLevel = '^'+capbName+'('+supportLevelValue+')';
+					$(tr).find('td').eq(2).html(supportLevel);
+					$(tr).find('td').eq(3).find('.saveCapbl').hide();
+					$(tr).find('td').eq(3).find('.editCapbl').show();
+					$(this).addClass('clicked');
+				}
+			});
+			
+			$(document).on('click', '.deleteCapbl', function(event) {			
+				if($(this).hasClass('clicked') == false){
+					if($('.deleteCapbl').hasClass('disableamend') == true){
+						return false;
+					}else{
+						var confirmTaskDelete = confirm("This Capability will be permanently deleted and cannot be recovered. Are you sure?");
+					    if (confirmTaskDelete == true) {
+					    	var tr = $(this).closest('tr');
+							$(tr).remove();
+							$(this).addClass('clicked');
+					    }
+					}
+				}
+			});
+			var currTableIndex = '';
+			var currappId = '';
+			$(document).on('click', '.updateApplClose', function(event) {
+				var rowCount = $('#applicationUpRecord tr').length;
+				var accountIdData = [];
+				for(var i=0; i<rowCount; i++){
+					accountIdData.push(document.getElementById("applicationUpRecord").rows[i].cells[0].innerHTML);
+				}
+				
+				var checkCurrentAlert = accountIdData.indexOf(selectedAccountId);
+				var selectedAccountId = $("#updateaccountid option:selected").val();
+				var selectedAccountName = $("#updateaccountid option:selected").text();
+				var checkCurrentAccount = accountIdData.indexOf(selectedAccountId);
+				
+				var applList = []; 
+				var applId = []; 
+				$('#updateapplicationList :selected').each(function(i, selected){ 
+					applList[i] = $(selected).text(); 
+					applId[i] = $(selected).val();
+				});
+				
+					if($(this).hasClass('addUpAccount')){
+						if(selectedAccountId != 0 && applId != ''){	
+							if(checkCurrentAccount >= 0){
+								alert("This Account is already added, please choose different account");
+								return false;
+							}else{
+								var acd = "<tr><td style='display:none;'>"+selectedAccountId+"</td><td> "+selectedAccountName+"</td>";
+								var apl = "<td style='display:none;'>"+applId.toString()+"</td><td>"+applList.toString()+"</td><td style='text-align:center;' align='center'><a href='javascript:void(0)' class='editAppl' title='Edit Application'><span class='glyphicon glyphicon-edit' style='font-size:20px;'></span></a>&nbsp;&nbsp;<a href='javascript:void(0)' class='deleteAppl' title='Delete Application'><span class='glyphicon glyphicon-remove-sign' style='font-size:20px;'></span></a></tr></tr>";		     	
+								$('#applicationUpRecord').append(acd+apl)
+								$('#applicationUpdate').hide();
+								$('#applicationEditor').hide();
+								$('#updateapplicationList').hide().html('');
+							}
+						}else{
+							alert('Please select account and application/s for this account');
+						}
+					}else{
+						if(checkCurrentAccount >= 0 && selectedAccountId != currappId){
+							alert("This Account is already added, please choose different account");
+							return false;
+						}else{
+							if(selectedAccountId != 0 && applId != ''){
+								$('.firstRow'+currTableIndex).html(selectedAccountId);
+								$('.secondRow'+currTableIndex).html(selectedAccountName);
+								$('.thirdRow'+currTableIndex).html(applId.toString());
+								$('.fourthRow'+currTableIndex).html(applList.toString());
+								$('#applicationUpdate').hide();
+								$('#applicationEditor').hide();
+								$('#updateapplicationList').hide().html('');
+							}else{
+								alert('Please select account and application/s for this account');
+							}
+						}
+					}
+			   
+			});
+			$(document).on('click', '.updateApplCancel', function(event) {
+				$('#applicationUpdate').hide();
+				$('#applicationEditor').hide();
+				$('#updateapplicationList').hide().html('');
+			});
+			$(document).on('click', '.updateCapCancel', function(event) {
+				$('#capblUpdate').hide();
+				$('#capblEditor').hide();
+				$('#usersupportLevelu').html('');
+				$('#capstringu').hide();
+			});
+			$(document).on('click', '.editAppl', function(event) {							
+					if($('.editAppl').hasClass('disableamend') == true){
+						return false;
+					}else{
+						var tr = $(this).closest('tr');	
+						currappId = $(tr).find('td').eq(0).html();	
+						var currAccAppId = $(tr).find('td').eq(2).html();
+						currTableIndex = $(tr).index();
+						$(tr).find('td').eq(0).addClass('firstRow'+currTableIndex);
+						$(tr).find('td').eq(1).addClass('secondRow'+currTableIndex);
+						$(tr).find('td').eq(2).addClass('thirdRow'+currTableIndex);
+						$(tr).find('td').eq(3).addClass('fourthRow'+currTableIndex);
+						$('#applicationUpdate').show();
+						$('#applicationEditor').show();
+						$('.updateApplClose').removeClass('addUpAccount');
+						$("#updateaccountid option[value='"+currappId+"']").attr("selected","selected");
+						$("#updateaccountid").attr("disabled","disabled");
+						
+						$.get( GetApplicationListForAccount + '?accountId='+currappId, function( data ) {							 
+							  console.log( "Load was performed."+data );
+							  var currApppl = data.response;
+								$('#updateapplicationList').html('');
+								for (var k = 0; k < currApppl.length; k++){  
+						     		$('#updateapplicationList').append("<option value='"+currApppl[k]._id+"'>"+currApppl[k].applicationName+"</option>");	     		
+						     	}
+								$('#updateapplicationList').show();
+							
+								$.each(currAccAppId.split(","), function(i,e){
+								    $("#updateapplicationList option[value='" + e + "']").prop("selected", true);
+								});
+						});
+					}
+				
+			});
+			$(document).on('click', '#addAccUpdate', function(event) {							
+					$('#applicationUpdate').show();
+					$('#applicationEditor').show();	
+					$('.updateApplClose').addClass('addUpAccount');
+			});	
+			$(document).on('click', '#addCaplUpdate', function(event) {	
+				//alert($('#capAmendRecord > tr > td').index());
+				$('#capblUpdate').show();
+				$('#capblEditor').show();	
+				$('#addRoleCapabilitiesu').addClass('addUpCapbl');
+			});
+			$(document).on('click', '.deleteAppl', function(event) {
+				
+				if($(this).hasClass('clicked') == false){
+					if($('.deleteAppl').hasClass('disableamend') == true){
+						return false;
+					}else{
+						var confirmTaskDelete = confirm("This Application will be permanently deleted and cannot be recovered. Are you sure?");
+					    if (confirmTaskDelete == true) {
+					    	var tr = $(this).closest('tr');
+							$(tr).remove();
+							$(this).addClass('clicked');
+					    }
+					}
+				}
+			});
+			function defineRole(){
+				checkPermission("AddRoleCap","adminportal");
+		    	if(flagCheckPM){
+					$('#createrolesubmit').show().removeClass('amendState');
+					$('#RoleSearch').hide(); 
+				    $('#createRole').show(); 
+				    $('#createrolename').show().removeAttr("disabled","disabled").val('');
+				    $('#role_required').show();
+				    $('#createroledesciption').show().removeAttr("disabled","disabled").val('');
+				    //$('#capabilityname').show();
+				    $('#createcapabilityname').val('');
+				   // $('#capstring').show();
+				    $('#addRoleCapabilities').show();
+				    $('#capabilityUpdateTable').hide();	
+				 	$('#commentSection').remove();
+				 	$('#accessFrmGp').show();
+		    	}else{
+		    		alert('You do not have access privileges for this operation');
+		    	}
+			}
+			
+			function showUserAdd(){
+				checkPermission("AddUserAccess","adminportal");
+		    	if(flagCheckPM){
+					$('#UserSearch').hide(); 
+				    $('#createUser').show();
+				    $('#amenduserbutton').hide();
+				    $('#deleteuserbutton').hide();
+				    $('#createuserupdate').hide();			    
+				    $('#createusersubmit').show();
+				    $('#user_required').show();
+				    $('#accContent').show();
+				    $('#applicationContent').hide();
+				    $('#applicationRecord').html('');
+				    $('#commentSectionUser').hide();			    
+				    $('#applicationTable').hide();	
+				    $('#applicationUpTable').hide();
+				    $('#commentSectionUser').remove();
+				    $('#addApplication').removeClass('clicked');
+				    $('#createusername').removeAttr("disabled","disabled").val('');
+				    $('#createuserid').removeAttr("disabled","disabled").val('');											    
+				    $('#adminUserEmail').removeAttr("disabled","disabled").val('');	
+				    $('#createaccountid').removeAttr("disabled","disabled");
+				    if(checkUserType == 'SuperAdmin'){
+						$('#adminUserType').removeAttr("disabled","disabled").html('<option value="Normal">Normal</option><option value="Admin">Admin</option><option value="SuperAdmin">Super Admin</option>');
+					}else{
+						$('#adminUserType').removeAttr("disabled","disabled").html('<option value="Normal">Normal</option><option value="Admin">Admin</option>');
+					}
+				   // $('#createuserrole').removeAttr("disabled","disabled").html('<option value="OCC Manager">OCC Manager</option><option value="Virtual System Engineer">Virtual System Engineer</option>');
+				   $('#createuserrole').removeAttr("disabled","disabled"); 
+				   $('#createuseractive').removeAttr("disabled","disabled").html('<option value="Y" selected="selected">Active</option><option value="N">In-active</option>');
+		    	}else{
+		    		alert('You do not have access privileges for this operation');
+		    	}
+		    }
+        	
+		</script>  
+  	 <script type="text/javascript">
+		$(function() { 
+			//$('#exportaudit-text').html(uiconfig.AdminPortalexportaudit);
+			//$('#cancel-text1').html(uiconfig.AdminPortalcancel);
+			//$('#cancel-text2').html(uiconfig.AdminPortalcancel);
+			//$('#cancel-text3').html(uiconfig.AdminPortalcancel);
+			//$('#save-text1').html(uiconfig.AdminPortalsave);
+			//$('#save-text2').html(uiconfig.AdminPortalsave);
+			//$('#save-text3').html(uiconfig.AdminPortalsave);
+			//$('#add-capability-text').html(uiconfig.AdminPortaladdcapability);
+			//$('#delete-role-text').html(uiconfig.AdminPortaldeleterole);
+			//$('#amend-role-text').html(uiconfig.AdminPortalamendrole);
+			//$('define-role-text').html(uiconfig.AdminPortaldefinerole);
+			//$('#search-text1').html(uiconfig.AdminPortalsearch);
+			//$('#search-text2').html(uiconfig.AdminPortalsearch);
+			//$('#manage-roles-text').html(uiconfig.AdminPortaltab1);
+			//$('#manage-users-text').html(uiconfig.AdminPortaltab2);
+			//$('#define-user-text').html(uiconfig.AdminPortaldefineuser);
+			//$('#amend-user-text').html(uiconfig.AdminPortalamenduser);
+			//$('#delete-user-text').html(uiconfig.AdminPortaldeleteuser);
+			//$('#administration-text').html(uiconfig.AdminPortaladministration);
+			//$('#update-text').html(uiconfig.AdminPortalupdate);
+			$('#loggedUserName').html(localStorage.getItem("username"));
+			//$('#accountNameNav').html(localStorage.getItem("accountName"));
+			$('#clientNameNav').html(localStorage.getItem("clientName"));
+		});	
+	 </script>
+  	 <script type="text/javascript">
+	 $.getJSON( "../../lib/mq_config.json", function( data ) {
+  var items = [];
+  var output = '';
+  $.each( data, function( key, val ) {
+  //alert(key+' ----------- '+val.monitoringAgentSchedulerCron);
+    //items.push( "<li>'" + key + "'</li><li>" + val.monitoringAgentSchedulerCron + "</li>" );
+	if(key=="general-properties"){
+		output +='<p><hr /></p>';
+		output +='<h3>General Properties</h3>';
+		output +='<hr />';
+		output +='<div class="form-group">';
+		output +='<label class="col-sm-4 control-label">Monitoring AgentS cheduler Cron </label> : ';
+		output += '<div class="col-sm-5"><input class="form-control" type="text" model="monitoringAgentSchedulerCron" name="monitoringAgentSchedulerCron" value="' + val.monitoringAgentSchedulerCron + '" /></div>';
+		output +='</div >';
+	}
+	
+	if(key=="deployment-specific-properties"){
+		
+		output +='<p><hr /></p>';	
+		output +='<p><h3>Deployment Specific Properties</h3>';
+		
+		output +='<p><hr /></p>';	
+		output +='<h4>Cloud : </h4>';
+		output +='<hr />';
+		output +='<div class="form-group">';
+		output +='<label class="col-sm-4 control-label">Name</label> : ';
+		output +='<div class="col-sm-5"><input class="form-control" type="text" model="CLOUD.name" value="' + val.CLOUD.name + '" /></div>';
+		output +='</div >';
+		output +='<div class="form-group">';
+		output +='<label class="col-sm-4 control-label">Label</label> : ';
+		output +='<div class="col-sm-5"><input class="form-control" type="text" model="CLOUD.label" value="' + val.CLOUD.label  + '" /></div>';
+		output +='</div >';
+		output +='<div class="form-group">';
+		output +='<label class="col-sm-4 control-label">Credentials URI</label> : ';
+		output +='<div class="col-sm-5"><input class="form-control" type="text" model="CLOUD.credentials.uri" value="' + val.CLOUD.credentials.uri  + '" /></div>';
+		output +='</div >';
+		
+		
+		output +='<h4>On Premise : </h4>';
+		output +='<hr />';
+		output +='<div class="form-group">';
+		output +='<label class="col-sm-4 control-label">Authentication Protocol</label> : ';
+		output +='<div class="col-sm-5"><input class="form-control" type="text" model="ON_PREM.authenticationProtocol" value="' + val.ON_PREM.authenticationProtocol  + '" /></div>';
+		output +='</div >';
+		output +='<div class="form-group">';
+		output +='<label class="col-sm-4 control-label">DB Connection URL</label> : ';
+		output +='<div class="col-sm-5"><input class="form-control" type="text" model="ON_PREM.dbConnectionURL" value="' + val.ON_PREM.dbConnectionURL  + '" /></div>';
+		output +='</div >';
+		
+		
+	
+	
+	//alert(val.ON_PREM.dbConnectionURL);
+		/*$.each( data2, function( key2, val2 ) {
+			output += "<li>'" + key2 + "'</li><li>" + val.name + "</li>";
+		});*/
+	}
+	
+  });
+   output += '';
+  /*$( "<ul/>", {
+    "class": "my-new-list",
+    html: items.join( "" )
+  }).appendTo( "body" );*/
+  $('#mqConfigPlaceholder').append(output);
+});
+	 </script>
+	 
+	 
+<script>
+$.getJSON("http://swarnasetu.mybluemix.net/rest/v1/adminmeta/getMapperConfigurations", function( data ) {
+  //var output1 = '';
+
+  var object2json = JSON.stringify(data, null, '\t');
+  //var object2json = data.toSource();
+   // alert(object2json);
+	var	outputMapperConfig ='<p><hr /></p>';
+		outputMapperConfig +='<h3>Mapper Config</h3>';
+		outputMapperConfig +='<hr />';
+		outputMapperConfig +='<div class="form-group">';
+		//output1 +='<label class="col-sm-4 control-label">Monitoring AgentS cheduler Cron </label> : ';
+		outputMapperConfig += '<div class="col-sm-10"><textarea style="width:700px; height:300px;" model="mapperConfigJson" name="mapperConfigJson" id="mapperConfigJson" >'+object2json+'</textarea></div>';
+		outputMapperConfig +='</div >';  
+		//$('#mapperConfigJson').val(object2json);
+  $('#mapperConfigJsonPlaceholder').append(outputMapperConfig);
+});
+</script>

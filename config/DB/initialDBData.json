@@ -1,0 +1,35 @@
+{
+    "client": {
+        "clientName": "IGA"
+    },
+    "account": {
+        "accountName": "IBM Global Account 1",
+        "clientName": "IGA"
+    },
+    "application": {
+        "applicationName": "Solutioning Workbench"
+    },
+    "rolecapability": {
+        "roleName": "Virtual System Engineer",
+        "capabilityNameList": [
+            "SopEdtr-Add|Upd|Del|VW"
+        ],
+        "Capabilities": [
+            {
+                "capName": "SopEdtr-Add|Upd|Del|VW",
+                "capRegStr": "^SopEdtr-Add|Upd|Del|VW(Add|Update,Delete,View)",
+                "accessPanel": "sopeditor"
+            }
+        ]
+    },
+    "dbUserCredential": {
+        "userID": "sauser"
+    },
+    "userAccess": {
+        "userName": "Super Admin",
+        "userID": "sauser",
+        "roleName": "Virtual System Engineer",
+        "type": "SuperAdmin",
+        "active": "Y"
+    }
+}

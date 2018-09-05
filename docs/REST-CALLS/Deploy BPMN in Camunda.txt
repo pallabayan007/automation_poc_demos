@@ -1,0 +1,202 @@
+POST /engine-rest/deployment/create HTTP/1.1
+Host: localhost:8080
+Content-Type: multipart/form-data; boundary="28319d96a8c54b529aa9159ad75edef9"
+Cache-Control: no-cache
+Postman-Token: 695900a6-9510-f369-41eb-4b9a992c3f01
+
+--28319d96a8c54b529aa9159ad75edef9
+Content-Disposition: form-data; name="deployment-name"
+Content-Type: text/plain; charset=us-ascii
+
+aName
+--28319d96a8c54b529aa9159ad75edef9
+Content-Disposition: form-data; name="enable-duplicate-filtering"
+Content-Type: text/plain; charset=us-ascii
+
+true
+--28319d96a8c54b529aa9159ad75edef9
+Content-Disposition: form-data; name="data"; filename="test.bpmn"
+Content-Type: application/octet-stream
+
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="_B0ppIPFYEeOlke_H2tkzCA" targetNamespace="http://camunda.org/examples" exporter="Camunda Modeler" exporterVersion="1.12.0" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="CHO_Ticket1" name="CHO_Ticket1" isExecutable="true">
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>SequenceFlow_0xxm04d</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:serviceTask id="Task_0sv7l0w" name="call RPA1">
+      <bpmn2:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">http://9.195.205.226:3000/rest/ExecuteIOD_Ticket?bottype=Automation%20Simulator</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">ticket.toString();</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="accept">application/json</camunda:entry>
+                <camunda:entry key="content-type">application/json</camunda:entry>
+                <camunda:entry key="Authorization">Basic UW5yY2g4TVdreW1zODVuaw==</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_1oly3e9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0tcqnfu</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_0xxm04d" sourceRef="StartEvent_1" targetRef="Task_1ykx2x6" />
+    <bpmn2:userTask id="Task_1ykx2x6" name="startFlow">
+      <bpmn2:incoming>SequenceFlow_0xxm04d</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1oly3e9</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1oly3e9" sourceRef="Task_1ykx2x6" targetRef="Task_0sv7l0w" />
+    <bpmn2:sequenceFlow id="SequenceFlow_0tcqnfu" sourceRef="Task_0sv7l0w" targetRef="Task_0wpo8pc" />
+    <bpmn2:userTask id="Task_0wpo8pc" name="Response From RPA1" default="SequenceFlow_05wjhr0">
+      <bpmn2:incoming>SequenceFlow_0tcqnfu</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1y9bl68</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_05wjhr0</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:endEvent id="EndEvent_1cev8jg">
+      <bpmn2:incoming>SequenceFlow_1tltn45</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:serviceTask id="ServiceTask_0mr85o9" name="call RPA2">
+      <bpmn2:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="url">http://9.195.205.226:3000/rest/ExecuteIOD_Ticket?bottype=Automation%20Simulator</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">ticket.toString();</camunda:script>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="accept">application/json</camunda:entry>
+                <camunda:entry key="content-type">application/json</camunda:entry>
+                <camunda:entry key="Authorization">Basic UW5yY2g4TVdreW1zODVuaw==</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_1y9bl68</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14cjb96</bpmn2:outgoing>
+    </bpmn2:serviceTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_1y9bl68" sourceRef="Task_0wpo8pc" targetRef="ServiceTask_0mr85o9">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression"><![CDATA[${  JSON(JSON(responseMsg).prop("automationResponseMsg").stringValue()).prop("status").stringValue()=="wip"}]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="UserTask_0o07zq4" name="Response From RPA2">
+      <bpmn2:incoming>SequenceFlow_14cjb96</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_1tltn45</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_14cjb96" sourceRef="ServiceTask_0mr85o9" targetRef="UserTask_0o07zq4" />
+    <bpmn2:sequenceFlow id="SequenceFlow_1tltn45" sourceRef="UserTask_0o07zq4" targetRef="EndEvent_1cev8jg" />
+    <bpmn2:endEvent id="EndEvent_0uz1ar0">
+      <bpmn2:incoming>SequenceFlow_05wjhr0</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_05wjhr0" sourceRef="Task_0wpo8pc" targetRef="EndEvent_0uz1ar0" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CHO_Ticket1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="47" y="84" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="20" y="54" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_07v0pze_di" bpmnElement="Task_0sv7l0w">
+        <dc:Bounds x="159" y="74" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0xxm04d_di" bpmnElement="SequenceFlow_0xxm04d">
+        <di:waypoint x="65" y="120" />
+        <di:waypoint x="65" y="159" />
+        <di:waypoint x="86" y="159" />
+        <di:waypoint x="86" y="198" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="75.5" y="138" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0s00mrn_di" bpmnElement="Task_1ykx2x6">
+        <dc:Bounds x="36" y="198" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1oly3e9_di" bpmnElement="SequenceFlow_1oly3e9">
+        <di:waypoint x="136" y="238" />
+        <di:waypoint x="148" y="238" />
+        <di:waypoint x="148" y="114" />
+        <di:waypoint x="159" y="114" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="163" y="170" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0tcqnfu_di" bpmnElement="SequenceFlow_0tcqnfu">
+        <di:waypoint x="209" y="154" />
+        <di:waypoint x="209" y="213" />
+        <di:waypoint x="324" y="213" />
+        <di:waypoint x="324" y="271" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="266.5" y="192" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1cjvvk7_di" bpmnElement="Task_0wpo8pc">
+        <dc:Bounds x="274" y="271" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1cev8jg_di" bpmnElement="EndEvent_1cev8jg">
+        <dc:Bounds x="586" y="293" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="604" y="271" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0mr85o9_di" bpmnElement="ServiceTask_0mr85o9">
+        <dc:Bounds x="377" y="372" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1y9bl68_di" bpmnElement="SequenceFlow_1y9bl68">
+        <di:waypoint x="324" y="351" />
+        <di:waypoint x="324" y="362" />
+        <di:waypoint x="427" y="362" />
+        <di:waypoint x="427" y="372" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="375.5" y="341" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0o07zq4_di" bpmnElement="UserTask_0o07zq4">
+        <dc:Bounds x="554" y="372" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_14cjb96_di" bpmnElement="SequenceFlow_14cjb96">
+        <di:waypoint x="477" y="412" />
+        <di:waypoint x="554" y="412" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="515.5" y="391" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1tltn45_di" bpmnElement="SequenceFlow_1tltn45">
+        <di:waypoint x="604" y="372" />
+        <di:waypoint x="604" y="329" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="619" y="344.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0uz1ar0_di" bpmnElement="EndEvent_0uz1ar0">
+        <dc:Bounds x="120" y="367" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="138" y="407" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_05wjhr0_di" bpmnElement="SequenceFlow_05wjhr0">
+        <di:waypoint x="274" y="311" />
+        <di:waypoint x="215" y="311" />
+        <di:waypoint x="215" y="385" />
+        <di:waypoint x="156" y="385" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="230" y="342" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
+
+
+
+--28319d96a8c54b529aa9159ad75edef9--

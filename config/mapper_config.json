@@ -1,0 +1,22 @@
+{
+    "adapterMappers": {
+        "ITMRESTAlert": "/rest/mappers/RESTAlertMapper",
+        "ServiceNowRESTAlert": "/rest/mappers/ServiceNowAlertMapper",
+        "ServiceNowTickets": "/rest/mappers/ServiceNowTicketMapper",
+        "SolManODataAlert": "/rest/mappers/ODataAlertMapper",
+        "NetCoolHttpOSLCAlert": "/rest/mappers/NetCoolAlertMapper",
+        "ScheduledMaintenanceAlert" : "/rest/mappers/ScheduledMaintenanceAlertMapper",
+        "SQLAlert": "/rest/mappers/SQLAlertMapper",
+        "client1_default_EmailAlert": "/rest/mappers/ABCDefaultEmailAlertMapper",
+        "manulife_ipc_EmailAlert":"/rest/mappers/ManulifeIPCEmailMapper"
+    },
+    "collectionUIMapper": {
+        "Alert": "SOP Editor",
+        "Account": "SOP Editor",
+        "Application": "SOP Editor",
+        "Client": "SOP Editor",
+        "User": "Admin Portal",
+        "Role": "Admin Portal",
+        "Capability": "Admin Portal"
+    }
+}

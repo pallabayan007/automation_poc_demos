@@ -1,0 +1,155 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+	
+<div class="container-fluid ama-container-style" >
+<h4>Application Management</h4>
+ <div class="panel panel-primary">
+		<!--<div class="panel-heading">Enter Application Details</div>-->
+		  <div class="panel-body ama-panel-out">
+		  	<div class=" ama-panel-in" ng-controller="amaappformcontroller">
+				<form role="form" class="form-horizontal" name="createAPPForm" ng-submit="createapp.submitForm()">
+					<div ng-show='message' style="color:#337ab7; font-weight:bold; padding:10px 0;">{{message}}</div>							
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Account : </label>
+					  <div class="col-sm-5">
+						<select class="form-control" ng-model="createapp.accountName" ng-options="account._id as account.accountName for account in accounts | orderBy:'accountName'" id="appAccountName">
+							<option  value="">Select Account</option>
+							<!-- <option ng-repeat="account in accounts" value="{{account._id}}" label="{{account.accountName}}">{{account.accountName}}</option> -->
+						</select>
+						</div>
+						<div class="col-sm-2">							
+						<span style="color:red;"> * required</span>
+						<a href="#accountCreate"> Add Account </a>
+					  </div> 														    
+					</div>	
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Application Name :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="createapp.appname" id="createappname" placeholder="Enter application name" required />
+					  </div>
+					  <div class="col-sm-2">	
+
+						<span style="color:red;"> * required</span>				
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Short Description :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="createapp.sdesc" placeholder="Enter short description" /> 											
+					  </div>									  
+					</div>									
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Support Level :</label>
+					  <div class="col-sm-5">										
+						<select class="form-control" ng-model="createapp.supportlevel" placeholder="Enter Support Level" >
+						 	<option selected value="">Select</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
+					  </div>
+					</div>
+						<script>
+$(function() {
+$( "#datepicker" ).datepicker({dateFormat: 'dd/mm/yy', minDate: 0, maxDate: "+1M +1D" });
+});
+</script>
+<style>
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+  table { }
+  th, td {
+	padding: 0;
+}
+</style>				
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Support Start Date : </label>
+					  <div class="col-sm-5">
+					  <input class="form-control" type="text" id="datepicker" ng-model="createapp.date"><span style="color: red;" id="badDatepicker"></span>
+						<!-- <div ng-controller="DatepickerCtrl">
+						<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="createapp.date" is-open="opened" min-date="" max-date="" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" style="width:20%; float:left;" />
+						  <span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+						  </span>
+						 </div> -->
+             <!-- Defect - 201194, Owner - Radha M De -->
+					  </div>
+            <div class="col-sm-2">
+            <span style="color:red;"></span>
+            </div>
+					</div>
+					
+					<!--  <div class="form-group">
+					  <label class="col-sm-3 control-label">Contract Type :</label>
+					  <div class="col-sm-5">
+						
+						<select ng-model="createapp.contracttype" placeholder="" />
+						 <option selected value="">Select</option>
+							<option value="Fixed Price">Fixed Price</option>
+							<option value="Time and Material">Time & Material</option>
+							<option value="Cost Plus Fixed Fee">Cost Plus Fixed Fee</option>
+							<option value="Fixed Price Incentive">Fixed Price Incentive</option>
+						</select>
+					  </div>
+					</div>--><!-- <option selected disabled value="">Select</option> -->
+					
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Tech Stack :</label>
+					  <div class="col-sm-5">										
+						<select class="form-control" class="form-control" ng-model="createapp.techstack" placeholder="">
+							<option value="">Select</option>
+							<option value="Java">Java</option>
+							<option value=".Net">.Net</option>
+							<option value="Open Source">Open Source</option>
+						</select>
+					  </div>
+					</div>									
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">App Server :</label>
+					  <div class="col-sm-5">										
+						<select class="form-control" ng-model="createapp.appserv" placeholder="">
+							<option value="">Select</option>
+							<option value="WAS">WAS</option>
+							<option value="JBOSS">JBOSS</option>
+							<option value="NODEJS">NODEJS</option>
+							<option value="JRun">JRun</option>
+						</select>
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Interfacing Apps :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="createapp.iterfacingapp" placeholder="" />											
+
+					  </div>
+					   
+					</div>
+				<!-- </div>			 -->										
+					<div class="tab-button-pos">  
+						<button class="btn btn-info" type="Submit">
+							<span class="glyphicon glyphicon-save"></span> Save
+						</button>	
+						<button class="btn btn-info" type="button" ng-click="goToAppList();"><!-- ng-disabled="error || incomplete"-->
+							<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+						</button>
+					</div>									
+			</form>
+			</div>
+		</div>
+		<!--  {{createapp}} -->
+  </div>				
+</div>
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#cancel-text').html(uiconfig.SOPEditorcancel);
+			$('#description-text').html(uiconfig.SOPEditordescription);
+		});	
+	 </script>

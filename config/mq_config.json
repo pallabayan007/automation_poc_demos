@@ -1,0 +1,11 @@
+{
+    "cloudamqp": 
+    	[ 
+    	  {	 
+    		  "name" : "IGA", 
+    		  "credentials": {
+    			  "uri": "amqp://guest:guest@localhost:5672//"
+    		  }
+    	  }
+        ] 
+}

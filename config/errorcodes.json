@@ -1,0 +1,94 @@
+{
+	"illFormat" : {
+		"statusCode" : 400,
+		"serviceCode" : 100,
+		"internalMessage" : "Format is invalid",
+		"userMessage" : "Your input format is invalid, please try again."
+	},
+	"ApplicationIdInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 101,
+		"internalMessage": "Application ID is missing",
+		"userMessage" : "Application ID is missing in your input. "
+	},
+	"UserIdInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 108,
+		"internalMessage": "User ID is missing or wrong",
+		"userMessage" : "User ID is missing or wrong in your input. "
+	},
+	"DBError":{
+		"statusCode" : 500,
+		"serviceCode" : 109,
+		"internalMessage": "Internal Server Error",
+		"userMessage" : "Internal Server Error"
+	},
+	"RoleIdInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 110,
+		"internalMessage": "Role ID is missing or wrong",
+		"userMessage" : "Role ID is missing or wrong in your input. "
+	},
+	"CapabilityIdInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 111,
+		"internalMessage": "Capability ID is missing or wrong",
+		"userMessage" : "Capability ID is missing or wrong in your input. "
+	},
+	"ClientIdInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 112,
+		"internalMessage": "Client ID is missing or wrong.",
+		"userMessage" : "Client ID is missing or wrong in your input."
+	},
+	"UserNameInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 114,
+		"internalMessage": "UserName is missing or wrong",
+		"userMessage" : "UserName is missing or wrong in your input."
+	},
+	"AccountIdInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 115,
+		"internalMessage": "Account ID is missing or wrong",
+		"userMessage" : "Account ID is missing or wrong in your input."
+	},
+	"RoleNameInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 116,
+		"internalMessage": "RoleName is missing or wrong",
+		"userMessage" : "RoleName is missing or wrong in your input."
+	},
+	"SaveSearchInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 117,
+		"internalMessage": "Save Search ID  is missing or wrong",
+		"userMessage" : "Save Search ID is missing or wrong in your input."
+	},
+	"generateAutomataServiceError" : {
+		"statusCode" : 404,
+		"serviceCode" : 118,
+		"internalMessage": "There is a problem in getting  automata service request. Please contact Adminitrator.",
+		"userMessage" : "There is a problem in getting  automata service request. Please contact Adminitrator."
+	},
+	"whiteListIDInvalid" : {
+		"statusCode" : 404,
+		"serviceCode" : 119,
+		"internalMessage": "WhiteList ID is missing or wrong",
+		"userMessage" : "WhiteList ID is missing or wrong in your input. "
+	},
+	"WhiteListConflict":{
+		"statusCode" : 404,
+		"serviceCode" : 120,
+		"internalMessage": "Time Conflict during update .",
+		"userMessage" : "Time Conflict during update ."
+	},
+	"SOPIdInvalid":{
+		"statusCode" : 404,
+		"serviceCode" : 121,
+		"internalMessage": "SOP id is invalid .",
+		"userMessage" : " SOP id is invalid."
+	}
+	
+	
+}

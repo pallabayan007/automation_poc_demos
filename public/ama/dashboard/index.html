@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+<title>Application Monitoring</title>
+<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/lib/jquery-ui/themes/swarnasetu-custom/jquery-ui.min.css">
+<link rel="stylesheet" href="/lib/multiple-select/multiple-select.css">
+<link rel="stylesheet" href="/lib/datetimepicker/jquery.datetimepicker.css">
+<link rel="stylesheet" href="/lib/popModal-gh-pages/popModal.min.css">
+<link rel="stylesheet" href="/ama/dashboard/stylesheets/style.css">
+<link rel="stylesheet" href="/lib/bootstrap-select/dist/css/bootstrap-select.min.css">
+
+<script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="/lib/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="/ama/sop_editor/js/angular-idle.js"></script>	
+<script type="text/javascript" src="/lib/angular-route/angular-route.min.js"></script>
+<script type="text/javascript" src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/lib/socket.io-client/socket.io.js"></script>
+<script type="text/javascript" src="/lib/multiple-select/jquery.multiple.select.js"></script>
+<script type="text/javascript" src="/lib/datetimepicker/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="/lib/moment/min/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="/lib/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+<script type="text/javascript" src="/lib/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="/lib/d3/d3.min.js"></script>
+<script type="text/javascript" src="/lib/sigma/sigma.min.js"></script>
+<script type="text/javascript" src="/lib/sigma/plugins/sigma.parsers.json.min.js"></script>
+<script type="text/javascript" src="/lib/sigma/plugins/sigma.layout.noverlap.js"></script>
+<script type="text/javascript" src="/lib/sigma/plugins/sigma.layout.forceAtlas2.min.js"></script>
+<script type="text/javascript" src="/lib/sigma/plugins/sigma.plugins.animate.min.js"></script>
+<script type="text/javascript" src="/lib/sigma/plugins/sigma.renderers.customEdgeShapes.min.js"></script>
+<script type="text/javascript" src="/lib/sigma/plugins/sigma.renderers.customShapes.min.js"></script>
+<script type="text/javascript" src="/lib/popModal-gh-pages/popModal.min.js"></script>
+<script type="text/javascript" src="/lib/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="/lib/system_properties.js"></script>  
+<script type="text/javascript" src="/ama/dashboard/main.js"></script>
+<script type="text/javascript" src="/ama/sop_editor/js/restAPP.js"></script>
+<script type="text/javascript" src="/lib/ui_config.json"></script>	
+</head>
+<style>
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: white;
+  shape-rendering: crispEdges;
+}
+
+
+.line {
+  fill: none;
+  stroke: orange;
+  stroke-width: 1.5px;
+}
+
+.bar.positive {
+  fill: steelblue;
+}
+
+.bar.negative {
+  fill: brown;
+}
+
+.axis text {
+  font: 10px sans-serif;
+  color: white;
+}
+
+		.ui-tabs-vertical { width: 100%; }
+		.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 6em; }
+		.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+		.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+		.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; }
+		.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: calc(100% - 6em);}
+
+</style>
+<body>
+	<div ui-view ng-controller="EventsCtrl"></div>
+</body>
+<script> 		  
+	$(function() { 
+		checkSystemLogOut();
+	});
+ </script>
+</html>

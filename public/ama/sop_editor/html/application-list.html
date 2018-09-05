@@ -1,0 +1,229 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+	
+<div class="container-fluid ama-container-style" ng-controller="getapplist">
+	<h4>Application Management</h4>
+	<div id="messg2" ng-show='message' style="color:#337ab7; font-weight:bold;">{{message}}</div>
+	<div class="panel panel-primary" id="applist">
+		<!--<div class="panel-heading">Application List</div>-->
+		<div class="panel-body ama-pagination-panel"><!-- ama-panel-out -->
+		  	<!-- <div class="ama-panel-in">		 -->										
+				<table class="table-responsive table table-striped">
+				  <thead><tr>
+					<th><span id="name-text"></span></th>
+					<th><span id="description-text"></span></th>
+				  </tr></thead>
+				  <tbody><tr ng-repeat="applistitems in applist">
+					<td>
+						<span class="dropdown" dropdown on-toggle="toggled(open)">
+						  <a href class="dropdown-toggle" dropdown-toggle>
+							{{applistitems.applicationName }}
+						  </a>
+			
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="javascript:void(0);" ng-click="AppDataView(applistitems._id);">View<span  id="view-menu-text"></span></a></li>
+							<li><a href="javascript:void(0);" ng-click="AppDataEdit(applistitems._id);" id="edit-menu-text"></a></li>
+							<li><a href="javascript:void(0);" ng-click="AppDataDelete(applistitems._id);" id="delete-menu-text"></a></li>
+						  </ul>
+						</span>				
+					</td>
+					<td>{{applistitems.applicationShortDesc}} </td>
+				  </tr></tbody>
+				</table>
+			<!-- </div> -->
+		</div>	
+			  <div style="text-align:center;">      		
+				<pagination 
+			      ng-model="currentPage"
+			      total-items="receivedData.length"
+			      max-size="maxSize"  
+			      items-per-page="numPerPage" 
+			      boundary-links="true">
+			    </pagination>
+	    	  </div>
+	
+<!-- 		<div class="tab-button-pos">
+			<a href="#applicationCreate" class="btn btn-info">
+				<span class="glyphicon glyphicon-plus-sign"></span> Add
+			</a>
+		</div> -->
+		<div class="tab-button-pos">
+			<button class="btn btn-info" id="add-button-text" ng-click="goToAppCreate();"><!-- ng-disabled="error || incomplete" -->
+				<span class="glyphicon glyphicon-plus-sign"></span> Add
+			</button>
+		</div>
+
+	</div>
+		 <div class="panel panel-primary" id="appDetails" style="display:none;">
+			<!--<div class="panel-heading">Application Details</div>-->
+			<div class="panel-body">
+						<table class="table-responsive table table-striped"><!--  ng-controller="viewappcontroller" -->
+						  <!-- <thead><tr><th>Application</th><th>Details</th></tr></thead> -->
+						  <tbody>
+						  <tr><td style="width:50%;"><label> Name	:</label><td>{{appdetails.applicationName}} </td></tr>
+						  <tr><td><label> Short Descritption :</label>	</td><td>{{appdetails.applicationShortDesc}} </td></tr>
+						  <tr><td><label> Support Level	:</label></td><td>{{appdetails.applicationSupportLevel}} </td></tr>
+						  <tr><td><label> Start Date	:</label></td><td>{{appdetails.applicationSupportStartDate| date:'medium'}} </td></tr>
+						  <tr><td><label> Tech Stack	:</label></td><td>{{appdetails.applicationTechStack}} </td></tr>
+						  <tr><td><label> App Server	:</label></td><td>{{appdetails.applicationAppServer}} </td></tr>
+						  <tr><td><label> Interfacing Apps	:</label></td><td>{{appdetails.applicationInterfacingApps}} </td></tr>
+						  <!-- <tr><td colspan="2" align="center"> <a href="javascript:void(0);" ng-click="showApplicationList();">Go back to Application List</a></td></tr> -->
+						 	</tbody>
+						</table>												
+			</div>															
+		</div>
+
+
+			
+		<div class="panel panel-primary"  id="appEdit" style="display:none;">
+			<!--<div class="panel-heading">Application Update</div>-->
+			  <div class="panel-body">		  	
+				<form role="form" class="form-horizontal" name="editAPPForm">
+					<!-- <div ng-show='message' style="color:#337ab7; font-weight:bold; padding:10px 0;">{{message}}</div> -->							
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Account : </label>
+					  <div class="col-sm-5">
+						<select class="form-control" ng-model="editapp.accountName" id="editappaccname">
+							<option selected disabled value="">Select Account</option>
+							<option ng-repeat="account in accounts" value="{{account._id}}" label="{{account.accountName}}">{{account.accountName}}</option>
+						</select>					
+						
+						
+					  </div> 														    
+					</div>	
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Application Name :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="editapp.appname" name="editappname" id="editappname" required ng-Blur="editapp.checkduplicateapps();" /> 
+						</div>
+						<div class="col-sm-2">							
+						
+						<span style="color:red;"> * required</span>
+						<!-- <p ng-show="editAPPForm.editapp.appname.$invalid" class="help-block">Application name is required.</p> -->				
+					 
+<!-- 					   	<span style="color:red" ng-show="editAPPForm.editapp.appname.$dirty && editAPPForm.editapp.appname.$invalid">
+  						<span ng-show="editAPPForm.editappname.$error.required">Application name is required.</span></span> -->
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Short Description :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="editapp.sdesc" id="editappsdesc" /> 											
+					  </div>									  
+					</div>									
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Support Level :</label>
+					  <div class="col-sm-5">										
+						<select class="form-control" ng-model="editapp.supportlevel" id="editappsupport" >
+						 	<option selected value="">Select</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
+					  </div>
+					</div>
+						<script>
+$(function() {
+$( "#editappdate" ).datepicker({dateFormat: 'dd/mm/yy', minDate: 0, maxDate: "+1M +1D" });
+});
+</script>
+<style>
+  .full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+  }
+  .partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+  }
+  table { }
+  th, td {
+	padding: 0;
+}
+</style>				
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Support Start Date : </label>
+					  <div class="col-sm-5">
+					  <input class="form-control" type="text" id="editappdate" ng-model="editapp.date" /> 
+						</div>
+						<!-- Defect - 201194, Owner - Radha M De -->
+						<div class="col-sm-2">
+					  <span style="color: red;" id="badDate"></span> <!-- ng-blur="isDate($this)"  class="{validate:{required:true, date:true}}" -->
+					  </div>
+					</div>
+					
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Tech Stack :</label>
+					  <div class="col-sm-5">										
+						<select class="form-control" ng-model="editapp.techstack" id="editapptechstack">
+							<option value="">Select</option>
+							<option value="Java">Java</option>
+							<option value=".Net">.Net</option>
+							<option value="Open Source">Open Source</option>
+						</select>
+					  </div>
+					</div>									
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">App Server :</label>
+					  <div class="col-sm-5">										
+						<select class="form-control" ng-model="editapp.appserv" id="editappappserv">
+							<option value="">Select</option>
+							<option value="WAS">WAS</option>
+							<option value="JBOSS">JBOSS</option>
+							<option value="NODEJS">NODEJS</option>
+							<option value="JRun">JRun</option>
+						</select>
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Interfacing Apps :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="editapp.iterfacingapp" id="editappinterfacingapp" />											
+
+					  </div>
+					   
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Comment :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="editapp.appcomment" name="editappcomment" id="editappcomment" required />	 
+						</div>
+						<div class="col-sm-2">							
+						
+						<span style="color:red;"> * required</span>										
+						<!-- <p ng-show="form.editAPPForm.editappcomment.$invalid" class="help-block">Comment is required.</p>	 -->			
+					 
+					   	<!-- <span style="color:red" ng-show="editAPPForm.editappcomment.$dirty && editAPPForm.editappname.$invalid">
+  						<span ng-show="editAPPForm.editappcomment.$error.required">Comment is required.</span></span> -->
+					  </div>
+					   
+					</div>
+					
+					
+				<!-- </div>			 -->										
+					<div style="float:right">  
+						<button class="btn btn-info" type="button" ng-click="saveApplOnEdit();"><!--   ng-disabled="editAPPForm.$invalid" -->
+							<span class="glyphicon glyphicon-save"></span> Save
+						</button>	
+						<button class="btn btn-info" type="button" ng-click="cancelUpdateApp();"><!-- ng-disabled="error || incomplete"-->
+							<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+						</button>
+					</div>									
+				</form>
+			</div>
+		</div>
+  	</div>
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#add-button-text').html(uiconfig.SOPEditoradd);
+			$('#edit-menu-text').html(uiconfig.SOPEditoredit);
+			$('#delete-menu-text').html(uiconfig.SOPEditordelete);
+			$('#view-menu-text').html(uiconfig.SOPEditorview);
+			$('#name-text').html(uiconfig.SOPEditorname);
+			$('#cancel-text').html(uiconfig.SOPEditorcancel);
+			$('#description-text').html(uiconfig.SOPEditordescription);
+			checkSystemLogOut();
+		});	
+	</script>	

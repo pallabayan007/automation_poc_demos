@@ -1,0 +1,18 @@
+<div ng-controller="crudController">
+	<div class="sopCrudBox">
+		<div class="sopCrudBox-header">Standard Operating Procedure</div>	<br />	
+		<span class="glyphicon glyphicon-plus" id="defineCollapseICO"></span>&nbsp;<a href="javascript:void(0);" ng-click="showHidePanel();" id="defineData">Define</a> | <a href="javascript:void(0);" ng-click="updateSOP();" id="amendData" class="disableamend sidebarstlyle">Amend</a> | <a href="javascript:void(0);" ng-click="deleteSOP();" id="deletedata" class="disableamend sidebarstlyle"> </a>
+	</div>
+	<div class="sopCrudBox" id="definePanel" style="text-align:left; padding-left:20px; display:block;">		
+	      <span style="width: 171px;"><input type="radio" id="foralertmenutext" ng-click="defineSOP();" name="sopALT" />&nbsp;For Alert</span><a href="javascript:void(0);" ng-click="showSOPHome();" class="glyphicon glyphicon-refresh" style="float: right; padding-right: 6px; font-size:30px; text-decoration:none; padding-top:4px;"></a>
+	      <div><input type="radio" id="forticketmenutext" ng-click="defineTicket();" name="sopALT">&nbsp;For Ticket</div>
+	</div>
+</div>
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#defineData').html(uiconfig.SOPEditordefine);
+			$('#deletedata').html(uiconfig.SOPEditordiscard);
+			$('#foralertmenutext').html(uiconfig.SOPEditorforalert);
+			$('#forticketmenutext').html(uiconfig.SOPEditforticket);
+		});	
+	</script>

@@ -1,0 +1,51 @@
+		<div class="alert-search">
+				<div class="form-group">
+					  <!--  <label class="control-label" style="float:left;">Application </label> -->
+					  <div class="alert-search-box"  ng-controller="leftSearchPannel">
+					  <label class="glyphicon glyphicon-search" style="top:-3px; position:relative; "></label>
+						<select class="form-control" ng-model="searchalert.appname" id="leftSelAppl" ng-change="selectApplication();">
+							<option selected disabled value="">Select Application</option>
+							<!-- <option ng-repeat="application in applications" value="{{application._id}}" >{{application.applicationName}}</option> -->
+						</select>
+					  </div> 														    	
+						<div style="width:100%;" ng-app="instantSearch" ng-controller="InstantSearchController">
+								<div class="bar">
+									<input class="form-control" type="text" ng-model="searchString" placeholder="Enter Alert Name" id="searchInput" disabled ng-change="changeSearch();" />
+								</div>
+								<ul class="serachAlertData" id="alertDataList" style="display:none;">
+									<li ng-repeat="i in items | searchFor:searchString">
+										<span id="{{i._id}}" ng-click="showAlertData(i._id);">{{i.alertName}}</span>
+									</li>
+								</ul>
+								<ul class="serachAlertData" id="ticketDataList" style="display:none;">
+									<li ng-repeat="i in items | searchFor:searchString">
+										<span id="{{i.ticketKey}}" ng-click="showAlertData(i.ticketKey);">{{i.ticketKey}}</span>
+									</li>
+								</ul>
+						</div>
+						<div style="float:right; margin:10px 0;">
+							<a href="#advanceSearch" class="btn btn-success btn-sm" id="advancedSearchBtn" disabled> 
+								<span class="glyphicon glyphicon-search"></span> Advanced Search
+							</a>
+						</div>
+				</div>
+		</div>
+		<script>								
+				$(document).ready(function() { 
+				    $('#searchInput').focusout(function(){	
+				    	setTimeout(function(){ 
+				    		$('#alertDataList').hide(); 
+				    		$('#ticketDataList').hide();
+				    	}, 900);
+				    	$('#upSOPButton').hide();				         
+				    });
+				});
+		</script>
+  	 <script type="text/javascript">
+		$(function() { 
+			//$('#name-text').html(uiconfig.SOPEditorname);
+			$('#search-text').html(uiconfig.SOPEditorsearch);
+		});	
+	 </script>			
+		
+

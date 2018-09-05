@@ -1,0 +1,25 @@
+{
+    "adapters": {
+        "WorkflowManagerAdapter": {
+                    "connection": {
+                        "connectionId": "1",
+                        "connectionProperties": {
+                            "protocol": "http",
+                            "host": "50.23.5.219",
+                            "port": "31053",
+                            "basePath": "/engine-rest",
+                            "timeout": "10000",
+                            "authetication": {
+                                "userId": "demo",
+                                "password": "demo"
+                            },
+                            "client": "IGA",
+                            "account": "IBM Global Account 1",
+                            "encoding": "UTF-8",
+                            "messageSize": "500"
+                        }
+                    }
+            
+        }
+    }
+}

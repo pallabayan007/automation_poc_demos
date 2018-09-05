@@ -1,0 +1,61 @@
+<div>
+	<nav class="header navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/ama/index.html" id="homeNav" >
+					<span>Golden Bridge</span>
+				</a>
+			</div>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+				  <button class="dropdown-toggle btn btnuser-success navbar-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></span></button>
+				  <ul class="dropdown-menu">
+					<li class="dropdown-header" style="font-weight:bold;">User Account</li>
+					<li id="loggedUserName" style="cursor:pointer; padding-left:20px; font: bold 12px arial; color:#000000;"></li>
+					<li><a href="javascript:void(0)">About</a></li>
+					<li><a href="javascript:void(0)">Support</a></li>
+					<li role="separator" class="divider"></li>
+					<li ng-controller="logoutController" ng-click="logout();" style="cursor:pointer; padding-left:20px; color:#000000;">Log Out</li>	
+				  </ul>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+								/*document.getElementById("dashboard-username").innerHTML = localStorage
+										.getItem("username");
+				    			var checkLoggedUser = localStorage.getItem("TestUserID");
+				    			$('#homeNav').attr('href','../index.html);  
+				    			*/
+								$('#loggedUserName').html(localStorage.getItem("username"));
+								//$('#accountNameNav').html(localStorage.getItem("accountName"));
+								$('#clientNameNav').html(localStorage.getItem("clientName"));
+								var checkToken = localStorage.getItem("tokenId");
+								$('#homeNav').attr('href','../index.html?token='+checkToken);
+			});
+		</script>
+
+	</nav>
+</div>
+<div style="top: 50px; position: relative; padding: 0px 20px;">
+	<h2 style="display: inline-block;">Human Activity</h2>
+	<div>
+		<p>
+			<div id="TaskDiv"></div>
+		</p>
+	</div>
+	<div id="AnswerDiv" sytle="display:none;text-color:black">
+		<form name="AnswerForm" id="AnswerForm" ng-submit="submitAnswer()">
+			<fieldset>
+		        <div class="control-group" id="AnswerInputDiv">
+		           	<textarea id="inputAnswer" class="form-control" rows="3" style="color:black; width:70%; resize:none; display:none;" placeholder="Your answer..." ng-model="answer" size=50 />
+					<select id="selectAnswer" class="form-control" style="display:none;" />
+		        </div>
+			</fieldset>
+			<p>
+		    	<div class="btn btn-primary" id="SubmitButton" type="submit" ng-click="submitAnswer()" >Submit now...</div>
+			</p>
+		</form>
+	</div>
+</div>

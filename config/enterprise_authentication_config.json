@@ -1,0 +1,27 @@
+{
+    "LDAP": {
+        "serverUrl": "ldap://ldap.forumsys.com",
+        "baseDN": "cn=read-only-admin,dc=example,dc=com",
+        "scope": "",
+        "port": "389",
+        "sslPort": "",
+        "timeLimit": "",
+        "sizeLimit": "",
+        "objectClass":"",
+        "emailDomain":"@ldap.forumsys.com"
+    },
+    "BLUEPAGE":{
+    	"serverUrl": "ldap://bluepages.ibm.com",
+        "baseDN": "ou=bluepages,o=ibm.com",
+        "scope": "",
+        "port": "389",
+        "sslPort": "",
+        "timeLimit": "",
+        "sizeLimit": "",
+        "objectClass":"ibmperson",
+        "emailDomain":""
+    },
+    "AD": {},
+    "SITEMINDER": {},
+    "OAUTH" : {}
+}

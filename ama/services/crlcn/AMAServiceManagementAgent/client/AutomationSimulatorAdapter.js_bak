@@ -1,0 +1,243 @@
+/**
+ * ./ama/services/crlcn/AMAServiceManagementAgent/client/AutomationSimulatorAdapter.js
+ * 
+ * A Automation Simulator Client which will do nothing but just accept the execution request
+ * from GB and return immediately with success.
+ * 
+ * Purpose - Capture the GB specific performance/throughput starting from intercepting the
+ * ticket/alert and successful automation execution for the same. With this adapter in place
+ * there will be no delay for executing the automation so the total time taken can be completely
+ * attributed to GB Processing Only.
+ * 
+ * Date - July 30, 2016
+ */
+
+var IOD_Execution_Mapping = {};
+
+var AutomationSimulatorClient = function() {
+	/*
+	 * Main Automation Execution Method
+	 */
+	this.execute = function(IOD,callback) {
+		console.log("===Inside Dummy Automata Client : Automation Execution==="+JSON.stringify(IOD));
+		var customisedInput=JSON.parse(IOD.AutomationInput[0]);
+		console.log(customisedInput);
+		var timestamp = new Date().getTime();
+		var request = require('request');
+		//======================================
+
+		if(IOD.ticket_audit_log.ticketKey=="Cog_createTicket")
+		{
+			
+			var postData = {
+		  	short_description: customisedInput.subject,
+		  	comments: 'These are my comments',
+		  	u_description: customisedInput.mailbody
+			}
+
+	var url = 'https://dev23476.service-now.com/api/now/v1/table/incident'
+	var options = {
+	  method: 'post',
+	  body: postData,
+	  json: true,
+	  url: url,
+	  headers: {
+			  'Content-Type': 'application/json',
+			  'Authorization' : 'Basic YWRtaW46ZUFBcHBLNkMyVnE2'
+		  }
+
+	}
+	console.log("starting by ari======");
+	request(options, function (err, res, body) {
+	  if (err) {
+		console.log('error posting json: ', err)
+		throw err
+	  }
+		var headers = res.headers
+		var statusCode = res.statusCode
+		var retTicketNo = body.result.number;
+		var sys_id = body.result.sys_id;
+		console.log('headers: ', headers)
+		console.log('statusCode: ', statusCode)
+		console.log('resulting body======= >: ', body)
+		console.log("Ticket Numere======== > "+retTicketNo);
+		var execution = {
+						execution_id : timestamp,
+						name : "Dummy Automaton Execution",
+						status : "Complete",
+						ticketnumber : retTicketNo,
+						sys_id:sys_id
+					};
+					console.log("excution body is ==== > "+JSON.stringify(execution));
+					IOD_Execution_Mapping[IOD.ticketID] = execution;
+					callback(null, execution);
+	});
+		}
+
+		else if(IOD.ticket_audit_log.ticketKey=="Cog_closeTicket")
+		{
+			console.log("Comes to close ticket section")
+
+			var postData = {
+		  close_code:'Closed/Resolved By Caller',
+		  state:'6',
+		  caller_id:"",
+		  close_notes:"Closed by API"
+	}
+	var sys_id=customisedInput.sys_id;
+	console.log("sys_id:======== > "+sys_id);
+	var url = 'https://dev23476.service-now.com/api/now/v1/table/incident/'+sys_id+'?sysparm_exclude_ref_link=true'
+	var options = {
+	  method: 'PUT',
+	  body: postData,
+	  json: true,
+	  url: url,
+	  headers: {
+			  'Content-Type': 'application/json',
+			  'Authorization' : 'Basic YWRtaW46ZUFBcHBLNkMyVnE2'
+		  }
+
+	}
+	request(options, function (err, res, body) {
+	  if (err) {
+		console.error('error posting json: ', err)
+		throw err
+	  }
+		var headers = res.headers
+		var statusCode = res.statusCode
+		console.log('headers: ', headers);
+		console.log('statusCode: ', statusCode);
+		console.log('body: ', body);
+		var execution = {
+						execution_id : timestamp,
+						name : "Dummy Automaton Execution",
+						status : "Complete",
+						ticketnumber : "",
+						sys_id:""
+					};
+					console.log("excution body is ==== > "+JSON.stringify(execution));
+					IOD_Execution_Mapping[IOD.ticketID] = execution;
+					callback(null, execution);
+	});
+		}
+		
+		
+		else if(IOD.ticket_audit_log.ticketKey=="Cog_createRequest")
+		{
+			console.log("Comes to service req section.........");
+			var postData = {
+				"short_description": customisedInput.subject,
+				"description": customisedInput.mailbody
+				}
+
+			var url = 'https://dev23476.service-now.com/api/now/v1/table/sc_request';
+			var options = {
+				method: 'post',
+				body: postData,
+				json: true,
+				url: url,
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization' : 'Basic YWRtaW46ZUFBcHBLNkMyVnE2'
+				}
+
+			}
+			request(options, function (err, res, body) {
+			if (err) {
+				console.error('error posting json: ', err)
+				throw err
+			}
+			var headers = res.headers
+			var statusCode = res.statusCode
+			var retTicketNo = body.result.number;
+			var sys_id = body.result.sys_id;
+			console.log('headers: ', headers)
+			console.log('statusCode: ', statusCode)
+			console.log('resulting body======= >: ', body)
+			console.log("Reqticket Numere======== > "+retTicketNo);
+		
+		var execution = {
+						execution_id : timestamp,
+						name : "Dummy Automaton Execution",
+						status : "Complete",
+						ticketnumber : retTicketNo,
+						sys_id:sys_id
+					};
+					console.log("excution body is ==== > "+JSON.stringify(execution));
+					IOD_Execution_Mapping[IOD.ticketID] = execution;
+					callback(null, execution);
+		});
+		}
+		
+		else if(IOD.ticket_audit_log.ticketKey=="Cog_updateRequest")
+		{
+			console.log("Comes to close service request section")
+
+			var postData = {
+				"approval": "requested"
+			}
+			var sys_id=customisedInput.sys_id;
+			console.log("sys_id:======== > "+sys_id);
+			var url = 'https://dev23476.service-now.com/api/now/v1/table/sc_request/'+sys_id+'?sysparm_exclude_ref_link=true'
+			var options = {
+			  method: 'PUT',
+			  body: postData,
+			  json: true,
+			  url: url,
+			  headers: {
+					  'Content-Type': 'application/json',
+					  'Authorization' : 'Basic YWRtaW46ZUFBcHBLNkMyVnE2'
+				  }
+			}
+			request(options, function (err, res, body) {
+			  if (err) {
+				console.error('error posting json: ', err)
+				throw err
+			  }
+				var headers = res.headers
+				var statusCode = res.statusCode
+				console.log('headers: ', headers);
+				console.log('statusCode: ', statusCode);
+				console.log('body: ', body);
+				var execution = {
+								execution_id : timestamp,
+								name : "Dummy Automaton Execution",
+								status : "Complete",
+								ticketnumber : "",
+								sys_id:""
+							};
+							console.log("excution body is ==== > "+JSON.stringify(execution));
+							IOD_Execution_Mapping[IOD.ticketID] = execution;
+							callback(null, execution);
+			});
+		}else {
+			var execution = {
+			execution_id : timestamp,
+			name : "Dummy Automaton Execution",
+			status : "Complete"
+			};
+		IOD_Execution_Mapping[IOD.ticketID] = execution;
+		callback(null, execution);
+			
+		}
+		//==========================================
+		
+				
+	}
+	
+	/*
+	 * Automation Status Query Method
+	 */
+	this.getStatus = function(IOD, callback) {
+		// check the in-memory variables
+		var status = IOD_Execution_Mapping[IOD.ticketID].status;
+		callback(null, status, IOD_Execution_Mapping[IOD.ticketID]);
+	}
+}
+
+
+var callServiceNow = function(callback) {
+	callback("arijit");
+}
+
+module.exports = AutomationSimulatorClient;

@@ -1,0 +1,16 @@
+POST /engine-rest/task/c390d8fc-4e9a-11e8-811c-0a0027000006/complete HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: b5941d77-5e92-0198-1cf5-1ce19efd9da2
+
+{
+"variables": 
+    {"responseMsg":{
+        "value": " {\"name\" : \"jonny\", \"automationResponseMsg\":\"{\"status\":\"wip\"}\"}", 
+        "type": "json", 
+        "valueInfo":{"serializationDataFormat":"application/json"}
+        }
+    }
+}
+

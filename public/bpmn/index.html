@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>bpmn-js modeler demo</title>
+	<link rel="stylesheet" href="css/diagram-js.css" />
+	<link rel="stylesheet" href="vendor/bpmn-font/css/bpmn-embedded.css" />
+	<link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+<style>
+ul.buttons
+{
+    left: 50%;
+}
+.buttons > li > a.publish
+{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+}
+.buttons > li > a.publish:hover
+{
+    background-color: #3e8e41;
+}
+
+
+
+
+
+
+.button
+{
+	position: fixed;
+	bottom: 5%;
+    left: 40%;
+	display: inline-block;
+	border-radius: 4px;
+	background-color: #1d8299;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 18px;
+	padding: 5px 0px;
+	width: 80px;
+	transition: all 0.5s;
+	cursor: pointer;
+	margin: 5px 5px;
+}
+.button span
+{
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	transition: 0.5s;
+}
+.button span:after
+{
+	content: '\00bb';
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	right: -20px;
+	transition: 0.5s;
+}
+
+.button:hover span
+{
+	padding-right: 15px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="1.js"></script>
+<div class="content" id="js-drop-zone">
+	<div class="message intro">
+		<div class="note">
+			Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
+		</div>
+	</div>
+	<div class="message error">
+		<div class="note">
+			<p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+			<div class="details">
+				<span>cause of the problem</span>
+				<pre></pre>
+			</div>
+		</div>
+	</div>
+	<div class="canvas" id="js-canvas"></div>
+	<div class="properties-panel-parent" id="js-properties-panel"></div>
+</div>
+
+<button class="button" style="vertical-align:middle" onClick="sendencodedData('a');">
+	<span>Publish</span>
+</button>
+
+  <ul class="buttons">
+    <li>
+		Download The Diagram
+    </li>
+    <li>
+      <a id="js-download-diagram" href title="download BPMN diagram">
+        BPMN diagram
+      </a>
+    </li>
+    <li>
+      <a id="js-download-svg" href title="download as SVG image">
+        SVG image
+      </a>
+    </li>
+    <li>
+      <a id="js-publish-diagram" href title="download as SVG image">
+        Publish
+      </a>
+      <a href="javascript:void();" onClick="sendencodedData('a','b');" title="download as SVG image">
+        Publish
+      </a>
+    </li>
+  </ul>
+  
+<!--
+<ul class="buttons">
+	<li>
+		<a class="active publish" href="javascript:void();" onClick="sendencodedData('a');" title="download as SVG image">
+			Publish
+		</a>
+	</li>
+</ul>
+-->
+
+<script src="index.js"></script>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="FLU">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>File Upload Functionality - Swarnasetu</title>
+	<link rel="stylesheet" href="../../../lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../lib/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../ama/sop_editor/stylesheets/app.css"  />
+	<link rel="stylesheet" href="../../../stylesheets/style.css" />	
+	<script type="text/javascript" src="../../../lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../lib/angular/angular.js"></script>
+	<script type="text/javascript" src="../../../lib/angular-route/angular-route.min.js"></script>	
+	<script type="text/javascript" src="../../../lib/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../../ama/sop_editor/js/ui-bootstrap-tpls-0.12.1.js"></script>
+	<script type="text/javascript" src="../../../ama/sop_editor/js/routePage.js"></script>
+	<script type="text/javascript" src="../../../ama/sop_editor/js/restAPP.js"></script>	
+	<script type="text/javascript" src="../../../lib/angular-sanitize/angular-sanitize.min.js"></script>
+	<style>
+		.ama-container-style {background-color:#FAFAFA; border-radius: 5px; box-shadow: 5px 5px 5px #D8D8D8; color: #000; }	
+		.welcome_style{line-height:40px; font-weight:bold; color: lightblue; font-size:30px;}
+		.ama-panel-style {  }
+	</style>
+</head>
+<body>
+<div class="container-fluid ama-container-style" >
+	<h4>File Upload</h4>
+		<div ng-controller="TabbedFormCtrl">
+		<form class="form-horizontal" id="createSOPForm" ng-submit="createsop.processForm()" name="createSOPForm">
+			<tabset justified="true">						
+				<tab heading="File Upload">
+					 <div class="panel panel-info">
+							<div class="panel-heading">Enter Task Details</div>
+								  <div class="panel-body ama-panel-style">
+										<div style="max-height: 270px; overflow-y: scroll;  overflow-x: hidden;">
+												<div class="form-group">
+												  <label class="col-sm-2 control-label">Upload File :</label>
+												  <div class="col-sm-10">										  
+													<input type="file" id="taskFileUpload" name="fileUpload" size="40">
+												  </div> 
+												</div>									
+										</div>
+								  </div>									
+					  </div>									  
+				</tab>
+			</tabset>												  													
+			<div class="tab-button-pos">  
+				<button class="btn btn-info" type="Submit"> <!--ng-click="createsop.submitTheForm()"     ng-disabled="error || incomplete" -->
+					<span class="glyphicon glyphicon-save"></span> Save
+				</button>
+				<button class="btn btn-info" ng-click="reset()"><!-- ng-disabled="error || incomplete"-->
+					<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+				</button>
+			</div>
+		</form>
+		
+	</div>	
+										
+</div>    
+
+</body>
+</html>
+<script type="text/javascript">
+
+var fileUpload = document.getElementById('taskFileUpload').files[0];
+console.log('file upload :'+fileUpload);
+	 var files = [];
+ if (fileUpload) {
+	 var reader = new FileReader();
+	    reader.onload = function(event) { 
+	      object = {};
+	      object.filename = fileUpload.name;
+	      object.data = event.target.result;
+	      files.push(object);
+	      //currentUploadFile = files;
+	    }; 
+	    reader.readAsDataURL(fileUpload);
+ }
+
+ console.log(files);
+var appl = angular.module('FLU', ['ngRoute','ui.bootstrap']);
+appl.controller('TabbedFormCtrl', function($scope, $http) {
+	$scope.createsop = {};    
+	 $scope.createsop.processForm = function(item, event) {
+		    console.log(" Submitting Saved Data form");
+		  			var dataObject = {
+							"Alerts":[
+										{
+											"alertName" : "Alert001",
+											"alertShortDesc" : "Test Description",
+											"alertType" : "FFOORO",
+											"alertSeverity" : "High",
+											"alertStatus": "acc001app001alertStatus001",
+											"alertFrequency": "acc001app001alertFrequency001",
+											"alertMetrics": "acc001app001alertMetrics001",
+											"alertRaisedTimeStamp": "30-JUN-2015",
+											"application_Name" : "SBAPP",
+											"SOPs" : [ 
+												{
+													"SOPID" : "app001alert001sop001",
+													"SOPName" : "SBNAOO",
+													"SOPShortDesc" : "SOP Description",
+													"SOPPurpose": "Test PUrpose",
+													"Classification": "",
+													"ExpectedInput": "",
+													"ExpectedOutput": "",
+													"WorkflowAutomationID" : "",
+													"SOPUserId" :  "",
+													"SOPPassword" : "",
+													"SOPCognitiveInfos" : [ 
+														{
+															"SOPCognitiveID" : "app001alert001sop001sopcogn001",
+															"goal" : "NO Goal",
+															"noOfHumanTasks" : "2",
+														}
+													],
+													"TaskExecutionFlows" : [ 
+														{
+															"TaskExecutionFlowID" : "ed",
+															"taskExecutionFlowName" : "app001alert001sop001FlowName001",
+															"TaskExecutionUserId " : "ssamy",
+															"TaskExecutionPwd"	: "sammb", 
+															"TaskMasters" : {									
+																"TaskName" : "Mtask",
+																"TaskShortDesc" : "Mdesc",
+																"TaskOwner" : "1",
+																"TaskExecutionType" : "FILE M",
+																"TaskExecutionOrder" : "R",
+																"FileData" : files
+															},
+															"RuleMasters" : [ 
+																{
+																	"RuleMasterID" : "app001alert001sop001Flow001Rule001",
+																	"RuleName" : "app001alert001sop001Flow001RuleName001",
+																	"RuleCondition" : "app001alert001sop001Flow001RuleCond001"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+					
+			};
+			
+			$http.defaults.headers.common.Authorization = "Basic UW5yY2g4TVdreW1zODVuaw==";
+		   var responsePromise = $http.post("https://swarnasetu-sr.eu-gb.mybluemix.net/rest/v1/sopmeta/upload", dataObject, {});	
+		   responsePromise.success(function(dataFromServer, status, headers, config) {
+		      //console.log(dataFromServer.title);
+			   alert('New SOP has been created!');
+
+		   });
+		    responsePromise.error(function(data, status, headers, config) {
+		    	console.log("Submitting form failed!");
+		   });
+		   $scope.createsop = angular.copy($scope.originForm); 
+		   $scope.rows = [];
+		   $scope.createSOPForm.$setPristine();
+		  // setTimeout(function(){  $scope.message =''; }, 1500);
+		 } 
+});
+
+</script>
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#cancel-text').html(uiconfig.AdminPortalcancel);
+		});	
+	 </script>	

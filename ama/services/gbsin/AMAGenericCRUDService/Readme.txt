@@ -1,0 +1,1 @@
+This folder is for services which are dealing CRUD operation on DB for generic purpose.

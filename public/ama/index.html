@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AMA">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<title>Application Monitoring Automation - swarnasetu</title>
+	<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="../ama/sop_editor/stylesheets/app.css"  />	
+	<script type="text/javascript" src="../lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="../lib/angular/angular.js"></script>
+	<script type="text/javascript" src="../lib/angular-route/angular-route.min.js"></script>
+	<script type="text/javascript" src="../ama/sop_editor/js/angular-idle.js"></script>	
+	<script type="text/javascript" src="../lib/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../lib/system_properties.js"></script>
+	<script type="text/javascript" src="../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/ui_config.json"></script>	
+	<script type="text/javascript" src="../lib/underscore/underscore-min.js"></script>
+	<script type="text/javascript" src="../ama/sop_editor/js/ui-bootstrap-tpls-0.12.1.js"></script>
+	<script type="text/javascript" src="../ama/sop_editor/js/jquery.tabletojson.js"></script>
+	<script type="text/javascript" src="../ama/adminPortal/js/configuration.editor.js"></script>
+	<script type="text/javascript" src="../lib/angular-ui-sortable/sortable.min.js"></script>
+	<script type="text/javascript" src="../ama/sop_editor/js/routePage.js"></script>
+	<script type="text/javascript" src="../ama/sop_editor/js/main.js"></script>	
+	<script type="text/javascript" src="../ama/sop_editor/js/restAPP.js"></script>
+	<link rel="stylesheet" type="text/css" href="../ama/sop_editor/stylesheets/overview.css"  />
+	<script type="text/javascript" src="../ama/sop_editor/js/overviewController.js"></script>
+    <script type="text/javascript" src="../lib/ui_config.json"></script>
+	<!-- Changes for Story # 160218 and #9979 -->
+	<style>
+		.ama-container-style {background-color:#FAFAFA; color: #000; }	/*border-radius: 5px; box-shadow: 5px 5px 5px #D8D8D8;*/
+		.welcome_style{font-weight:normal; color: #FFFFFF; font-size:2em; text-align: center;} /*color: #337ab7*/
+		.ama-panel-style {  }
+			#goldenBridgeTxt{
+				font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,sans-serif;
+				font-size:72px;
+				text-align:center;
+				color:#A9A9A9;
+			}
+			#bridgeHeadContent{
+				font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,sans-serif;
+				font-size:24px;
+				text-align:center;
+				color:#A9A9A9;
+				line-height:1.2;
+			}
+			#bridgeHeadContent span{
+				font-size:18px;
+			}
+			#bridgeHeadContent span:hover {color: #6495ED; cursor:pointer;}
+			.btn-gb{
+				background-color: #dfdfdf;
+    			/*border-color: #2d3f49;*/
+    			color: #2d3f49;
+    			width:315px;
+    			margin:10px 0;
+    			font: 14px arial;
+    			height:30px;
+			}
+			.btn-gb:hover{
+				color: #6495ED;
+				cursor:pointer;
+			}
+	</style>
+	<script>
+		function showDetailedOverview(){
+			document.getElementById("intro-overview").style.display = 'none';
+			document.getElementById("detailed-overview").style.display = 'block';
+			
+		}
+		
+		function hideDetailedOverview(){
+			document.getElementById("detailed-overview").style.display = 'none';
+			document.getElementById("intro-overview").style.display = 'block';
+			
+		}
+	</script>
+	
+</head>
+
+<body ng-controller="EventsCtrl">
+	<div ng-controller="UserAuth">
+		<div ng-include src="'sop_editor/html/error_exception_tmpl.html'"></div>
+		<div class="col-sm-12 main-content">
+		 	      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+		 	      	<!--  <ul class="nav navbar-nav" style="padding-left: 720px; padding-top: 22px; color: #00b299; font-weight: bold;"><li id="accountNameNav"></li></ul>-->
+					<ul class="nav navbar-nav navbar-right" style="margin: 5px 5px;">
+					  <li><span class="navbar-brand brand-client" id="clientNameNav" style="position: relative; left: -207px;"></span></li>				
+					   <!--
+					   <li>		        
+						<button type="button" id="logout-controller" ng-controller="logoutController" class="btn btn-success btn-sm" style="float:right;" ng-click="logout()">
+							<span class="glyphicon glyphicon-user"></span>
+						 </button>
+						</li>
+						-->
+						<li class="dropdown"><!-- style="position:absolute;" -->
+					  <button class="dropdown-toggle btn btn-success" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></span></button>
+					  <ul class="dropdown-menu">
+						<li class="dropdown-header" style="color:#00b299; font:bold 14px arial;">User Account</li>
+						<li id="sop-username" style="cursor:pointer; padding:5px 20px; font: 14px arial;"></li>
+						<li><a href="#">About</a></li>
+						<li><a href="#">Support</a></li>
+						<li role="separator" class="divider"></li>
+						<li id="logout-controller" ng-controller="logoutController" ng-click="logout();" style="cursor:pointer; padding: 0 20px 5px; font:14px arial;">Log Out</li>  </ul>
+					</li>				
+					</ul>					  
+				  
+				  
+				  
+				  </div>  
+         			<p style="height:60px;"> &nbsp;</p> 
+				
+				<div class="welcome_style" id="welcome_message">Welcome <!--<span id="homepage-username"></span>--> to Golden Bridge Portal</div> 
+
+
+
+			<p> 
+				<a href="#" class="btn btn-success btn-sm" role="button" onclick="javascript:showDetailedOverview();">OVERVIEW</a>
+				<a href="./sop_editor/index.html" class="btn btn-success btn-sm" role="button">SOP EDITOR</a>
+				<a href="./dashboard/index.html" class="btn btn-success btn-sm" role="button">DASHBOARD</a>
+				<a href="javascript:void(0);" id="adminLink" class="btn btn-success btn-sm" onclick="openAdminPage();" style="display:none;" role="button">ADMIN PORTAL</a>	
+<!--
+				<button type="button" id="logout-controller" ng-controller="logoutController" class="btn btn-success btn-sm" style="float:right;" ng-click="logout()">
+					<span class="glyphicon glyphicon-off"></span> Logout 
+				</button>		    
+				<button  data-toggle="modal" data-target="#AboutDialog" type="button" id="aboutDialogButton" style="float:right;" class="btn btn-success btn-sm">
+					<span class="glyphicon"></span> ABOUT 
+				</button> 	
+-->				
+			</p>
+		  <div class="container-fluid ama-container-style" style="width: 100%;align:left" id="homepage_content">
+				<div align="center" style="display:inline-block; width: 100%;height:110%" class="col-sm-12" ng-controller="OverviewController">
+				  <!--div id="detailed-overview" style="display:block;" ng-include src="'overview_content.html'"></div-->
+				  
+<div id="goldenBridgeTxt">Golden Bridge</div><br />
+<div class="col-sm-2"></div>
+<div id="bridgeHeadContent" class="col-sm-8">Golden Bridge is an automation asset that mediates and orchestrates automated remediation based on Problem Events/Service Requests/Cognitive Conversations. Born on cloud, Golden Bridge can be operational on public/private cloud or on-premise <span onclick="$('#readMoreContainer').show();">Read More</span> </div>
+<div class="col-sm-2"></div>
+<br /><br /><br /><br /><br /><br /><br />
+<div class="col-sm-3">
+	<a role="button" class="btn btn-gb btn-sm" id="" href="javascript:void(0);" onclick="$('#etoeContainer').show();">Enables E2E Automation</a>
+	<img width="48" height="48" src="../images/e2eAuto.png" onclick="$('#etoeContainer').show();" alt="Enables E2E Automation" />
+</div>
+<div class="col-sm-3">
+	<a role="button"  onclick="$('#optimizeContainer').show();" class="btn btn-gb btn-sm" id="" href="javascript:void(0);">Optimizes Robot Utilization</a>
+	<img width="48" height="48" src="../images/optimizeRobot.png"  onclick="$('#optimizeContainer').show();" alt="Optimizes Robot Utilization" />
+</div>
+<div class="col-sm-3">
+	<a role="button"  onclick="$('#intelliAutoContainer').show();" class="btn btn-gb btn-sm" id="" href="javascript:void(0);">Integrates Cognitive-Robotic Automation</a>
+	<img width="48" height="48" src="../images/intCog.png" onclick="$('#intelliAutoContainer').show();" alt="Integrates Cognitive-Robotic Automation" />
+</div>
+<div class="col-sm-3">
+	<a role="button" onclick="$('#orcContainer').show();" class="btn btn-gb btn-sm" id="" href="javascript:void(0);">Orchestrates SOPs for Automation</a>
+	<img width="48" height="48" src="../images/orchesSOP.png" onclick="$('#orcContainer').show();" alt="Orchestrates SOPs for Automation" />
+</div>
+<div align = "right" style="margin-top:240px;"><a style="color:#f5b041;" target="_blank" href="https://www.youtube.com/watch?v=SCNRyFBcKdQ"><i><u>Watch Golden Bridge @ youtube</u></i></a></div>
+
+<div id="readMoreContainer" style="font-family: Helvetica,sans-serif; border:1px solid #d9edf7; z-index:3; text-align:left; background-color:#ffffff; left:0px; top:-570px; position:relative; display:none; padding:10px; width:960px; height:642px; border-radius:9px;">
+	<div class="panel panel-primary" style="height: 54px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font-size:22px;">About Golden Bridge Solution</div>
+			<div style="float:right; top:-27px; position:relative;">	
+				<button class="btn btn-info" type="button" onclick="$('#readMoreContainer').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12" style="font-size:18px;">
+		Golden Bridge is the “nervous system” of Automation Platform that senses a problem in an IT ecosystem and “gets it resolved” through backend Robotic Automation <br />		
+	</div>
+	<br />
+	<div class="col-sm-6" style="font-size:16px; margin:25px 0;">
+	<ul>
+		<li>Golden Bridge leverages Cognitive Intelligence of Watson (the Brain) to disambiguate a complex problem</li>
+		<li>It also enables scheduled automation for periodic health monitoring and maintenance activities</li>
+		<li>Golden Bridge is appropriate where enterprise events ( problem, incidents, alerts, work orders, service requests, conversational dialogs, web portal or scheduler) are intercepted and remediated through RPA tools </li>
+		<li>Look at Golden Bridge, when you have events, and automation tool, but no visible connection</li>
+		<li>Think of Golden Bridge when problems to be addressed through conversation chat-bot </li>
+		<li>Offers orchestration for  complex automation in hybrid automation ecosystem. Any complex business problem may be segregated into smaller problems and orchestrated within Golden Bridge</li>
+		<li>Adapter based framework supports various industry standard protocols for integration</li>
+	</ul>
+	</div>
+	<div class="col-sm-6"><img style="top:54px; position:relative;" width="400" height="300" src="../images/bridge_automation.png" id="bridgeAutoImg"/></div>
+</div>
+<div id="etoeContainer" style="font-family: Helvetica,sans-serif; border:1px solid #d9edf7; z-index:3; text-align:left; background-color:#ffffff; left:0px; top:-342px; position:relative; display:none; padding:10px; width:960px; height:210px; border-radius:9px;">
+	<div class="panel panel-primary" style="height: 54px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font-size:22px;">Enables End to End Automation in IT Operations</div>
+			<div style="float:right; top:-27px; position:relative;">	
+				<button class="btn btn-info" type="button" onclick="$('#etoeContainer').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12" style="font-size:18px; margin:10px 0;">
+		<ul>
+			<li>Golden Bridge integrates a range of IT service management systems (ITSM) with market leading RPA tools to remediate business problems</li>
+			<li>Golden bridge supports loosely coupled integration to add new ITSM tool or automation tool easily</li>
+		</ul>
+	</div>
+</div>
+<div id="optimizeContainer" style="font-family: Helvetica,sans-serif; border:1px solid #d9edf7; z-index:3; text-align:left; background-color:#ffffff; left:0px; top:-342px; position:relative; display:none; padding:10px; width:960px; height:210px; border-radius:9px;">
+	<div class="panel panel-primary" style="height: 54px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font-size:22px;">Optimizes Utilization of Robot</div>
+			<div style="float:right; top:-27px; position:relative;">	
+				<button class="btn btn-info" type="button" onclick="$('#optimizeContainer').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12" style="font-size:18px;">
+		Golden Bridge intercepts monitoring alerts, and helps optimizing Robot’s usage  <br />		
+	</div>
+	<div class="col-sm-12" style="font-size:18px; margin:10px 0;">
+	<ul>
+		<li>Instead of monitoring for an alert, Robot would be free, to work on other items and get engaged only when a remediation is needed. </li>
+		<li>In a typical IT operations scenario, Robot needs to work only five minutes, five times a day, instead of 24x7 monitoring</li>
+	</ul>
+	</div>
+</div>
+<div id="intelliAutoContainer" style="font-family: Helvetica,sans-serif; border:1px solid #d9edf7; z-index:3; text-align:left; background-color:#ffffff; left:0px; top:-342px; position:relative; display:none; padding:10px; width:960px; height:210px; border-radius:9px;">
+	<div class="panel panel-primary" style="height: 54px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font-size:22px;">Enables Intelligent Automation Through Cognitive – Robotic Integration</div>
+			<div style="float:right; top:-27px; position:relative;">	
+				<button class="btn btn-info" type="button" onclick="$('#intelliAutoContainer').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12" style="font-size:18px; margin:10px 0;">
+	<ul>
+		<li>Golden Bridge intercepts cognitive conversation requests and invokes appropriate Robots to get things done, in a near real time asynchronous integration. </li>
+	</ul>
+	</div>
+</div>
+<div id="orcContainer" style="font-family: Helvetica,sans-serif; border:1px solid #d9edf7; z-index:3; text-align:left; background-color:#ffffff; left:0px; top:-342px; position:relative; display:none; padding:10px; width:960px; height:210px; border-radius:9px;">
+	<div class="panel panel-primary" style="height: 54px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font-size:22px;">Orchestration Of SOPs - Complex and Human Intervention</div>
+			<div style="float:right; top:-27px; position:relative;">	
+				<button class="btn btn-info" type="button" onclick="$('#orcContainer').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>	
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12" style="font-size:18px; margin:10px 0;">
+	<ul>
+		<li>Golden Bridge offers to attach multiple Standard Operations Procedures (SOP) in a choreographed sequence, to execute a specific task or group of tasks </li>
+		<li>Golden Bridge allows human intervention during the orchestration execution</li>
+	</ul>
+	</div>
+</div>
+<div style="display:none;">				  
+				  <div class="col-sm-6" style="list-style: none;">
+						<span align="left" ng-bind-html = "firstQuadHtmlContHead"></span>
+						<li><img  id="bridgeAutoImg" src="../images/bridge_automation.png" width="400" height="200"/></li>
+						<ul><p align = "center" style="font-size:60%;"><b>Please click the image to zoom</b></p></ul>
+						<ul>
+							<li ng-repeat="x in firstQuadHtmlCont"><p align="left" ng-bind-html = "x.Value"></p></li>
+						</ul>
+						<div id="bridgeModal" class="modal">
+						  <span class="ovmodal_close">x</span>					  
+						  <img class="overviewmodal-content" id="imgBridgeModal"/>
+						</div>
+					</div>
+					
+				   <div class="col-sm-6">
+						<span align="left" ng-bind-html = "secondQuadHtmlContHead"></span>
+						<ul type="disc">
+							<li ng-repeat="x in secondQuadHtmlCont"><p ng-bind-html = "x.Value"></p></li>
+						</ul>								
+				   </div>
+				   <div class="col-sm-6">
+						<span align="left" ng-bind-html = "thirdQuadHtmlContHead"></span>
+						<ul type="disc">
+							<li ng-repeat="x in thirdQuadHtmlCont"><p align="left" ng-bind-html = "x.Value"></p></li>
+						</ul>
+						
+					</div>
+					 <div class="col-sm-6">
+						<span align="left" ng-bind-html = "fourthQuadHtmlContHead"></span>
+						<ul type="disc">
+							<!--img src="../images/various_inputs.png" id="imgVarInputs"></img-->
+							<li ng-repeat="x in fourthQuadHtmlCont"><p align="left" ng-bind-html = "x.Value"></p></li>
+						</ul>
+						<ul><img src="../images/business_context.png" id="imgBusCxt"></img></ul>
+						<ul><p align = "center" style="font-size:60%;"><b>Please click the image to zoom</b></p></ul>
+						<div id="busCxtModal" class="modal">
+						  <span class="ovmodal_close">x</span>					  
+						  <img class="overviewmodal-content" id="imgBusCxtModal"/>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<ul><img src="../images/various_inputs.png" id="imgVarInputs"></img></ul>
+						<ul><p align = "center" style="font-size:60%;"><b>Please click the image to zoom</b></p></ul>
+						<ul><span align="left" ng-bind-html = "fifthQuadHtmlContHead"></span></ul>
+						<ul type="disc">
+							<ul type="disc">
+								<li ng-repeat="x in fifthQuadHtmlCont"><p align="left" ng-bind-html = "x.Value"></p></li>
+							</ul>
+						</ul>
+						<br>
+						<div id="varInpModal" class="modal">
+						  <span class="ovmodal_close">x</span>					  
+						  <img class="overviewmodal-content" id="imgVarInputModal"/>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<span align="left" ng-bind-html = "sixthQuadHtmlContHead"></span>
+						<ul type="disc">
+							<!--img src="../images/various_inputs.png" id="imgVarInputs"></img-->
+							<li ng-repeat="x in sixthQuadHtmlCont"><p align="left" ng-bind-html = "x.Value"></p></li>
+						</ul>
+						<ul><p align = "right" style="font-size:160%;"><a href="https://www.youtube.com/watch?v=SCNRyFBcKdQ"><i><u>Golden bridge@youtube</u></i></a></p></ul>
+					</div>
+				
+				</div>
+				</div>
+				<!--div id="detailed-overview_old" style="display:none;" ng-include src="'overview_content_old.html'"></div-->						
+			</div>		
+       	</div>        
+        <script type="text/javascript">          
+        	function openAdminPage(){
+        		 adminWindow = window.open("./adminPortal/admin.html", "_blank", "toolbar=no, scrollbars=yes, resizable=no, top=60, left=90, width=1200, height=700");    
+      		 	   		
+        	}
+		
+			var span = document.getElementsByClassName("ovmodal_close")[0];
+			var span1 = document.getElementsByClassName("ovmodal_close")[1];
+			var span2 = document.getElementsByClassName("ovmodal_close")[2];
+			launchmodal('bridgeModal',"imgBridgeModal",'bridgeAutoImg',span);
+			launchmodal('varInpModal',"imgVarInputModal",'imgVarInputs',span2);
+			launchmodal('busCxtModal',"imgBusCxtModal",'imgBusCxt',span1);
+			function launchmodal(modalname,modalImg,imageName,spanObj){
+				var modal = document.getElementById(modalname);
+				var img = document.getElementById(imageName);
+				var modalImg = document.getElementById(modalImg);
+					img.onclick = function(){
+					modal.style.display = "block";
+					modalImg.src = this.src;
+				}
+
+				// Get the <span> element that closes the modal
+				// When the user clicks on <span> (x), close the modal
+				spanObj.onclick = function() {
+					modal.style.display = "none";
+				}
+			}
+        </script>
+			
+		<div class="modal fade" id="AboutDialog" tabindex="-1"
+			role="dialog" aria-labelledby="dialog_title" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="dialog_title" style="color: black;">About - Swarnasetu</h4>
+					</div>
+					<div class="modal-body" style="color: black;">		
+						<span id="about-version-text"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>	            
+	   <footer class="footer navbar-fixed-bottom" style="background-color:#000;">
+		     <div class="container">
+		       <p class="text-muted">Golden Bridge  &copy; 2015, 2016, 2017. All Rights Reserved.</p>
+		     </div>
+		</footer>
+		<div id="showAutoBackContainerDL" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>
+		<div id="initialDataLoad" style="display:none; border:1px solid #dca7a7; height:162px; width:500px; top:180px; left:504px; z-index:3;background-color:#ffffff; position:absolute;color:#000000;">
+			<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle" style="padding:10px; background-image: linear-gradient(to bottom, #f2dede 0px, #e7c3c3 100%); background-repeat: repeat-x; border-bottom-color: #dca7a7; border-left-color: #dca7a7; border-right-color: #dca7a7; border-top-color: #dca7a7; color: #a94442; font-weight:bold;">Initial Data Load
+			</div>
+			<p style="margin:10px;">
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 70px 0;"></span>
+				<span id="" style="color: #a94442; font-weight:bold;">
+					Required Initial Data Load to set up the Client/Account. <br />
+					Inital data load will erase all existing data. <br />
+					Do you want to proceed?
+				</span>
+			</p>
+			<div style="float:right; padding-right:10px;">
+				<button class="btn btn-info" type="button" ng-click="callInitialDataLoad();" >
+						<span class="glyphicon glyphicon-save"></span> Yes
+				</button>
+				<button class="btn btn-info" type="button" ng-click="cancelInitialDataLoad();">
+						<span class="glyphicon glyphicon-remove-circle"></span> No
+				</button>
+			</div>
+		</div> 
+	</div>
+		<!-- Changes for Story # 160218 Ends here-->
+</body>
+</html>
+<script>
+$(function() { 
+	$('#about-version-text').html(uiconfig.SOPEditorversions);
+	document.getElementById("sop-username").innerHTML =  localStorage.getItem("type");
+	//checkSystemLogOut();
+});	
+
+</script>

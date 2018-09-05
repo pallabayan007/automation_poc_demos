@@ -1,0 +1,15 @@
+{
+    "general-properties": {
+    	"monitoringAgentSchedulerCron": "* */2 * * *"
+    },
+    "deployment-specific-properties": {
+        "CLOUD": {
+        	"authenticationProtocol":"",
+            "dbConnectionURL": "mongodb://admin:passw0rd@ds131942.mlab.com:31942/dixon_camunda_cloud"
+        },
+        "ON_PREM": {
+        	"authenticationProtocol":"",
+            "dbConnectionURL": "mongodb://IbmCloud_h65aeqju_lm95s3it_qcobq5ft:-pnC2fSAqdtx7hptLNJsRK1u71inRBWo@ds041190.mongolab.com:41190/IbmCloud_h65aeqju_lm95s3it"
+        }
+    }
+} 

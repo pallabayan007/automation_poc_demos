@@ -1,0 +1,18 @@
+			<div class="sopCrudBox">
+			<div class="sopCrudBox-header">Standard Operating Procedure</div>
+				<p ng-controller="crudController"><br>
+				<!--<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Create</a></li>
+					<li><a href="#">Edit</a></li>
+					<li><a href="#">Delete</a></li>
+				</ul>-->
+					<a href="html/create-sop-defination.html" id="defineData"> </a> | <a href="javascript:void(0);"  ng-click="updateSOP();" id="amendData" class="disableamend"> </a> | <a href="javascript:void(0);" ng-click="deleteSOP();" class="disableamend" id="deletedata"> Discard </a>
+				</p>
+			</div>
+	<script type="text/javascript">
+		$(function() { 
+			$('#defineData').html(uiconfig.SOPEditordefine);
+			$('#amendData').html(uiconfig.SOPEditoramend);
+			//$('#deletedata').html(uiconfig.SOPEditordiscard);
+		});	
+	</script>

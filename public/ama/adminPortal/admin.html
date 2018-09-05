@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AMA">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+	<title>Administration</title>
+	<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" href="../../lib/jquery-ui/themes/base/jquery-ui.min.css" />	
+	<link rel="stylesheet" href="../../ama/sop_editor/stylesheets/app.css" />
+	<link rel="stylesheet" href="../../lib/jsoneditor/dist/jsoneditor.css" type="text/css">
+	<link rel="stylesheet" href="stylesheets/configstyles.css"  type="text/css" />
+	<script type="text/javascript" src="../../lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="../../lib/angular/angular.js"></script>
+	<script type="text/javascript" src="../../lib/angular-route/angular-route.min.js"></script>	
+	<script type="text/javascript" src="../../ama/sop_editor/js/angular-idle.js"></script>
+	<script type="text/javascript" src="../../lib/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../lib/ui_config.json"></script>
+	<script type="text/javascript" src="../../lib/system_properties.js"></script>
+	<script type="text/javascript" src="../../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/ui-bootstrap-tpls-0.12.1.js"></script>
+	<script src="js/configuration.editor.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/routePage.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/main.js"></script>	
+	<script type="text/javascript" src="../../ama/adminPortal/js/admin.js"></script>	
+	<script type="text/javascript" src="../../ama/sop_editor/js/restAPP.js"></script>
+	<script type="text/javascript" src="../../ama/adminPortal/js/jquery.tabletojson.js"></script>
+	<script type="text/javascript" src="../../ama/adminPortal/js/accessPanelPermission.js"></script>
+	<script type="text/javascript" src="../../lib/angular-ui-sortable/sortable.min.js"></script>
+	<!--script src="../../lib/jsoneditor/dist/jsoneditor.js"></script-->
+    <script src="js/ConfigurationController.js"></script>
+
+	<style>
+		.ama-container-style {background-color:#FAFAFA; border-radius: 5px; box-shadow: 5px 5px 5px #D8D8D8; color: #000; }	
+	</style>
+	<style type="text/css">
+		#jsoneditor {width: 800px;height: 400px;}p {width: 500px;font-family: "DejaVu Sans", sans-serif;}
+	</style>
+</head>
+<body ng-controller="EventsCtrl">
+	<div ng-include src="'html/administration.html'"></div>    
+	<div ng-include src="'html/footer.html'"></div>    
+</body>
+<script> 		  
+	$(function() { 
+		checkSystemLogOut();
+	});
+ </script>
+</html>

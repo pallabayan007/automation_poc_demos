@@ -1,0 +1,47 @@
+<div class="col-sm-5" style="padding-top: 20px;"><span class="account-label" ng-controller="accountPannel">Account : </span> <!-- <span style="float:left;" class="label label-success" ng-controller="accountPannel"> </span> -->
+<span class="account-selection">
+	<select class="form-control" ng-model="accountSlection.account" id="accountSelOps">
+		<option disabled value="" label="">Select Account</option>
+	</select>
+</span>
+</div>
+<div class="col-sm-1"></div>
+		<div class="col-sm-3"> </div>
+		<div class="col-sm-1"><h4><span style="height:30px; display:none;" class="label label-default">User : </span></h4> 
+		</div>
+		<div class="col-sm-2">
+		
+		<h4><span id="sop-username" class="sop-username" style="display:none"> </span></h4>
+		</div>
+		<!--<div class="col-sm-1">   ng-controller="logoutController"  -->
+<!-- 			<span style="line-height:40px; font-weight:bold; color: lightblue;">
+		        <button type="button" id="logOutSOP" class="btn btn-success btn-sm" ng-click="logout()">
+		          	<span class="glyphicon glyphicon-off"></span> <span id="SOPEditorclose"></span> 
+		        </button>
+	        </span> 
+        </div>-->
+        <div id="unauthAccess" title="No Access Privilege">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+				You do not have access privileges for this operation
+			</p>
+		</div>
+
+        <script type="text/javascript">
+		$(document).ready(function() { 
+			//var chkval = localStorage.getItem("username");
+			document.getElementById("sop-username").innerHTML =  localStorage.getItem("username");
+			//document.getElementById("sop-accountname").innerHTML =  localStorage.getItem("accountName");
+			dialogAccess = $("#unauthAccess").dialog({
+				 closeOnEscape: false,
+				 autoOpen: false,
+				 modal: true,
+				 buttons: {
+				 Ok: function() {
+					 	$( this ).dialog( "close" );
+					 }
+				 }
+			});
+			$('#SOPEditorclose').html(uiconfig.SOPEditorclose);
+		});	
+        </script> 

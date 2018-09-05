@@ -1,0 +1,890 @@
+<div id="choreoGraphWindowu" title="View ChoreoGraph">
+	<div style="border:1px solid #46b8da; width:35%; height:450px; float:left; margin-top:10px;">
+  		<div style="font:bold 13px verdana; top:-9px; left:18px; width:96px; background-color:white; position:relative;">Choreograph</div>
+  		<div style="margin:20px;">
+  			<span class="labelTxt">Start SOP:&nbsp;&nbsp;</span><span id="startSOPChoreoData"></span>
+  		</div>
+  		<div style="margin:20px;" id="tableChoreoData">
+	  		<table  class="table-responsive table table-bordered" style="">
+				  <thead>
+				    <tr>
+				      <th width="41%">From SOP</th>
+				      <th width="41%">To SOP</th>
+				    </tr>
+				  </thead>
+				  <tbody id="dataRetriveChoreo">				  	
+				  </tbody>
+			</table>
+  		</div>
+  		<div class="chart" id="choreoGraphChartRetrive" style=""></div>
+  	</div>
+  	<div style="border:1px solid #46b8da; width:45%; height:450px; float:left; margin-top:10px;">
+  		<div style="font:bold 13px verdana; top:-9px; left:18px; width:63px; background-color:white; position:relative;">Paths</div>
+  	</div>
+  	<div style="border:1px solid #46b8da; width:20%; height:450px; float:left; margin-top:10px;">
+  		<div style="font:bold 13px verdana; top:-9px; left:18px; width:112px; background-color:white; position:relative;">I/O Map Value</div>
+  	</div>
+</div>
+<div id="choreoGraphWindow" title="Manage Choreograph">
+	<div style="border:1px solid #46b8da; width:35%; height:630px; float:left; margin-top:10px;">
+  		<div style="font:bold 13px verdana; top:-9px; left:18px; width:96px; background-color:white; position:relative;">Choreograph</div>
+  		<div style="margin:20px;">
+  			<span class="labelTxt">Start SOP:&nbsp;&nbsp;</span>
+  			<span>
+  				<select id="selectStartSOP" class="form-control" onchange="checkActivateSOP(this);">
+  				</select>
+  			</span>
+  		</div>
+  		<div style="margin:20px;">
+  			<span class="labelTxt">Human Activities: &nbsp;&nbsp;</span><span style="color:#5bc0de; font-weight:bold; text-decoration:underline; cursor:pointer;" onclick="openChoreoFrame2('humanAct');">New</span>
+  		</div>
+  		<div style="margin:20px; max-height:108px; overflow-y:scroll; display:none;" id="tableHumanActivities">
+	  		<table  class="table-responsive table table-bordered" style="">
+				  <thead>
+				    <tr>
+				      <th width="25%">Name</th>
+				      <th width="25%">Type</th>
+				      <th width="30%">Value</th>
+				      <th width="20%"></th>
+				    </tr>
+				  </thead>
+				  <tbody id="addedHumanActivities">				  	
+				  </tbody>
+			</table>
+  		</div>
+  		<div style="margin:20px;">
+  			<span class="labelTxt">Paths: &nbsp;&nbsp;</span><span style="color:#5bc0de; font-weight:bold; text-decoration:underline; cursor:pointer;" onclick="openChoreoFrame2('parallel');">New</span>
+  		</div>
+  		<div style="margin:20px; max-height:108px; overflow-y:scroll; display:none;" id="tableStartPath">
+	  		<table  class="table-responsive table table-bordered" style="">
+				  <thead>
+				    <tr>
+				      <th width="41%">From</th>
+				      <th width="41%">To</th>
+				      <th width="18%"></th>
+				    </tr>
+				  </thead>
+				  <tbody id="addedSopPath">				  	
+				  </tbody>
+			</table>
+  		</div>
+  		<div style="margin:20px; display:none;" id="validateCh">
+			<button class="btn btn-info" type="button" onclick="validateCh('addedSopPath','choreoGraphChart');">
+					<span class="glyphicon glyphicon-stats"></span> Validate
+			</button>
+		</div> 
+  		<div class="chart" id="choreoGraphChart" style="display:none;"></div> 
+  				
+  	</div>
+  	<div style="border:1px solid #46b8da; width:45%; height:630px; float:left; margin-top:10px;">
+  		<div style="font:bold 13px verdana; top:-9px; left:18px; width:63px; background-color:white; position:relative;" id="headFrame2">Paths</div>
+  		<div id="choreoFrame2" style="display:none;">
+  		  <div style="margin:20px;">
+  			<span class="labelTxt">From SOP:&nbsp;&nbsp;</span>
+  			<span>
+  				<select class="form-control" id="selectFromSOP" onchange="checkSOPInputData();checkActivateSOP(this);">
+  				</select>
+  			</span>
+  		</div>
+
+  		 <div style="margin:20px;">
+  			<span class="labelTxt">To SOP:&nbsp;&nbsp;</span>
+  			<span>
+  				<select class="form-control" id="selectToSOP" onchange="flowToSOP(this)">
+  				</select>
+  			</span>
+  		</div>
+  		<div style="margin:20px;">
+  			<span class="labelTxt">I/O Map: &nbsp;&nbsp;</span>
+  		</div>
+  		<div style="margin:20px;" id="tableToMap">
+	  		<table  class="table-responsive table table-bordered" style="">
+				  <thead>
+				    <tr>
+				      <th width="30%">Input</th>
+				      <th width="30%">Map Value</th>
+				      <th width="30%">Output</th>
+				      <th width="10%"></th>
+				    </tr>
+				  </thead>
+				  <tbody id="addedSopIOTo">  	
+				  </tbody>
+			</table>
+			<input type="checkbox" name="pathCondition" value="Conditions" id="conditionCheckbox" />&nbsp; Conditions<br />
+			<div id="conditionstableRow" style="display:none;">
+				<table id="tableVar1" class="table-responsive table table-bordered" style="">
+					  <thead>
+					    <tr>
+					      <th width="45%">Variable</th>
+					      <th width="20%">Output</th>
+					      <th width="20%">Condition</th>
+					      <th width="15%"><a href="javascript:void(0);" onclick="generateTableRow('1');" style="font-weight:bold; text-decoration:underline; color:#ffffff; cursor:pointer;">New</a></th>
+					    </tr>
+					  </thead>
+					  <tbody id="tableBodyVar1">  	
+					  </tbody>
+				</table>
+			</div>
+			<div id="addChoreoSOPBtn" style="float:right; padding-right:10px; display:none;">
+				<button class="btn btn-info disableClass" type="button" onclick="addChoreoSOP();">
+					<span class="glyphicon glyphicon-plus-sign"></span> <span id="btnAddUpdate">Add</span>
+				</button>
+			</div>
+  		</div>
+  		</div>
+  		<div id="choreoHumanFrame2" style="display:none;">
+  		  <div style="margin:5px 20px;">
+  			<span class="labelTxt">Name:&nbsp;&nbsp;</span>
+  			<span>
+  				<input class="form-control" id="humanName" type="text" placeholder="Enter Name" />
+  			</span>
+  		</div>
+
+  		 <div style="margin:5px 20px;">
+  			<span class="labelTxt">Description:&nbsp;&nbsp;</span>
+  			<span>
+  				<textarea class="form-control" id="humanDesc" type="text" ng-model="" placeholder="Enter Description" row="2"></textarea>											
+  			</span>
+  		</div>
+  		<div id="actorsValAdd" style="margin:5px 20px;">
+  			<span class="labelTxt">Actors: &nbsp;&nbsp;</span><span style="color:#5bc0de; font-weight:bold; text-decoration:underline; cursor:pointer;" onclick="addActorsEmail();">New</span>
+  		</div>
+  		<div style="margin:5px 20px;" id="actorsTableToValue">
+	  		<table  class="table-responsive table table-bordered" style="max-height:72px; overflow-y:scroll;">
+				  <thead>
+				    <tr>
+				      <th width="80%">Email</th>
+				      <th width="20%"></th>
+				    </tr>
+				  </thead>
+				  <tbody id="addedActorsValue">  	
+				  </tbody>
+			</table>
+  		</div>
+  		<div style="margin:5px 20px;">
+  			<span class="labelTxt">Type:&nbsp;&nbsp;</span>
+  			<span>
+  				<select class="form-control" id="humanType" onchange="checkTypeVal();">
+  					<option value="Enum">Enum</option><option value="String">String </option>
+  				</select>
+  			</span>
+  		</div>
+  		<div id="EnumValAdd" style="margin:5px 20px;">
+  			<span class="labelTxt">Values: &nbsp;&nbsp;</span><span style="color:#5bc0de; font-weight:bold; text-decoration:underline; cursor:pointer;" onclick="openChoreoFrame3('humanAct');">New</span>
+  		</div>
+  		<div style="margin:5px 20px;" id="tableToValue">
+	  		<table  class="table-responsive table table-bordered" style="">
+				  <thead>
+				    <tr>
+				      <th width="50%">Value</th>
+				      <th width="50%"></th>
+				    </tr>
+				  </thead>
+				  <tbody id="addedHumanValue">  	
+				  </tbody>
+			</table>
+			<div id="addHumanSOPBtn" style="float:right; padding-right:10px;">
+				<button class="btn btn-info disableClass" id="humanActivityAddBtn" type="button" onclick="addHumanActivity();">
+						<span class="glyphicon glyphicon-plus-sign"></span> Add
+				</button>
+			</div>
+  		</div>
+  		</div>
+  	</div>
+  	<div style="border:1px solid #46b8da; width:20%; height:630px; float:left; margin-top:10px;">
+  		<div id="ioMapValueHead" style="font:bold 13px verdana; top:-9px; left:18px; width:112px; background-color:white; position:relative;">I/O Map Value</div>
+  		<div id="choreoFrame3" style="display:none;">
+	  		<div style="margin:20px 20px 0 20px;"class="labelTxt">Map Item Type</div>
+	  		<div style="margin:0 20px;">
+	  			<input type="radio" value="Fixed" name="mapvalue" onclick="$('#outValParam').show();$('#paramValSOPs').hide();" />&nbsp;Fixed<br />
+	  			<input type="radio" value="PassThrough" name="mapvalue" onclick="showSourceSOP();" />&nbsp;Pass Through<br />
+	  			<input type="radio" value="Customized" name="mapvalue"  onclick="$('#outValParam').hide();$('#paramValSOPs').hide();"/>&nbsp;Customized
+	  		</div>
+	  		<div style="margin:20px; display:none;" id="outValParam">
+	  			<span class="labelTxt">Value:</span> &nbsp;&nbsp;<input class="form-control" id="outputValTxt" type="text" placeholder="Enter Output value" />
+	  		</div>
+	  		<div style="margin:20px; display:none;" id="paramValSOPs">
+	  			<span class="labelTxt">Source SOP:</span> &nbsp;&nbsp;
+	  			<select class="form-control" id="sourceSOP" onchange="outputParamList();">
+	  				<option>SOP1</option><option>SOP2</option>
+	  			</select>
+	  			<br />
+	  			<span class="labelTxt">Output Parameter Value:</span> &nbsp;&nbsp;
+	  			<select class="form-control" id="outputParamChoreo">
+	  			</select>
+	  		</div>
+	  		<div style="float:right; padding-right:10px;">
+				<button class="btn btn-info" type="button" onclick="setMapValue();">
+						<span class="glyphicon glyphicon-copy"></span> Set
+				</button>
+			</div>
+		</div>
+		<div id="choreoHumanFrame3" style="display:none;">
+	  		<div style="margin:20px;" id="outValHuman">
+	  			<span class="labelTxt">Value:</span> &nbsp;&nbsp;<input class="form-control" id="ValHumanTxt" type="text" placeholder="Enter value" />
+	  		</div>
+	  		<div style="float:right; padding-right:10px;">
+				<button class="btn btn-info" type="button" onclick="setValue();">
+						<span class="glyphicon glyphicon-copy"></span> Set
+				</button>
+			</div>
+		</div>
+  	</div>
+  	<div id="inactiveSOPDialog" style="display:none; border:1px solid #dca7a7; height:162px; width:500px; top:110px; left:261px; z-index:3;background-color:#ffffff; position:absolute;color:#000000;">
+		<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle" style="padding:10px; background-image: linear-gradient(to bottom, #f2dede 0px, #e7c3c3 100%); background-repeat: repeat-x; border-bottom-color: #dca7a7; border-left-color: #dca7a7; border-right-color: #dca7a7; border-top-color: #dca7a7; color: #a94442; font-weight:bold;">Alert
+		</div>
+		<p style="margin:10px;">
+			<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 70px 0;"></span>
+			<span id="inactiveErrorMsg" style="color: #a94442; font-weight:bold;"></span>
+		</p>
+		<div style="float:right; padding-right:10px;">
+			<button class="btn btn-info" type="button" onclick="activeSelectedSOP();" >
+					<span class="glyphicon glyphicon-save"></span> Yes
+			</button>
+			<button class="btn btn-info" type="button" onclick="cancelInactiveDialog();">
+					<span class="glyphicon glyphicon-remove-circle"></span> No
+			</button>
+		</div>
+	</div>
+	<div id="waitingMsg" style="display:none;border:1px solid #dca7a7; height:162px; width:500px; top:110px; left:261px; z-index:4;background-color:#ffffff; position:absolute;color:#000000;">Please Wait......</div>
+</div>
+		
+<script type="text/javascript">		
+	$(document).ready(function() {
+			dialogchoreoModel = $("#choreoGraphWindow").dialog({
+				 closeOnEscape: false,
+				 autoOpen: false,
+				 modal: true,
+				 height:630,
+				 width:1080,
+				 buttons: {
+				 	Done: function() {
+				 		fetchChoreoData();
+					 },
+				    Close: function(){
+				    	closeChoreoDialog();
+				    	$(this).dialog( "close" );
+				    }				    
+				 },
+				 create:function () {
+				        $(this).closest(".ui-dialog").find(".ui-button:first").addClass("btn btn-info");
+				 }
+			});
+			dialogchoreoModelUp = $("#choreoGraphWindowu").dialog({
+				 closeOnEscape: false,
+				 autoOpen: false,
+				 modal: true,
+				 width:1080,
+				 buttons: {
+				 	Ok: function() {
+				 		//fetchCronDataUp();
+					 	$(this).dialog( "close" );
+					 }
+				 }
+			
+			});	
+			$('#conditionCheckbox').change(function() {
+				  if ($(this).is(':checked')) {
+				   	$('#conditionstableRow').show();
+				  } else {
+				    console.log('Unchecked');
+					$('#conditionstableRow').hide();
+				  }
+			});
+	});
+	
+	function validateCh(div1,div2){
+		$("#"+div2).show();
+		$("#"+div2).html('');
+		var choreoGraphChart;
+		if(($('#'+div1+' tr:last').index() + 1) == 1 ){
+		    choreoGraphChart = {
+		            chart: {
+		                container: "#"+div2,
+		            },
+		            nodeStructure: {
+		            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },		            	
+		                children: [
+		                    {
+		                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+		                        children: []
+		                    }
+		                ]
+		            }
+		        };
+		    validateGraph = 'Y';
+		}
+		if(($('#'+div1+' tr:last').index() + 1) == 2 ){
+			if((document.getElementById(div1).rows[0].cells.item(1).innerHTML != document.getElementById(div1).rows[1].cells.item(1).innerHTML)){			
+				if((document.getElementById(div1).rows[0].cells.item(1).innerHTML) == (document.getElementById(div1).rows[1].cells.item(0).innerHTML)){
+			        choreoGraphChart = {
+			            chart: {
+			                container: "#"+div2,
+			            },
+			            nodeStructure: {
+			            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+			                children: [
+			                    {
+			                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+			                        children: [
+			                            {
+			                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+			                            	children: []
+			                            }
+			                        ]
+			                    }
+			                ]
+			            }
+			        };
+			        validateGraph = 'Y';
+			    }else if((document.getElementById(div1).rows[0].cells.item(0).innerHTML) == (document.getElementById(div1).rows[1].cells.item(0).innerHTML)){
+				        choreoGraphChart = {
+				            chart: {
+				                container: "#"+div2,
+				            },
+				            nodeStructure: {
+				            	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+				                children: [
+				                    {
+				                    	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+				                        children: [
+				                            {
+				                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+				                            	children: []
+				                            }
+				                        ]
+				                    }
+				                ]
+				            }
+				        };
+				        validateGraph = 'Y';		    	
+			    }else{
+			        choreoGraphChart = {
+				            chart: {
+				                container: "#"+div2,
+				            },
+				            nodeStructure: {
+				            	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+				                children: [
+				                    {
+				                    	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+				                        children: [
+				                            {
+				                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+				                            	children: []
+				                            }
+				                        ]
+				                    }
+				                ]
+				            }
+				        };
+			    	//alert("Invalid Choreographed SOP, Please check");
+			    	validateGraph = 'Y';
+			    }
+			}else{
+				alert("This path already exists. It cannot be added again. Please choose a new path.");
+				validateGraph = 'N';
+			}
+		}
+		
+		if(($('#'+div1+' tr:last').index() + 1) == 3 ){
+		if((document.getElementById(div1).rows[1].cells.item(1).innerHTML != document.getElementById(div1).rows[2].cells.item(1).innerHTML)){			
+		  if((document.getElementById(div1).rows[1].cells.item(1).innerHTML) == (document.getElementById(div1).rows[2].cells.item(1).innerHTML) &&(document.getElementById(div1).rows[0].cells.item(0).innerHTML) != (document.getElementById(div1).rows[1].cells.item(0).innerHTML)){
+			  choreoGraphChart = {
+	            chart: {
+	                container: "#"+div2,
+	            },
+	            nodeStructure: {
+	            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+	                children: [
+	                       {
+	                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+	                        children: [
+	                            {
+	                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+	                            	children: [
+	                                      {
+	                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+	                                           	children: []
+	                                      }
+	                                  ]
+	                            }
+	                        ]
+	                    }
+	                ]
+	            }
+	        };
+			  validateGraph = 'Y';
+		  }else if((document.getElementById(div1).rows[0].cells.item(0).innerHTML) == (document.getElementById(div1).rows[1].cells.item(0).innerHTML)){
+			        choreoGraphChart = {
+			            chart: {
+			                container: "#"+div2,
+			            },
+			            nodeStructure: {
+			            	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+			                children: [
+			                    {
+			                    	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+			                        children: [
+			                            {
+			                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+			                            	children: [
+			                            	      {
+			                            	    	  text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+			                                          children: []
+			                            	      }			                            	           
+			                            	]
+			                            }
+			                        ]
+			                    }
+			                ]
+			            }
+			        };
+			        validateGraph = 'Y';		    	
+		  }else{
+		        choreoGraphChart = {
+			            chart: {
+			                container: "#"+div2,
+			            },
+			            nodeStructure: {
+			            	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+			                children: [
+			                    {
+			                    	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+			                        children: [
+			                            {
+			                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+			                            	children: [
+			                            	      {
+			                            	    	  text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+			                                          children: []
+			                            	      }			                            	           
+			                            	]
+			                            }
+			                        ]
+			                    }
+			                ]
+			            }
+			        };
+			        validateGraph = 'Y';
+			  //alert("Invalid Choreographed SOP, Please check");
+			  //validateGraph = 'N';
+		  }
+		 }else{
+			 alert("This path already exists. It cannot be added again. Please choose a new path.");
+			 validateGraph = 'N';
+		 }
+		}	
+		if(($('#'+div1+' tr:last').index() + 1) == 4 ){
+			  if((document.getElementById(div1).rows[2].cells.item(1).innerHTML) == (document.getElementById(div1).rows[3].cells.item(0).innerHTML)){	
+		    	choreoGraphChart = {
+		            chart: {
+		                container: "#"+div2,
+		            },
+		            nodeStructure: {
+		            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+		                children: [
+		                       {
+		                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+		                        children: [
+		                            {
+		                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+		                            	children: [
+		                                      {
+		                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+		                                           	children: [
+															{
+															   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+															   	children: []
+															} 
+		                                           ]
+		                                      }
+		                                  ]
+		                            }
+		                        ]
+		                    }
+		                ]
+		            }
+		        };
+		    	validateGraph = 'Y';
+			  }else{
+			    	choreoGraphChart = {
+				            chart: {
+				                container: "#"+div2,
+				            },
+				            nodeStructure: {
+				            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+				                children: [
+				                       {
+				                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+				                        children: [
+				                            {
+				                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+				                            	children: [
+				                                      {
+				                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+				                                           	children: [
+																	{
+																	   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+																	   	children: []
+																	} 
+				                                           ]
+				                                      }
+				                                  ]
+				                            }
+				                        ]
+				                    }
+				                ]
+				            }
+				        };
+				 // alert("Invalid Choreographed SOP, Please check");
+				  validateGraph = 'Y';
+			  }
+			}
+			if(($('#'+div1+' tr:last').index() + 1) == 5 ){
+				  if((document.getElementById(div1).rows[3].cells.item(1).innerHTML) == (document.getElementById(div1).rows[4].cells.item(0).innerHTML)){	
+			    	choreoGraphChart = {
+			            chart: {
+			                container: "#"+div2,
+			            },
+			            nodeStructure: {
+			            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+			                children: [
+			                       {
+			                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+			                        children: [
+			                            {
+			                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+			                            	children: [
+			                                      {
+			                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+			                                           	children: [
+																{
+																   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+																   	children: [
+																			{
+																			   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																			   	children: []
+																			}       
+																   	]
+																} 
+			                                           ]
+			                                      }
+			                                  ]
+			                            }
+			                        ]
+			                    }
+			                ]
+			            }
+			        };
+			    	validateGraph = 'Y';
+				  }else{
+				    	choreoGraphChart = {
+					            chart: {
+					                container: "#"+div2,
+					            },
+					            nodeStructure: {
+					            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+					                children: [
+					                       {
+					                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+					                        children: [
+					                            {
+					                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+					                            	children: [
+					                                      {
+					                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+					                                           	children: [
+																		{
+																		   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+																		   	children: [
+																					{
+																					   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																					   	children: []
+																					}       
+																		   	]
+																		} 
+					                                           ]
+					                                      }
+					                                  ]
+					                            }
+					                        ]
+					                    }
+					                ]
+					            }
+					        };
+					    	validateGraph = 'Y';
+					  //alert("Invalid Choreographed SOP, Please check");
+					  //validateGraph = 'N';
+					  //changes for 9733 - Human Intervension orchestration 
+				  }
+				}
+			
+			if(($('#'+div1+' tr:last').index() + 1) == 6 ){
+			    	choreoGraphChart = {
+			            chart: {
+			                container: "#"+div2,
+			            },
+			            nodeStructure: {
+			            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+			                children: [
+			                       {
+			                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+			                        children: [
+			                            {
+			                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+			                            	children: [
+			                                      {
+			                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+			                                           	children: [
+																{
+																   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+																   	children: [
+																			{
+																			   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																			   	children: [
+																					{
+																					   	text: { name: document.getElementById(div1).rows[5].cells.item(1).innerHTML },
+																					   	children: []
+																					}           
+																			   	]
+																			}       
+																   	]
+																} 
+			                                           ]
+			                                      }
+			                                  ]
+			                            }
+			                        ]
+			                    }
+			                ]
+			            }
+			        };
+			    	validateGraph = 'Y';
+			}	
+			
+			if(($('#'+div1+' tr:last').index() + 1) == 7 ){
+		    	choreoGraphChart = {
+		            chart: {
+		                container: "#"+div2,
+		            },
+		            nodeStructure: {
+		            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+		                children: [
+		                       {
+		                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+		                        children: [
+		                            {
+		                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+		                            	children: [
+		                                      {
+		                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+		                                           	children: [
+															{
+															   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+															   	children: [
+																		{
+																		   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																		   	children: [
+																				{
+																				   	text: { name: document.getElementById(div1).rows[5].cells.item(1).innerHTML },
+																				   	children: [
+																									{
+																									   	text: { name: document.getElementById(div1).rows[6].cells.item(1).innerHTML },
+																									   	children: []
+																									}   
+																				   	  ]
+																				}           
+																		   	]
+																		}       
+															   	]
+															} 
+		                                           ]
+		                                      }
+		                                  ]
+		                            }
+		                        ]
+		                    }
+		                ]
+		            }
+		        };
+		    	validateGraph = 'Y';
+		}	
+			
+			if(($('#'+div1+' tr:last').index() + 1) == 8 ){
+		    	choreoGraphChart = {
+		            chart: {
+		                container: "#"+div2,
+		            },
+		            nodeStructure: {
+		            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+		                children: [
+		                       {
+		                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+		                        children: [
+		                            {
+		                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+		                            	children: [
+		                                      {
+		                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+		                                           	children: [
+															{
+															   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+															   	children: [
+																		{
+																		   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																		   	children: [
+																				{
+																				   	text: { name: document.getElementById(div1).rows[5].cells.item(1).innerHTML },
+																				   	children: [
+																									{
+																									   	text: { name: document.getElementById(div1).rows[6].cells.item(1).innerHTML },
+																									   	children: [
+																														{
+																														   	text: { name: document.getElementById(div1).rows[7].cells.item(1).innerHTML },
+																														   	children: []
+																														}																									   	           
+																									   	           ]
+																									}   
+																				   	  ]
+																				}           
+																		   	]
+																		}       
+															   	]
+															} 
+		                                           ]
+		                                      }
+		                                  ]
+		                            }
+		                        ]
+		                    }
+		                ]
+		            }
+		        };
+		    	validateGraph = 'Y';
+		}	
+			
+			if(($('#'+div1+' tr:last').index() + 1) == 9 ){
+		    	choreoGraphChart = {
+		            chart: {
+		                container: "#"+div2,
+		            },
+		            nodeStructure: {
+		            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+		                children: [
+		                       {
+		                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+		                        children: [
+		                            {
+		                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+		                            	children: [
+		                                      {
+		                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+		                                           	children: [
+															{
+															   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+															   	children: [
+																		{
+																		   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																		   	children: [
+																				{
+																				   	text: { name: document.getElementById(div1).rows[5].cells.item(1).innerHTML },
+																				   	children: [
+																									{
+																									   	text: { name: document.getElementById(div1).rows[6].cells.item(1).innerHTML },
+																									   	children: [
+																														{
+																														   	text: { name: document.getElementById(div1).rows[7].cells.item(1).innerHTML },
+																														   	children: [
+																																			{
+																																			   	text: { name: document.getElementById(div1).rows[8].cells.item(1).innerHTML },
+																																			   	children: []
+																																			}																														   	           																													   	           
+																														   	           ]
+																														}																									   	           
+																									   	           ]
+																									}   
+																				   	  ]
+																				}           
+																		   	]
+																		}       
+															   	]
+															} 
+		                                           ]
+		                                      }
+		                                  ]
+		                            }
+		                        ]
+		                    }
+		                ]
+		            }
+		        };
+		    	validateGraph = 'Y';
+		}
+			
+			if(($('#'+div1+' tr:last').index() + 1) == 10 ){
+		    	choreoGraphChart = {
+		            chart: {
+		                container: "#"+div2,
+		            },
+		            nodeStructure: {
+		            	text: { name: document.getElementById(div1).rows[0].cells.item(0).innerHTML },
+		                children: [
+		                       {
+		                    	text: { name: document.getElementById(div1).rows[0].cells.item(1).innerHTML },
+		                        children: [
+		                            {
+		                            	text: { name: document.getElementById(div1).rows[1].cells.item(1).innerHTML },
+		                            	children: [
+		                                      {
+		                                           	text: { name: document.getElementById(div1).rows[2].cells.item(1).innerHTML },
+		                                           	children: [
+															{
+															   	text: { name: document.getElementById(div1).rows[3].cells.item(1).innerHTML },
+															   	children: [
+																		{
+																		   	text: { name: document.getElementById(div1).rows[4].cells.item(1).innerHTML },
+																		   	children: [
+																				{
+																				   	text: { name: document.getElementById(div1).rows[5].cells.item(1).innerHTML },
+																				   	children: [
+																									{
+																									   	text: { name: document.getElementById(div1).rows[6].cells.item(1).innerHTML },
+																									   	children: [
+																														{
+																														   	text: { name: document.getElementById(div1).rows[7].cells.item(1).innerHTML },
+																														   	children: [
+																																			{
+																																			   	text: { name: document.getElementById(div1).rows[8].cells.item(1).innerHTML },
+																																			   	children: [
+																																						{
+																											   												text: { name: document.getElementById(div1).rows[9].cells.item(1).innerHTML },
+																											   												children: []
+																																						} 	           
+																																			   	   ]
+																																			}																														   	           																													   	           
+																														   	           ]
+																														}																									   	           
+																									   	           ]
+																									}   
+																				   	  ]
+																				}           
+																		   	]
+																		}       
+															   	]
+															} 
+		                                           ]
+		                                      }
+		                                  ]
+		                            }
+		                        ]
+		                    }
+		                ]
+		            }
+		        };
+		    	validateGraph = 'Y';
+		}			
+		console.log(choreoGraphChart);
+		new Treant( choreoGraphChart );
+	}
+</script>

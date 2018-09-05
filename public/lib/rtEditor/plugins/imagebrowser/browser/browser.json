@@ -1,0 +1,67 @@
+[
+	{
+		"image":  "/lib/rtEditor/plugins/imagebrowser/images/bluemix-logo.png",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/bluemix-logo.png",
+		"folder": "Folder1"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/ibmLogo.png",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/ibmLogo.png",
+		"folder": "Folder2"
+	},
+	{
+		"image":  "/lib/rtEditor/plugins/imagebrowser/images/setu.png",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/setu.png",
+		"folder": "Folder2"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/Appextend.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/Appextend.jpg",
+		"folder": "Folder1"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/newapp-icon.png",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/newapp-icon.png",
+		"folder": "Folder2"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/Hosting.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/Hosting.jpg",
+		"folder": "Folder2"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/ibm-businessconnect.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/ibm-businessconnect.jpg",
+		"folder": "Folder1"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/maxresBlue.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/maxresBlue.jpg",
+		"folder": "Folder1"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/blueIBM.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/blueIBM.jpg",
+		"folder": "Folder1"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/IBM_PC.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/IBM_PC.jpg",
+		"folder": "Folder1"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/ibmoldlog.png",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/ibmoldlog.png",
+		"folder": "Folder2"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/ibmgray.png",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/ibmgray.png",
+		"folder": "Folder2"
+	},
+	{
+		"image": "/lib/rtEditor/plugins/imagebrowser/images/ibm-watson.jpg",
+		"thumb": "/lib/rtEditor/plugins/imagebrowser/images/ibm-watson.jpg",
+		"folder": "Folder2"
+	}
+]

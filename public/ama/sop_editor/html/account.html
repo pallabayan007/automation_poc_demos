@@ -1,0 +1,67 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+	
+<div class="container-fluid ama-container-style" >
+<h4>Account Management</h4>
+ <div class="panel panel-primary">
+		<!--<div class="panel-heading">Enter Account Details</div>-->
+		  <div class="panel-body ama-panel-out">
+		  	<div role="form" class="ama-panel-in" ng-controller="amaAccountformcontroller">
+				<form role="form" class="form-horizontal" name="createAccountForm" ng-submit="createAccounts.submitForm()">
+					<div ng-show='message' style="color:#337ab7; font-weight:bold; padding:10px 0;">{{message}}</div>
+					
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Client : </label>
+					  <div class="col-sm-5">
+<!--  						<select ng-model="createAccounts.clientName" id="accClientName" style="width:150px;" >
+							<option selected disabled value="">Select Client</option>
+							<option ng-repeat="client in clients" value="{{client.clientName}}" label="{{client.clientName}}">{{client.clientName}}</option>
+						</select> --> 
+						<select class="form-control" ng-model="createAccounts.clientName" ng-options="client.clientName as client.clientName for client in clients | orderBy:'clientName'" id="accClientName">
+							<option selected disabled value="">Select Client</option>
+						</select>
+						</div>
+						<div class="col-sm-2">							
+						<span style="color:red;"> * required</span>
+						<a href="#clientCreate">Add Client </a>
+					  </div> 														    
+					</div>							
+					<div class="form-group">
+					  <label class="col-sm-3 control-label"><span id="name-text"> </span>  <a href="#" data-toggle="tooltip" data-placement="bottom" class="light-tooltip" title="Account name as registered in IBM trusted source">(?)</a> :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="createAccounts.accountName" id="createAccountName" placeholder="Enter Account name" required /> 
+						</div>
+						<div class="col-sm-2">							
+						
+						<span style="color:red;"> * required</span>		
+					  </div>
+					</div>
+<!-- 					<div class="form-group">
+					  <label class="col-sm-3 control-label">Company :</label>
+					  <div class="col-sm-5">
+						<input type="text" ng-model="createAccounts.company" placeholder="Enter Company" /> 											
+					  </div>									  
+					</div>	 -->												
+					<div class="tab-button-pos">  
+						<button class="btn btn-info" type="Submit">
+							<span class="glyphicon glyphicon-save"></span> Save
+						</button>	
+						<button class="btn btn-info" type="button" ng-click="goToAccountList();"><!-- ng-disabled="error || incomplete"-->
+							<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+						</button>
+					</div>									
+			</form>
+			</div>
+		</div>
+  </div>				
+</div>
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#name-text').html(uiconfig.SOPEditorname);
+			$('#cancel-text').html(uiconfig.SOPEditorcancel);
+		});	
+	</script>	
+	<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>	 	

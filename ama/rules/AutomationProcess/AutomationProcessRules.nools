@@ -1,0 +1,71 @@
+//AutomationProcessRules.nools file, contains all rules 
+//that will decide whether automation process needs to start or skip
+//@author : Supal K Chowdhury
+
+//Define Alert attributes to specify  the rules
+define Alert {
+	status : null,
+	state : null,
+	currRaisedTime : null,		 //Alert raised time  received from monitoring system
+	auditLoggedRaisedTime : null //most recent alert raised time retrieved from Audit log
+}
+
+//Define ProcessAlertForAutomation attributes to specify  the rule's action
+//Default value is -1 i.e. no rules get matched.
+//start  = 1 : Start automation process
+//skip  = 0 :Skip Automation process
+define ProcessAlertForAutomation {
+	start  : 1,
+	skip : 0,
+    value : -1
+}
+
+
+
+//Define Rule for process to start
+rule RuleProcessStart {
+
+	when {
+	  a1 : Alert (
+	  				(a1.status =~ /^OPEN$|^NEW$|^REOPEN$|^IN PROGRESS$|^NOT CLOSED$|^PENDING$/) && 
+	  					(
+	  						(a1.state == 'AutomationDone' && a1.currRaisedTime !=  a1.auditLoggedRaisedTime ) ||
+	  						(a1.state == 'AutomationAbort' && a1.currRaisedTime !=  a1.auditLoggedRaisedTime ) ||
+	  						(a1.state == null && a1.currRaisedTime ==  a1.auditLoggedRaisedTime ) ||
+	  						(a1.state == null  && a1.currRaisedTime !=  a1.auditLoggedRaisedTime )
+	  					)
+	  			 );
+	
+	  outcome : ProcessAlertForAutomation;
+	}
+	then {
+		console.log("Rule-engine suggests --> Alert process for automation needs to start.");
+		outcome.value = outcome.start;
+	}
+}
+
+//Define Rule for process to skip
+rule RuleProcessSkip {
+
+	when {
+	  
+	  
+	  a1 : Alert (
+	  					(a1.status =~ /^CLOSED$|^RESOLVED$|^CANCELLED$|^POSTPONED$|^DELETED$|^BACK$|^COMPLETED$|^SOLVED$|^ON HOLD$/) ||
+	  					(
+	  						(a1.status =~ /^OPEN$|^NEW$|^REOPEN$|^IN PROGRESS$|^NOT CLOSED$|^PENDING$/) && 
+	  							( 
+	  								(a1.state == 'AutomationInit' ) ||
+	  								(a1.state == 'AutomationInProgress' ) ||
+	  								(a1.state == 'AutomationDone' && a1.currRaisedTime ==  a1.auditLoggedRaisedTime ) ||
+	  								(a1.state == 'AutomationAbort' && a1.currRaisedTime ==  a1.auditLoggedRaisedTime )
+	  							)
+	  					) 
+	  			);
+	  outcome : ProcessAlertForAutomation;
+	}
+	then {
+		console.log("Rule-engine suggests ---> Alert process for automation needs to skip.");
+		outcome.value = outcome.skip;
+	}
+}

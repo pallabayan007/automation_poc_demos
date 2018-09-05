@@ -1,0 +1,8 @@
+POST /rest/external/v1/UpdateAutomationExeResult HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+Authorization: Basic UW5yY2g4TVdreW1zODVuaw==
+Cache-Control: no-cache
+Postman-Token: 54bdff87-66a5-10dd-7e8d-4d301a5a3c3e
+
+{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1YWY5ODM2ZmZjNTRhZTFkNzg1ODFmZjEiLCJleHAiOjE1MjY5MDYzODA2NzV9.Mnq-ZKCsSxpWXyW-WCGmGgY_LKm_6vwyA6vG5eNe39I","gbEventId": "5af9839ffc54ae1d78581ff7", "eventType": "ticket", "status": "Completed", "statusMsg": "execution done", "updateTime": "", "automationResponseMsg": "{\"status\":\"close\", \"user\":\"Radha\"}", "pid":"325a9543-5774-11e8-a0fc-0a0027000006"}

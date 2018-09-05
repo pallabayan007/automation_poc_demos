@@ -1,0 +1,2473 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+<div class="container-fluid ama-container-style" >
+<style>
+	.ta-editor{ min-height: 50px; height: auto; overflow: auto; font-family: inherit; font-size: 100%;	}
+</style>
+	<h4>Create SOP Definition</h4>
+		<div ng-controller="TabbedFormCtrl">
+		<form class="form-horizontal" id="createSOPForm" ng-submit="createsop.processForm()" name="createSOPForm">
+			<tabset justified="true">
+				<tab id="alertTabSet">
+					<tab-heading id="tab-alert-text">Alert
+
+					</tab-heading>
+					 <div class="panel"><!-- panel-primary
+							<!--<div class="panel-heading" id="uitab1heading">Enter Alert Details</div>
+							  <div class="panel-body ama-panel-style">-->
+							  		<div class="panel-body ama-panel-style">
+									<div class="form-group">
+									  <label class="col-sm-3 control-label">Application : </label>
+									  <div class="col-sm-5">
+										<select class="form-control" ng-model="createsop.appname" id="applNameCreate">
+											<option selected disabled value="">Select Application</option>
+										</select>
+									  </div>
+									  <div class="col-sm-2">
+										<span style="color:red;"> * required</span>
+
+										<a href="#application" style="float:right; font-size: 12px;">Add Application </a>
+									   </div>
+									</div>
+									<div id="alertDetails">
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Alert : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" maxlength="20" type="text" ng-model="createsop.alertname" id="createAlertName" placeholder="Enter alert name" ng-blur="createsop.searchAlert();"  />
+										  </div>
+										  <div class="col-sm-2">
+											<a href="javascript:void(0);" class="glyphicon glyphicon glyphicon-search" style="text-decoration:none;" id="alertTips" ng-click="alertSearchData();" title="Lookup Using List"></a><span style="color:red;"> * required</span>
+											<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+												Required
+											</span>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label"><span id="description-text"></span> : </label>
+										  <div class="col-sm-5">
+											<textarea class="form-control" id="alertDescTxtArea" ng-model="createsop.alertdesc" placeholder="Alert Description"></textarea>
+										  </div>
+										  <div class="col-sm-2">
+
+											<span ng-show="basicsForm.sopDescription.$dirty && basicsForm.sopDescription.$error.required" class="help-inline">Required
+		        							</span>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label"><span id="type-text"></span> : </label>
+										  <div class="col-sm-5">
+											<select class="form-control" ng-model="createsop.alerttype" placeholder="Alert type" id="alertTypeDrp">
+												<option disabled value="" label="">Select</option>
+												<option value="Host">Host</option>
+												<option value="Java">Java</option>
+												<option value="Others">Others</option>
+											</select>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Severity : </label>
+										  <div class="col-sm-5">
+											<select class="form-control" ng-model="createsop.alertseverity" placeholder="Alert severity" id="alertSeverityDrp">
+												<option disabled value="" label="">Select</option>
+												<option value="High">High</option>
+												<option value="Medium">Medium</option>
+												<option value="Low">Low</option>
+											</select>
+										  </div>
+										</div>
+									</div>
+
+									<div id="ticketDetails" style="display:none;">
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Ticket ID : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" type="text" ng-model="createsop.ticketname" id="createTicketName" placeholder="Search Ticket ID"  />
+										  </div>
+										  <div class="col-sm-2">
+											<a href="javascript:void(0);" class="glyphicon glyphicon glyphicon-search" style="text-decoration:none;" id="ticketTips" ng-click="alertSearchData();" title="Lookup Using List"></a>
+											<span style="color:red;"> * required</span>
+											<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+												Required
+											</span>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Requester : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" type="text" disabled ng-model="createsop.requestername" id="requesterTicket" placeholder="Enter ticket requestor name or system" />
+										  </div>
+										</div>
+
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Assignee : </label>
+											<div class="col-sm-5">
+												<input class="form-control" type="text" disabled ng-model="createsop.assignee" id="assigneeTicket" placeholder="Enter assignee name" />
+
+										    </div>
+										    <div class="col-sm-2">
+										  		<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+													Required
+												</span>
+										  	</div>
+										</div>
+
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Assignment Group : </label>
+											<div class="col-sm-5">
+												<input class="form-control" type="text"  ng-model="createsop.assigneeGroup" id="assigneeGroup" placeholder="Enter assignee group" />
+										  	</div>
+										  	<div class="col-sm-2">
+												<span style="color:red;"> * required</span>
+										    </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Type : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" type="text"  ng-model="createsop.tickettype" id="ticketTypeDrp" />
+										  </div>
+										  <div class="col-sm-2">
+											<span style="color:red;"> * required</span>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Priority : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" type="text" disabled ng-model="createsop.ticketpriority" id="ticketPriorityDrp" />
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Severity : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" type="text" disabled ng-model="createsop.ticketseverity" id="ticketSeverityDrp" />
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Ticket Description : </label>
+										  <div class="col-sm-5">
+											<textarea class="form-control" id="ticketDescTxtArea" disabled ng-model="createsop.ticketdesc" placeholder="Enter ticket description"></textarea>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Status : </label>
+										  <div class="col-sm-5">
+											<input class="form-control" type="text"  ng-model="createsop.ticketstatus" id="ticketStatusDrp" />
+										  </div>
+										  <div class="col-sm-2">
+											<span style="color:red;"> * required</span>
+										  </div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Raised On : </label>
+											<div class="col-sm-5">
+												<input class="form-control" type="text" disabled ng-model="createsop.ticketraisedOn" id="ticketRaisedOn" placeholder="Enter Raised On Date" />
+										  	</div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Cause : </label>
+											<div class="col-sm-5">
+												<input class="form-control" type="text" disabled ng-model="createsop.ticketcause" id="ticketCause" placeholder="Enter the likely cause of the ticket" />
+										  	</div>
+										</div>
+										<div class="form-group">
+										  <label class="col-sm-3 control-label">Category : </label>
+											<div class="col-sm-5">
+												<input class="form-control" type="text" disabled ng-model="createsop.ticketcategory" id="ticketCategory" placeholder="Enter ticket category" />
+										  	</div>
+										</div>
+									</div>
+									</div>
+							  <!--</div>								-->
+					  </div>
+				</tab>
+				<tab id="sopTabSet">
+					<tab-heading id="tab-sop-text">
+
+					</tab-heading>
+					 <div class="panel"><!--<div class="panel panel-primary">
+							<div class="panel-heading">Enter SOP Details</div>
+								  <div class="panel-body ama-panel-style"> -->
+									<div class="panel-body ama-panel-style">
+												<div class="form-group">
+												  <label class="col-sm-3 control-label"><span id="name-text"> </span> :</label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text"  maxlength="20" ng-model="createsop.sopuserName" id="createsopuserid" placeholder="Sop Name" />
+													</div>
+													<div class="col-sm-2">
+														<span style="color:red;"> * required</span>
+												  	</div>
+												</div>
+												<div class="form-group" style="display:none">
+												  <label class="col-sm-3 control-label"><span id="name-text-type"> </span> :</label>
+												  <div class="col-sm-5">
+													<label class="radio-inline">
+														<input type="radio" name="sopType" value="simple" checked>Simple
+													</label>
+													<label class="radio-inline">
+														<input type="radio" name="sopType" value="choreographed">Choreographed
+													</label>
+												  </div>
+												  <div class="col-sm-2">
+												  </div>
+												</div>
+												<div class="form-group" id="choreoReqInfo" style="display:none;">
+												  <label class="col-sm-3 control-label">Manage Choreographed :</label>
+												  <div class="col-sm-1">
+													<a href="javascript:void(0);" id="createChoreo" onclick="createChoreo();" class="glyphicon glyphicon-list-alt" title="Click to create 'Choreographed request info'"></a>  |
+													<a href="javascript:void(0);" id="editChoreo" ng-click="editChoreo();" class="disableClass glyphicon glyphicon-edit" title="Click to edit 'Choreographed request info'"></a>  |
+													<a href="javascript:void(0);" id="viewChoreo" ng-click="viewChoreo();" title="Click to view 'Choreographed request info'" class="disableClass glyphicon glyphicon-eye-open"></a>
+													</div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">
+												  <span id="automation-provider-text"></span> :
+												  </label>
+												  <div class="col-sm-5">
+													<span id="automationProviderListPlaceholder"></span>	<!--  style="float: left; position: relative; top: 7px;" -->
+												  </div>
+													<div class="col-sm-2">
+														<span style="color:red;"> * required</span>
+													</div>
+												</div>
+												<div id="autoProcessContainer" style="display:none;">
+												<div class="form-group" style="display:none">
+													 <label class="col-sm-3 control-label">
+													 Automation Process :
+													 </label>
+												    <div class="col-sm-5">
+														 <input class="form-control" ng-model="createsop.autoProcess" id="selectProcessValue" placeholder="Automation Process" />
+												    </div>
+													<!-- <div class="col-sm-2">
+													  	<a title="" href="javascript:void(0);" class="glyphicon glyphicon-info-sign" style="text-decoration:none;" id="autoProcessOpShortDesc"  ng-mouseover="showProcessTip();"></a>
+												   </div> -->
+												</div>
+												</div>
+												<div class="form-group" id="autoReqInfo">
+												  <label class="col-sm-3 control-label">Automation Request Info :</label>
+												  <div class="col-sm-2">
+													<a href="javascript:void(0);" id="createAutoReq" ng-click="createAutoReqInfo();" class="glyphicon glyphicon-list-alt" title="Click to create 'Automation request info'"></a>  |
+													<a href="javascript:void(0);" id="editAutoReq" ng-click="editAutoReqInfo();" class="disableClass glyphicon glyphicon-edit" title="Click to edit 'Automation request info'"></a>  |
+													<a href="javascript:void(0);" id="viewAutoReq" ng-click="viewAutoReqInfo();" title="Click to view 'Automation request info'" class="disableClass glyphicon glyphicon-eye-open"></a>
+												  </div>
+												  <div class="col-sm-1">
+													<span style="color:red;">*required</span>
+												  </div>
+												   <label class="col-sm-3 control-label">Automation Response Info :</label>
+												  <div class="col-sm-2">
+													<a href="javascript:void(0);" id="createAutoRes" ng-click="createAutoResInfo();" class="glyphicon glyphicon-list-alt" title="Click to create 'Automation response info'"></a>  |
+													<a href="javascript:void(0);" id="editAutoRes" ng-click="editAutoResInfo();" class="disableClass glyphicon glyphicon-edit" title="Click to edit 'Automation response info'"></a>  |
+													<a href="javascript:void(0);" id="viewAutoRes" ng-click="viewAutoResInfo();" title="Click to view 'Automation response info'" class="disableClass glyphicon glyphicon-eye-open"></a>
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Execute Automation :</label>
+												  <div class="col-sm-5">
+												    <label class="radio-inline">
+														<input type="radio" name="executeAutomation" value="realTime" checked> As Real Time
+													</label>
+													<label class="radio-inline" id="scheduledCheck">
+														<input type="radio" name="executeAutomation" value="scheduled"> As Scheduled Job
+													</label>
+												  </div>
+												</div>
+												<div style="border:1px solid #d9edf7; margin:10px; padding:10px; display:none;" id="scheduleAutoContainer">
+													<div class="form-group">
+													  <label class="col-sm-3 control-label">Application : </label>
+													  <div class="col-sm-5" style="top:8px;">
+															<span id="applicationAutomation" style="top:6px;"></span>
+													  </div>
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-3 control-label">Job Name : </label>
+													  <div class="col-sm-5">
+														<input class="form-control" type="text" ng-model="createsop.jobname" placeholder="Job Name" id="jobNameSJ" />
+													</div>
+													<div class="col-sm-2">
+														<span style="color:red;"> * required</span>
+													  </div>
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-3 control-label">Details : </label>
+													  <div class="col-sm-5">
+														<textarea class="form-control" type="text" ng-model="createsop.scheduleDetails" placeholder="Enter Details" row="3"></textarea>
+													  </div>
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-3 control-label">Trigger On : </label>
+													  <div class="col-sm-5">
+													  	<textarea class="form-control" type="text" id="triggerOnValText" row="3" disabled /></textarea>
+
+														<input class="form-control" type="text" ng-model="createsop.triggeron" id="triggerOnVal" style="display:none;" placeholder="Trigger On" disabled />
+
+														<span class="btn btn-info" style="cursor:pointer; top: 7px; position:relative; " onclick="dialogCronExpModel.dialog('open');$('#cronGenResult').val('');"><a href="javascript:void(0);" style="color:#fff;  text-decoration: none; font:12px Helvetica;" class="glyphicon glyphicon-qrcode"> Generate</a>
+														</span>
+													</div>
+													<div class="col-sm-2">
+														<span style="color:red;"> * required</span>
+													  </div>
+													</div>
+													<div class="form-group">
+													  <label class="col-sm-3 control-label">Time Zone : </label>
+													  <div class="col-sm-5">
+													  	<select class="form-control" ng-model="createsop.timezone" id="createTimeZone" >
+													  		<option selected disabled value="" label="">Select Time Zone</option>
+														</select>
+													  </div>
+
+														<!--//201372 - Radha M De -->
+														<div class="col-sm-2">
+															<span style="color:red;"> * required</span>
+														</div>
+														<!--//201372 - Radha M De -->
+
+													</div>
+													<div class="form-group">
+												  		<label class="col-sm-3 control-label">Active :</label>
+														  <div class="col-sm-5">
+														  <label class="radio-inline">
+															<input type="radio" id="jobActiveYes" ng-model="createsop.active" name="timeZone" value="y"> Yes
+
+															</label>
+															<label class="radio-inline">
+															<input type="radio" ng-model="createsop.active" name="timeZone" value="n">&nbsp;No
+
+															</label>
+														  </div>
+
+														<!--//201372 - Radha M De -->
+														<div class="col-sm-2">
+															<span style="color:red;"> * required</span>
+														</div>
+														<!--//201372 - Radha M De -->
+													</div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Description : </label>
+												  <div class="col-sm-5">
+													<textarea class="form-control" ng-model="createsop.sopDescription" placeholder="Enter short description" row="3"></textarea>
+												  </div>
+												  <div class="col-sm-2">
+
+													<span ng-show="basicsForm.sopDescription.$dirty && basicsForm.sopDescription.$error.required" class="help-inline">Required
+           									 		</span>
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Purpose : </label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" ng-model="createsop.purpose" id="puropseCreateSOP" placeholder="Purpose" />
+													</div>
+													<div class="col-sm-2">
+
+													<span style="color:red;"> * required</span>
+
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Classification : </label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" ng-model="createsop.classification" placeholder="Classification" />
+
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Expected Input : </label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" ng-model="createsop.expectedInput" placeholder="ExpectedInput" />
+
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Expected Output : </label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" ng-model="createsop.expectedOutput" placeholder="ExpectedOutput" />
+
+												  </div>
+												</div>
+												<div class="form-group">
+												  <!--<label class="col-sm-3 control-label">Task duration:</label>-->
+												  <div class="col-sm-2">
+
+												  </div>
+												  <div class="col-sm-8">
+													<label class="checkbox-inline">
+													<!-- <input type="checkbox" ng-model="createsop.soprule" ng-true-value="yes" ng-false-value="no" > Rule -->
+													<input type="checkbox" id="sopcognitiveboxcheckbox" onclick="showsopcognitivebox()"> Cognitive Info
+													</label>
+													<script>
+														function showsopcognitivebox() {
+															if(document.getElementById("sopcognitiveboxcheckbox").checked){
+														    	document.getElementById("sopcognitivebox").style.display = "block";
+															}
+															else{
+														    	document.getElementById("sopcognitivebox").style.display = "none";
+															}
+														}
+													</script>
+												  </div>
+												</div>
+												<div  id="sopcognitivebox" style="display:none; border: 1px solid #CEECF5 ; border-radius :6px; margin : 10px 0 10px 0; padding:12px 12px; line-height: 10px; text-align:center; height:150px; width:95%">
+													<div class="form-group">
+														<!--<span><i class="glyphicon glyphicon-chevron-down"></i> Pick up a critical alert for the MDS port</span>	-->
+														<label class="col-sm-3 control-label">Goal :</label>
+														  <div class="col-sm-5">
+															<select class="form-control" ng-model="createsop.sopgoal" placeholder="Enter Goal">
+																<option value="1">Max</option>
+																<option value="2">Min</option>
+															</select>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<!--<span><i class="glyphicon glyphicon-chevron-down"></i> Pick up a critical alert for the MDS port</span>	-->
+														<label class="col-sm-3 control-label">Num Human Tasks :</label>
+														 <div class="col-sm-5">
+															<select class="form-control" ng-model="createsop.taskexecutionoder" ng-init="(_Array = []).length = 20;" placeholder="Enter Number of Human Tasks">
+																<option ng-repeat="i in _Array track by $index">{{$index+0}}</option>
+															</select>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<!--<span><i class="glyphicon glyphicon-chevron-down"></i> Pick up a critical alert for the MDS port</span>	-->
+														<label class="col-sm-3 control-label">Num Tasks in Flows :</label>
+														  <div class="col-sm-5">
+
+															<select class="form-control" ng-model="createsop.taskexecutionoder" ng-init="(_Array = []).length = 20;" placeholder="Enter Number of Tasks in Flows">
+																<option ng-repeat="i in _Array track by $index">{{$index+0}}</option>
+															</select>
+
+														</div>
+													</div>
+												</div>
+											</div>
+								  		<!--</div>								-->
+					  				</div>
+
+				</tab>
+				<tab id="taskTabSet">
+					<tab-heading id="tab-task-text">
+
+					</tab-heading>
+					<div class="panel"><!-- <div class="panel panel-primary">
+							<div class="panel-heading">Enter Task Details</div>
+
+								  <div class="panel-body ama-panel-style">-->
+								    <div class="panel-body ama-panel-style" id="orchoTabContent" style="display:none;">
+								    <p>Tasks have been documented in the individual SOP's that are being choreographed for orchestration.</p>
+								    </div>
+									<div class="panel-body ama-panel-style" id="sopTaskTabContent">
+										<div class="appTable" ng-hide="appTaskTable">
+												<table  class="table-responsive table table-bordered">
+												  <thead>
+												    <tr>
+												      <th>Order</th>
+												      <th>Name</th>
+												    </tr>
+												  </thead>
+												  <tbody>
+												    <tr ng-repeat="rowContentName in rows">
+												      <td>{{rowContentName.executionorder}}</td>
+												      <td>{{rowContentName.name}}</td>
+												    </tr>
+												  </tbody>
+												</table>
+										</div>
+										<div ng-show='messageTask' style="color:#337ab7; font-weight:bold; margin:0 0 10px 20px;">{{messageTask}}</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Name :</label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" ng-model="createsop.taskname" placeholder="Task Name" />
+													</div>
+													<div class="col-sm-2">
+													<span style="color:red;">* required</span>
+													<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+														Required
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Description : </label>
+												  	<div class="col-sm-5">
+												  		<div class="btn btn-info" onclick="$('#taskEditor').dialog('open'); "><span style="color:#fff;  text-decoration: none; font:12px Helvetica;" class="glyphicon glyphicon-plus-sign"> Create Task Description </span></div>
+           									 			<textarea class="form-control" ng-model="createsop.taskdesc" id="taskDescRTE" placeholder="Task Description" row="3" style="display:none;"></textarea>
+													</div>
+												</div>
+												<div class="form-group" id="taskContext" style="display:none;">
+													  <label class="col-sm-3 control-label">Context : </label>
+													  <div class="col-sm-5">
+														<textarea class="form-control" type="text" id="taskContextData" ng-model="createsop.taskcontext" placeholder="Enter the minimal set of data used by a task"  row="3"></textarea>
+													  </div>
+												</div>
+												<div class="form-group" id="taskScript" style="display:none;">
+													  <label class="col-sm-3 control-label">Script : </label>
+													  <div class="col-sm-5">
+														<textarea class="form-control" type="text" id="teskScriptData" ng-model="createsop.taskscript" placeholder="Enter any specific script to be run for this task"  row="3"></textarea>
+													  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label"><span id="owner-text"></span> :</label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" ng-model="createsop.taskowner" placeholder="Task Owner Name" />
+													</div>
+													<div class="col-sm-2">
+													<span style="color:red;">* required</span>
+													<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+														Required
+													</span>
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Type : </label>
+												  <div class="col-sm-5">
+													<select class="form-control" ng-model="createsop.taskexecutiontype" id="createTaskExe" ng-options="execTyp.name for execTyp in execTyps" >
+														<option selected disabled value="" label="">Select Execution Type</option>
+													</select>
+												  </div>
+													<!-- defect - 200175, owner - Radha M De -->
+													<div class="col-sm-2">
+													<span style="color:red;">* required</span>
+													<span ng-show="tasksForm.sopName.$dirty && tasksForm.sopName.$error.required" class="help-inline">
+														Required
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Order :</label>
+												  <div class="col-sm-5">
+													<input class="form-control" type="text" id="autoExeOrder" value="1" style="text-align:right;" disabled />
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Execution UserID :</label>
+												  <div class="col-sm-5">
+												  <input class="form-control" type="text" ng-model="createsop.taskexecutionuerId" id="automationuserId" placeholder="UserId" />
+												  </div>
+												</div>
+												<div class="form-group">
+												  <label class="col-sm-3 control-label">Execution Password :</label>
+												  <div class="col-sm-5">
+												 	<input class="form-control" type="password" ng-model="createsop.taskexecutionpassword" placeholder="Password" />
+												  </div>
+												</div>
+												<div class="form-group" style="display:none;">
+												  <label class="col-sm-3 control-label">Upload File :</label>
+												  <div class="col-sm-5" id="taskContainer">
+													<input class="form-control" type="file" id="taskFileUpload" name="fileUpload" size="40">
+												  </div>
+												</div>
+												<a href="javascript:void(0)" ng-click="createsop.addTask()" class="btn btn-info glyphicon glyphicon-plus-sign" style="float:right; margin-right:10px;"> Add </a>
+									</div>
+							<!--</div>-->
+					  </div>
+				</tab>
+				<tab id="sopBpmnTabSet">
+					<tab-heading id="tab-alert-text">SOP-Bpmn</tab-heading>	
+					<div class="panel">
+						<div class="panel-body ama-panel-style">
+							<div class="form-group">
+								<label class="col-sm-3 control-label"><span id="name-text">Deployment Name</span> :</label>
+								<div class="col-sm-5">
+								<!--
+<input class="form-control" type="text"  maxlength="20" ng-model="createsop.sopuserName" id="sopBpmnDataId" name="sopBpmnDataId" placeholder="Sop Name" />
+<input class="form-control" type="text"  maxlength="20" ng-model="createsop.sopuserName2" id="sopBpmnDataId2" name="sopBpmnDataId2" placeholder="Sop Name" />
+
+								-->
+<input class="form-control" type="text" ng-model="createsop.workflowName" id="workflowName" name="workflowName" />
+
+<textarea id="sopBpmnData" name="sopBpmnData" rows="4" cols="50" ng-model="createsop.sopBpmnData">
+</textarea>
+								</div>
+								<div class="col-sm-2">													
+									<span style="color:red;"> * required</span>													
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-5">
+									<div id="openBpmnTool" class="btn btn-info glyphicon">Open-BPMN-Tool</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
+				
+				
+			</tabset>
+			<div class="tab-button-pos">
+				<button class="btn btn-info" type="Submit"> <!--ng-click="createsop.submitTheForm()"     ng-disabled="error || incomplete" -->
+					<span class="glyphicon glyphicon-save"></span> Save
+				</button>
+				<a href="#home" class="btn btn-info"><!-- ng-disabled="error || incomplete"-->
+					<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+				</a>
+			</div>
+			<div id="wholesopFlagErrorDialog" style="display:none; border:1px solid #dca7a7; height:162px; width:500px; top:110px; left:261px; z-index:3;background-color:#ffffff; position:absolute;color:#000000;">
+				<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle" style="padding:10px; background-image: linear-gradient(to bottom, #f2dede 0px, #e7c3c3 100%); background-repeat: repeat-x; border-bottom-color: #dca7a7; border-left-color: #dca7a7; border-right-color: #dca7a7; border-top-color: #dca7a7; color: #a94442; font-weight:bold;">Error
+				</div>
+				<p style="margin:10px;">
+					<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 70px 0;"></span>
+					<span id="wholesopFlagErrorMsg" style="color: #a94442; font-weight:bold;"></span>
+				</p>
+				<div style="float:right; padding-right:10px;">
+					<button class="btn btn-info" type="submit" >
+							<span class="glyphicon glyphicon-save"></span> Yes
+					</button>
+					<button class="btn btn-info" type="button" onclick="cancelSOPFlag();">
+							<span class="glyphicon glyphicon-remove-circle"></span> No
+					</button>
+				</div>
+			</div>
+		</form>
+		<div id="duplicateAlert" title="Duplicate Alert">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+				<span id="dupAlertMsg">You CANNOT create two different SOPs for same Alert.</span>
+			</p>
+		</div>
+		<div id="duplicateExeOrd" title="Duplicate Execution Order">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+				You CANNOT save two different tasks with same execution order
+			</p>
+		</div>
+		<div id="taskEditor" title="Enter Task Description">
+			<div id="editor"></div>
+			<script>
+				initSample();
+			</script>
+		</div>
+	</div>
+</div>
+
+<div id="alertResultContainer" style="border:1px solid #d9edf7; z-index:3; background-color:#ffffff; left:120px; top:-500px; position:relative; display:none; padding:10px; width:800px; height:390px; border-radius:9px;">
+	<div class="panel panel-primary" style="height: 42px;">
+		<div class="panel-heading">
+			<div style="text-align:center; font:bold 14px verdana;" id="listAuditLog">Alert List</div>
+			<div style="float:right; top:-27px; position:relative;">
+				<button class="btn btn-info" type="button" onclick="$('#alertResultContainer').hide(); $('#showAutoBackContainer').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>
+			</div>
+		</div>
+	</div>
+	<table class="table-responsive" id="alertResultTable" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th class="txtCenter">Name</th>
+				<th class="txtCenter">Short Description</th>
+			</tr>
+		</thead>
+		<tbody id="alertResultData">
+
+		</tbody>
+	</table>
+</div>
+
+<div id="waitContainer" style="display:none;height:300px; width:500px; top:110px; left:180px; z-index:3;background-color:#ffffff; position:absolute;color:#000000;"><div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f;">Please Wait.....</div></div>
+<div id="waitContainerOnGen" style="display:none;height:300px; width:500px; top:110px; left:250px; z-index:4;background-color:#ffffff; position:absolute;color:#000000;border:1px solid gray;"><div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f; padding-left:100px;">Please Wait.....</div></div>
+<div id="alertErrorData" style="background-color: #f2dede; color: #a94442; display: none; height: 268px; left: 376px; position: absolute; top: 160px; width: 450px; z-index: 5; border:1px solid #dca7a7;">
+	<div id="alertAutomataGenerate" style="margin:80px 20px 20px 20px; font:18px verdana;">
+	</div>
+	<div style="margin:50px 20px; float:right;">
+		<button class="btn btn-info" type="button" onclick="$('#alertErrorData').hide();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+		</button>
+	</div>
+</div>
+
+<div id="showAutomationRequest" style="display:none;height:555px; width:800px; top:2px; left:180px; z-index:3;background-color:#ffffff; position:absolute;">
+	<div class="panel panel-primary" style="">
+		<div class="panel-heading">
+			<div style="text-align:center; font:bold 14px verdana;">Automation Request</div>
+			<div style="text-align:center;">For <span style="font-weight:bold;" id="accNmAuto"></span> of <span style="font-weight:bold;" id="clientNmAuto"></span></div>
+			<div style="float:left; top:-27px; position:relative;">
+				<!--  <button id="generateInputBtn" class="btn btn-info" type="button" ng-click="generateAutomataServiceRequest();">
+					<span class="glyphicon glyphicon-wrench"></span> Generate Input
+				</button>-->
+			</div>
+			<div style="float:right; top:-27px; position:relative;">
+				<button class="btn btn-info" type="button" onclick="closeGenDialog();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>
+			</div>
+		</div>
+	</div>
+	<div id="blueAutoGen" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px 10px 10px 50px; width:800px; height:400px; border-radius:9px; overflow:scroll; color:#000000;">
+		<label class="col-sm-4 control-label" style="padding-right:0px;">Process Name:</label>
+  		<div class="col-sm-5">
+			<input class="form-control" type="text" ng-model="createsop.processname" placeholder="Process Name" id="blueprismProcessName" />
+		</div>
+		<div class="col-sm-2">
+			<span style="color:red;"> * required</span>
+ 		</div>
+		<br /><br />
+		<div class="appTable" id="appParamTableB" style="display:none;">
+				<div style="color:#31708f; font-weight:bold;">Parameter Set</div>
+				<table class="table-responsive table table-bordered">
+				  <thead>
+					<tr>
+					  <th style="width:36px;">#</th>
+					  <th>
+					  	<div style="font-weight:bold; border-bottom:1px solid white;">Parameters</div>
+					  	<div style="border-bottom:1px solid white;">
+					  		<span style="float:left; width:200px; border-right:1px solid white;">Name</span>
+					  		<span>Value</span>
+					  	</div>
+					  </th>
+					   <th style="width:36px;"></th>
+					</tr>
+				  </thead>
+				  <tbody id="paramListB">
+				  </tbody>
+				</table>
+				</div>
+		<a id="addParamCreateLinkB" href="javascript:void(0);" onclick="addParamDomB();" style="padding-left:14px; font-weight:bold;">Click here to add Parameter</a><br /><br />
+		<div id="autoParamContainerB"></div>
+		<a id="createParamJSON" style="float:right;" class="btn btn-info glyphicon glyphicon-plus-sign" onclick="createAutoJSONB();" href="javascript:void(0)"> Add </a>
+	</div>
+	<div id="ipSoftAutoGen" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:430px; border-radius:9px; overflow:scroll;">
+		<div class="form-group" style="color:#000000;">
+		  		<label class="col-sm-4 control-label" style="padding-right:0px;">Automation Name:</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.automationname" placeholder="Automation Name" id="ipsoftAutomationName" />
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+		 		</div>
+		 		<br /><br />
+		 		<label class="col-sm-4 control-label" style="padding-right:0px;">Automation Path:</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.automationpath" placeholder="Automation Path" id="ipsoftAutomationPath" />
+		 		</div>
+		 		<br /><br />
+		 		<label class="col-sm-4 control-label" style="float:left;">Automation Description: </label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.automationdescription" id="ipsoftautomationDescription" placeholder="Automation Description"  />
+		 		</div>
+		 		<br /><br />
+		 		<label class="col-sm-4 control-label">OS Type :</label>
+				<div class="col-sm-5">
+					<select class="form-control" id="ipsoftOSType">
+						<option value="Windows" selected>Windows</option>
+						<option value="Unix">Unix</option>
+						<option value="AIX">AIX</option>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+				</div>
+				<br /><br />
+		 		<label class="col-sm-4 control-label">Severity :</label>
+				<div class="col-sm-5">
+					<select class="form-control" id="ipsoftSeverity">
+						<option selected disabled value="">Select Severity</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+				<br /><br />
+		 		<label class="col-sm-4 control-label" style="float:left;">Assignment Group :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.automationAssgroup" id="ipsoftAssGroup" placeholder="Assignment Group"  />
+				</div>
+				<br /><br />
+				<label class="col-sm-4 control-label" style="float:left;">Target Host Name :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.targetHost" id="ipsoftTargetHost" placeholder="Target Host Name"  />
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+				</div>
+
+				<br /><br />
+				<!-- <label class="col-sm-4 control-label" style="float:left;">Timeout (in minutes) :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.timeout" id="ipsoftTimeOut" placeholder="Timeout"  />
+				</div>
+				<div class="col-sm-2">
+				</div>
+				<br /><br />
+				 -->
+				<div class="appTable" id="appParamTable" style="display:none;">
+				<div style="color:#31708f; font-weight:bold;">Parameter Set</div>
+				<table class="table-responsive table table-bordered">
+				  <thead>
+					<tr>
+					  <th style="width:36px;">#</th>
+					  <th>
+					  	<div style="font-weight:bold; border-bottom:1px solid white;">Parameters</div>
+					  	<div style="border-bottom:1px solid white;">
+					  		<span style="float:left; width:200px; border-right:1px solid white;">Name</span>
+					  		<span>Value</span>
+					  	</div>
+					  </th>
+					   <th style="width:36px;"></th>
+					</tr>
+				  </thead>
+				  <tbody id="paramList">
+				  </tbody>
+				</table>
+				</div>
+				<a id="addParamCreateLink" href="javascript:void(0);" onclick="addParamDom();" style="padding-left:14px; font-weight:bold;">Click here to add Parameter</a><br /><br />
+				<div id="autoParamContainer"></div>
+				<a id="createParamJSON" style="float:right;" class="btn btn-info glyphicon glyphicon-plus-sign" onclick="createAutoJSON();" href="javascript:void(0)"> Add </a>
+		  </div>
+	</div>
+	<div id="ibmWorkLoadAutoGen" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:280px; border-radius:9px; overflow:scroll;">
+		<div class="form-group" style="color:#000000;">
+		  		<label class="col-sm-3 control-label" style="float:left; width:139px;">Library Name :</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.workLoadLibrary" id="workLoadLib" placeholder="Enter Library Name" />
+				</div>
+				<div class="col-sm-2">
+					<a href="javascript:void(0);" class="glyphicon glyphicon glyphicon-info-sign" style="text-decoration:none;" title="The name of the library where the alert remediation processes are stored "></a>
+					<span style="color:red;"> * required</span>
+		 		</div>
+				<br /><br />
+		 		<label class="col-sm-3 control-label" style="float:left; width:139px;">Process Name :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.workloadProcess" id="workLoadProcess" placeholder="Enter Process Name"  />
+				</div>
+				<div class="col-sm-2">
+					<a href="javascript:void(0);" class="glyphicon glyphicon glyphicon-info-sign" style="text-decoration:none;" title="The name of the process which may include any number of executable steps to remediate your alert."></a>
+		 			<span style="color:red;"> * required</span>
+		 		</div>
+		  </div>
+		  <br /><br />
+		  <div class="appTable" id="appParamTableWLA" style="display:none;">
+				<div style="color:#31708f; font-weight:bold;">Parameter Set</div>
+				<table class="table-responsive table table-bordered">
+				  <thead>
+					<tr>
+					  <th style="width:36px;">#</th>
+					  <th>
+					  	<div style="font-weight:bold; border-bottom:1px solid white;">Parameters</div>
+					  	<div style="border-bottom:1px solid white;">
+					  		<span style="float:left; width:200px; border-right:1px solid white;">Name</span>
+					  		<span>Value</span>
+					  	</div>
+					  </th>
+					   <th style="width:36px;"></th>
+					</tr>
+				  </thead>
+				  <tbody id="paramListWLA">
+				  </tbody>
+				</table>
+		</div>
+		<a id="addParamCreateLinkWLA" href="javascript:void(0);" onclick="addParamDomWLA();" style="padding-left:14px; font-weight:bold;">Click here to add Parameter</a><br /><br />
+		<div id="autoParamContainerWLA"></div>
+		<a id="createParamJSONWLA" style="float:right;" class="btn btn-info glyphicon glyphicon-plus-sign" onclick="createAutoJSONWLA();" href="javascript:void(0)"> Add </a>
+	</div>
+	<div style="float:right; margin-right:10px;">
+		<button class="btn btn-info" type="button" style="display:none;" id="autoGenDone" ng-click="autoGenerateDone();">
+			<span class="glyphicon glyphicon-thumbs-up"></span> Done
+		</button>
+	</div>
+</div>
+
+<!--
+<div id="showAutomationResponse" style="display:none;height:555px; width:800px; top:2px; left:180px; z-index:3;background-color:#ffffff; position:absolute;">
+	<div class="panel panel-primary" style="">
+		<div class="panel-heading">
+			<div style="text-align:center; font:bold 14px verdana;">Automation Response</div>
+			<div style="text-align:center;">For <span style="font-weight:bold;" id="accNmAutoResp"></span> of <span style="font-weight:bold;" id="clientNmAutoResp"></span></div>
+			<div style="float:left; top:-27px; position:relative;">
+			</div>
+			<div style="float:right; top:-27px; position:relative;">
+				<button class="btn btn-info" type="button" onclick="closeGenDialog();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>
+			</div>
+		</div>
+	</div>
+	<div id="blueAutoGenResp" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px 10px 10px 50px; width:800px; height:400px; border-radius:9px; overflow:scroll; color:#000000;">
+		<label class="col-sm-4 control-label" style="padding-right:0px;">Process Name:</label>
+  		<div class="col-sm-5">
+			<input class="form-control" type="text" ng-model="createsop.processnameResp" placeholder="Process Name" id="blueprismProcessNameResp" />
+		</div>
+		<div class="col-sm-2">
+			<span style="color:red;"> * required</span>
+ 		</div>
+		<br /><br />
+		<div class="appTable" id="appParamTableBResp" style="display:none;">
+				<div style="color:#31708f; font-weight:bold;">Parameter Set</div>
+				<table class="table-responsive table table-bordered">
+				  <thead>
+					<tr>
+					  <th style="width:36px;">#</th>
+					  <th>
+					  	<div style="font-weight:bold; border-bottom:1px solid white;">Parameters</div>
+					  	<div style="border-bottom:1px solid white;">
+					  		<span style="float:left; width:200px; border-right:1px solid white;">Name</span>
+					  		<span>Value</span>
+					  	</div>
+					  </th>
+					   <th style="width:36px;"></th>
+					</tr>
+				  </thead>
+				  <tbody id="paramListBResp">
+				  </tbody>
+				</table>
+				</div>
+		<a id="addParamCreateLinkBResp" href="javascript:void(0);" onclick="addParamDomRespB();" style="padding-left:14px; font-weight:bold;">Click here to add Parameter</a><br /><br />
+		<div id="autoParamContainerBResp"></div>
+		<a id="createParamJSONRespB" style="float:right;" class="btn btn-info glyphicon glyphicon-plus-sign" onclick="createAutoJSONRespB();" href="javascript:void(0)"> Add </a>
+	</div>
+	<div id="ipSoftAutoGenResp" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:430px; border-radius:9px; overflow:scroll;">
+		<div class="form-group" style="color:#000000;">
+		  		<label class="col-sm-4 control-label" style="padding-right:0px;">Automation Name:</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.automationnameResp" placeholder="Automation Name" id="ipsoftAutomationNameResp" />
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+		 		</div>
+		 		<br /><br />
+		 		<label class="col-sm-4 control-label" style="padding-right:0px;">Automation Path:</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.automationpathResp" placeholder="Automation Path" id="ipsoftAutomationPathResp" />
+		 		</div>
+		 		<br /><br />
+		 		<label class="col-sm-4 control-label" style="float:left;">Automation Description: </label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.automationdescriptionResp" id="ipsoftautomationDescriptionResp" placeholder="Automation Description"  />
+		 		</div>
+		 		<br /><br />
+		 		<label class="col-sm-4 control-label">OS Type :</label>
+				<div class="col-sm-5">
+					<select class="form-control" id="ipsoftOSTypeResp">
+						<option value="Windows" selected>Windows</option>
+						<option value="Unix">Unix</option>
+					</select>
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+				</div>
+				<br /><br />
+		 		<label class="col-sm-4 control-label">Severity :</label>
+				<div class="col-sm-5">
+					<select class="form-control" id="ipsoftSeverityResp">
+						<option selected disabled value="">Select Severity</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+				<br /><br />
+		 		<label class="col-sm-4 control-label" style="float:left;">Assignment Group :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.automationAssgroupResp" id="ipsoftAssGroupResp" placeholder="Assignment Group"  />
+				</div>
+				<br /><br />
+				<label class="col-sm-4 control-label" style="float:left;">Target Host Name :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.targetHostResp" id="ipsoftTargetHostResp" placeholder="Target Host Name"  />
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+				</div>
+
+				<br /><br />
+				<div class="appTable" id="appParamTableRes" style="display:none;">
+				<div style="color:#31708f; font-weight:bold;">Parameter Set</div>
+				<table class="table-responsive table table-bordered">
+				  <thead>
+					<tr>
+					  <th style="width:36px;">#</th>
+					  <th>
+					  	<div style="font-weight:bold; border-bottom:1px solid white;">Parameters</div>
+					  	<div style="border-bottom:1px solid white;">
+					  		<span style="float:left; width:200px; border-right:1px solid white;">Name</span>
+					  		<span>Value</span>
+					  	</div>
+					  </th>
+					   <th style="width:36px;"></th>
+					</tr>
+				  </thead>
+				  <tbody id="paramListResp">
+				  </tbody>
+				</table>
+				</div>
+				<a id="addParamCreateLinkResp" href="javascript:void(0);" onclick="addParamDomResp();" style="padding-left:14px; font-weight:bold;">Click here to add Parameter</a><br /><br />
+				<div id="autoParamContainerResp"></div>
+				<a id="createParamJSONResp" style="float:right;" class="btn btn-info glyphicon glyphicon-plus-sign" onclick="createAutoJSONResp();" href="javascript:void(0)"> Add </a>
+		  </div>
+	</div>
+	<div id="ibmWorkLoadAutoGenResp" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:280px; border-radius:9px; overflow:scroll;">
+		<div class="form-group" style="color:#000000;">
+		  		<label class="col-sm-3 control-label" style="float:left; width:139px;">Library Name :</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.workLoadLibrary" id="workLoadLibResp" placeholder="Enter Library Name" />
+				</div>
+				<div class="col-sm-2">
+					<a href="javascript:void(0);" class="glyphicon glyphicon glyphicon-info-sign" style="text-decoration:none;" title="The name of the library where the alert remediation processes are stored "></a>
+					<span style="color:red;"> * required</span>
+		 		</div>
+				<br /><br />
+		 		<label class="col-sm-3 control-label" style="float:left; width:139px;">Process Name :</label>
+		 		<div class="col-sm-5">
+		 			<input class="form-control" type="text" ng-model="createsop.workloadProcessResp" id="workLoadProcessResp" placeholder="Enter Process Name"  />
+				</div>
+				<div class="col-sm-2">
+					<a href="javascript:void(0);" class="glyphicon glyphicon glyphicon-info-sign" style="text-decoration:none;" title="The name of the process which may include any number of executable steps to remediate your alert."></a>
+		 			<span style="color:red;"> * required</span>
+		 		</div>
+		  </div>
+	</div>
+	<div style="float:right; margin-right:10px;">
+		<button class="btn btn-info" type="button" style="display:none;" id="autoGenDoneResp" ng-click="autoGenerateDoneResp();">
+			<span class="glyphicon glyphicon-thumbs-up"></span> Done
+		</button>
+	</div>
+</div>
+
+-->
+<div id="showAutomationResponse" style="display:none;height:416px; width:800px; top:2px; left:180px; z-index:3;background-color:#ffffff; position:absolute;">
+	<div class="panel panel-primary" style="">
+		<div class="panel-heading">
+			<div style="text-align:center; font:bold 14px verdana;">Automation Response</div>
+			<div style="text-align:center;">For <span style="font-weight:bold;" id="accNmAutoResp"></span> of <span style="font-weight:bold;" id="clientNmAutoResp"></span></div>
+			<div style="float:left; top:-27px; position:relative;">
+			</div>
+			<div style="float:right; top:-27px; position:relative;">
+				<button class="btn btn-info" type="button" onclick="closeGenDialog();">
+					<span class="glyphicon glyphicon-remove-circle"></span> Close
+				</button>
+			</div>
+		</div>
+	</div>
+	<div id="ibmWorkLoadAutoGenResp" style="border:1px solid #d9edf7; top:-20px; position:relative; display:none; padding:10px; width:800px; height:280px; border-radius:9px; overflow:scroll;">
+		<div class="appTable">
+			<table  class="table-responsive table table-bordered" id="tabOutputParam" style="display:none;">
+			  <thead>
+			    <tr>
+			      <th>Name</th>
+			      <th>Type</th>
+			      <th>Description</th>
+			      <th>Action</th>
+			    </tr>
+			  </thead>
+			  <tbody id="outNmTpRow">
+			  </tbody>
+			</table>
+		</div>
+		<div class="form-group" style="color:#000000;">
+		  		<label class="col-sm-3 control-label" style="float:left; width:139px;">Output Name :</label>
+		  		<div class="col-sm-5">
+					<input class="form-control" type="text" ng-model="createsop.outputName" id="outputName" placeholder="Enter Output Name" />
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+		 		</div>
+				<br /><br />
+		 		<label class="col-sm-3 control-label" style="float:left; width:139px;">Output Type :</label>
+		 		<div class="col-sm-5">
+		 			<select class="form-control" ng-model="createsop.outputType" id="outputType">
+		 				<option value="sel">Select Output Type</option>
+		 				<option value="String" selected>String</option>
+		 				<option value="Integer">Integer</option>
+		 				<option value="Boolean">Boolean</option>
+		 				<option value="Float">Float</option>
+		 			</select>
+				</div>
+				<div class="col-sm-2">
+					<span style="color:red;"> * required</span>
+		 		</div>
+		 		<br /><br />
+				<label class="col-sm-3 control-label" style="float:left; width:139px;">Output Description :</label>
+		  		<div class="col-sm-5">
+					<textarea class="form-control" type="text" ng-model="createsop.outputdesc" id="outputDesc" maxlength="100" placeholder="Enter Output Description" ></textarea>
+				</div>
+				<div class="col-sm-2">
+				        &#40; max 100 character &#41;
+		 		</div>
+		 		<br /><br />
+		 		<a href="javascript:void(0)" ng-click="addOutputParam();" class="btn btn-info glyphicon glyphicon-plus-sign" style="float:right; margin-right:10px;"> Add </a>
+		  </div>
+	</div>
+	<div style="float:right; margin-right:10px;">
+		<button class="btn btn-info" type="button" id="autoGenDoneResp" ng-click="autoGenerateDoneResp();">
+			<span class="glyphicon glyphicon-thumbs-up"></span> Done
+		</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+var cronResultVar='';
+$(document).ready(function() {
+	dialogDepAlert = $("#duplicateAlert").dialog({
+		 closeOnEscape: false,
+		 autoOpen: false,
+		 modal: true,
+		 buttons: {
+		 Ok: function() {
+			 	$( this ).dialog( "close" );
+			 }
+		 }
+	});
+	taskEditor = $("#taskEditor").dialog({
+		 closeOnEscape: false,
+		 autoOpen: false,
+		 modal: false,
+		 width:880,
+		 buttons: {
+		 Ok: function() {
+			 updateDiv();
+			 	//$( this ).dialog( "close" );
+			 }
+		 }
+	});
+	dialogExe = $("#duplicateExeOrd").dialog({
+		 closeOnEscape: false,
+		 autoOpen: false,
+		 modal: true,
+		 buttons: {
+		 	Ok: function() {
+			 	$(this).dialog( "close" );
+			 }
+		 }
+	});
+	 $('#ipsoftAutomationName').focusout(function(){
+	    	var automationInput = $('#ipsoftAutomationName').val();
+	    	var automationReg = /^[0-9]\d*$/;
+	        if(automationInput != '')  {
+	           // $('#automation_credentials').show(100);
+	            $('#autoGenDone').show();
+	        } else {
+	           // $('#automation_credentials').hide(100);
+	            $('#autoGenDone').hide();
+	            alert('Automation Name - reuired.');
+	        }
+	    });
+
+	    $('#workLoadProcess').focusout(function(){
+	    	var workLoadProcess = $('#workLoadProcess').val();
+	    	if(workLoadProcess != '')  {
+	            $('#autoGenDone').show();
+	        }
+	    });
+
+	    $('#workLoadLib').focusout(function(){
+	    	var workLoadLib = $('#workLoadLib').val();
+	        if(workLoadLib != '')  {
+	            $('#autoGenDone').show();
+	        }
+	    });
+
+	    $('#ipsoftAutomationNameResp').focusout(function(){
+	    	var automationInput = $('#ipsoftAutomationNameResp').val();
+	    	var automationReg = /^[0-9]\d*$/;
+	        if(automationInput != '')  {
+	           // $('#automation_credentials').show(100);
+	            $('#autoGenDoneResp').show();
+	        } else {
+	           // $('#automation_credentials').hide(100);
+	            $('#autoGenDoneResp').hide();
+	            alert('Automation Name - reuired.');
+	        }
+	    });
+
+	    $('#workLoadProcessResp').focusout(function(){
+	    	var workLoadProcess = $('#workLoadProcessResp').val();
+	    	if(workLoadProcess != '')  {
+	            $('#autoGenDoneResp').show();
+	        }
+	    });
+
+	    $('#workLoadLibResp').focusout(function(){
+	    	var workLoadLib = $('#workLoadLibResp').val();
+	        if(workLoadLib != '')  {
+	            $('#autoGenDoneResp').show();
+	        }
+	    });
+
+});
+$(document).on('click','.ui-dialog-titlebar-close',function(){
+	CKupdate();
+});
+$(document).on('change', 'input:radio[name=executeAutomation]', function(event) {
+    if ($("input[name='executeAutomation']:checked").val() == 'realTime') {
+   	 	$('#scheduleAutoContainer').hide();
+   		$('#taskContext').hide();
+    	$('#taskScript').hide();
+    	$("#jobActiveYes").prop( "checked", false );
+    }
+    if ($("input[name='executeAutomation']:checked").val() == 'scheduled') {
+    	var currApplName = $("#applNameCreate option:selected").html();
+        $('#applicationAutomation').html(currApplName);
+        $('#createTimeZone').html('');
+        $('#scheduleAutoContainer').show();
+        $('#taskContext').show();
+        $('#taskScript').show();
+        $("#jobActiveYes").prop( "checked", true );
+		//201372 - Radha M De
+		$('#createTimeZone').append('<option value="">'+'Select Time Zone'+'</option>');
+        for(var i = 0; i<timezone.length; i++){
+       	 $('#createTimeZone').append('<option value="'+timezone[i]+'">'+timezone[i]+'</option>');
+        }
+    }
+});
+
+$(document).on('change', 'input:radio[name=sopType]', function(event) {
+    if ($("input[name='sopType']:checked").val() == 'simple') {
+   	 	$('#choreoReqInfo').hide();
+   	 	$('#orchoTabContent').hide();
+   	 	$('#sopTaskTabContent').show();
+   	    $('#autoReqInfo').show();
+   	 	sopType = "S";
+   	 	$("#selectProviderValue").html('<option disabled value="" selected>Select Automation Provider</option><option value="IPSoft">IPSoft</option><option value="blueprism">Blue Prism</option><option value="IBMWorkloadAutomation">IBM Workload Automation</option><option value="Automation Simulator">Automation Simulator</option>');
+    }
+    if ($("input[name='sopType']:checked").val() == 'choreographed') {
+    	$('#choreoReqInfo').show();
+    	$('#orchoTabContent').show();
+    	$('#sopTaskTabContent').hide();
+    	$('#autoReqInfo').hide();
+    	sopType = "C";
+    	$("#selectProviderValue").html('<option value="Workflow" selected>Workflow</option>');
+    	automataJSONobj = 'Not Available';
+    	automataJSONobjRes = 'Not Available';
+    }
+});
+
+/* Modified by Sandeep Gupta Started - for fixing deselection of option dopdown items on deselection of the random values other than Every second , minute , hour etc. radio button	*/
+
+$(document).on('change', 'input:radio[name=seccron]', function(event) {
+	 if ($("input[name='seccron']:checked").val() == 'evsec'){
+		 $("#secmultiple option:selected").prop("selected", false);
+		 $("#secmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#secmultiple").removeAttr("disabled");
+	 }
+});
+$(document).on('change', 'input:radio[name=mincron]', function(event) {
+	 if ($("input[name='mincron']:checked").val() == 'evmin'){
+		 $("#minmultiple option:selected").prop("selected", false);
+		 $("#minmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#minmultiple").removeAttr("disabled");
+	 }
+});
+$(document).on('change', 'input:radio[name=hourcron]', function(event) {
+	 if ($("input[name='hourcron']:checked").val() == 'evhrs'){
+		 $("#hrsmultiple option:selected").prop("selected", false);
+		 $("#hrsmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#hrsmultiple").removeAttr("disabled");
+	 }
+});
+$(document).on('change', 'input:radio[name=daycron]', function(event) {
+	 if ($("input[name='daycron']:checked").val() == 'evday'){
+		 $("#daymultiple option:selected").prop("selected", false);
+		 $("#daymultiple").attr("disabled","disabled");
+	 }else{
+		 $("#daymultiple").removeAttr("disabled");
+	 }
+});
+$(document).on('change', 'input:radio[name=monthcron]', function(event) {
+	 if ($("input[name='monthcron']:checked").val() == 'evmon'){
+		 $("#monthmultiple option:selected").prop("selected", false);
+		 $("#monthmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#monthmultiple").removeAttr("disabled");
+	 }
+});
+$(document).on('change', 'input:radio[name=weekcron]', function(event) {
+	 if ($("input[name='weekcron']:checked").val() == 'evwkd'){
+		 $("#weekmultiple option:selected").prop("selected", false);
+		 $("#weekmultiple").attr("disabled","disabled");
+	 }else{
+		 $("#weekmultiple").removeAttr("disabled");
+	 }
+});
+$(document).on('click', '#daymultiple', function(event) {
+	$('#daymultiple :selected').each(function(i, selected){
+		var selectedDayVal = $(selected).text();
+		if(selectedDayVal >= 29){
+			$("#monthmultiple option[value='1']").attr('disabled', 'disabled' );
+		}else{
+			$("#monthmultiple option[value='1']").removeAttr('disabled');
+		}
+	});
+});
+
+$(document).on('click', '#alertTabSet', function(event) {
+	console.log('clicked - 1');
+	$(".tab-content > div:nth-child(1)").addClass("active");
+	$(".tab-content > div:nth-child(2)").removeClass("active");
+	$(".tab-content > div:nth-child(3)").removeClass("active");
+	$(".tab-content > div:nth-child(4)").removeClass("active");
+});
+$(document).on('click', '#sopTabSet', function(event) {
+	console.log('clicked - 2');
+	$(".tab-content > div:nth-child(1)").removeClass("active");
+	$(".tab-content > div:nth-child(2)").addClass("active");
+	$(".tab-content > div:nth-child(3)").removeClass("active");
+	$(".tab-content > div:nth-child(4)").removeClass("active");
+});
+$(document).on('click', '#taskTabSet', function(event) {
+	console.log('clicked - 3');
+	$(".tab-content > div:nth-child(1)").removeClass("active");
+	$(".tab-content > div:nth-child(2)").removeClass("active");
+	$(".tab-content > div:nth-child(3)").addClass("active");
+	$(".tab-content > div:nth-child(4)").removeClass("active");
+});
+
+$(document).on('click', '#sopBpmnTabSet', function(event) {
+	console.log('clicked - 4');
+	$(".tab-content > div:nth-child(1)").removeClass("active");
+	$(".tab-content > div:nth-child(2)").removeClass("active");
+	$(".tab-content > div:nth-child(3)").removeClass("active");
+	$(".tab-content > div:nth-child(4)").addClass("active");
+});
+
+$(document).on('click', '#openBpmnTool', function(event) {
+	//alert(document.createSOPForm.sopBpmnDataId.value);
+	//window.open("http://localhost:3000/bpmn/", "myWindow", "width=800,height=600");
+	openPopUpWindow(document.createSOPForm.workflowName,document.createSOPForm.sopBpmnData);
+});
+function openPopUpWindow(workflowName,sopBpmnData){
+	var w = window.open('http://localhost:3000/bpmn/','_blank','width=800,height=600,scrollbars=1');
+	// pass the targetField to the pop up window
+	w.workflowName = workflowName;
+	w.sopBpmnData = sopBpmnData;
+	w.focus();
+}
+// this function is called by the pop up window
+function setSearchResult(targetField, returnValue){
+	var uri_dec = decodeURIComponent(returnValue);
+	targetField.value = uri_dec;
+	window.focus();
+}
+
+
+
+/* Modified by Sandeep Gupta Ended - for fixing deselection of option dopdown items on deselection of the random values other than Every second , minute , hour etc. radio button	*/
+
+
+$(document).on('change', '#applNameCreate', function(event) {
+	 var applName = $("#applNameCreate option:selected").html();
+	 $('#applicationAutomation').html(applName);
+});
+
+//CKEDITOR.replace('editor');
+
+//timer = setInterval(updateDiv,100);
+var paramP = 1;
+var paramPm = 2;
+function addParamDom(){
+	if(paramP <= 20){
+		var domResult = '<div><div class="col-sm-4"><input class="form-control" type="text" ng-model="createsop.sopparamName'+paramP+'" id="paramName'+paramP+'" placeholder="Enter Parameter"  /></div><div class="col-sm-3" id="addSubParam'+paramP+'"><input class="form-control" type="text" ng-model="createsop.sopparamVal'+paramP+'" id="paramval'+paramP+'" placeholder="Enter Parameter Value"  /></div><span style="display:none;" onclick="addSubparam(\'addSubParam'+paramP+'\');" class="col-sm-5 glyphicon glyphicon-plus-sign"></span></div><br /><br />';
+		$('#autoParamContainer').append(domResult);
+		paramP = paramP + 1;
+	}else{
+		alert('Maximum 6 parameters are allowed.');
+		return false;
+	}
+}
+function addSubparam(id){
+	var domResultParam = '<br /><input class="form-control" type="text" ng-model="createsop.sopparamVal'+paramPm+'" id="paramval'+paramPm+'" placeholder="Enter Parameter Value"  />';
+	$('#'+id).append(domResultParam);
+	paramPm = paramPm + 1;
+}
+function addParamDomResp(){
+	if(paramP <= 6){
+		var domResult = '<div><div class="col-sm-4"><input class="form-control" type="text" ng-model="createsop.sopparamNameRes'+paramP+'" id="paramNameRes'+paramP+'" placeholder="Enter Parameter"  /></div><div class="col-sm-3" id="addSubParamRes'+paramP+'"><input class="form-control" type="text" ng-model="createsop.sopparamValRes'+paramP+'" id="paramvalRes'+paramP+'" placeholder="Enter Parameter Value"  /></div><span style="display:none;" onclick="addSubparamResp(\'addSubParamRes'+paramP+'\');" class="col-sm-5 glyphicon glyphicon-plus-sign"></span></div><br /><br />';
+		$('#autoParamContainerResp').append(domResult);
+		paramP = paramP + 1;
+	}else{
+		alert('Maximum 6 parameters are allowed.');
+		return false;
+	}
+}
+function addSubparamResp(id){
+	var domResultParam = '<br /><input class="form-control" type="text" ng-model="createsop.sopparamValRes'+paramPm+'" id="paramvalRes'+paramPm+'" placeholder="Enter Parameter Value"  />';
+	$('#'+id).append(domResultParam);
+	paramPm = paramPm + 1;
+}
+var rowVal = 1;
+function createAutoJSON(){
+	var ipsoftAutomationName = $('#ipsoftAutomationName').val();
+	var ipsoftAutomationPath = $('#ipsoftAutomationPath').val();
+	var ipsoftautomationDescription = $('#ipsoftautomationDescription').val();
+	var ipsoftOSType = $('#ipsoftOSType option:selected').val();
+	var ipsoftSeverity = $('#ipsoftSeverity option:selected').val();
+	var ipsoftAssGroup = $('#ipsoftAssGroup').val();
+	var ipsoftTargetHost = $('#ipsoftTargetHost').val();
+	//var ipsoftTimeOut = $('#ipsoftTimeOut').val();
+	var automationParam1 = $('#paramName1').val();
+	var automationParam2 = $('#paramName2').val();
+	var automationParam3 = $('#paramName3').val();
+	var automationParam4 = $('#paramName4').val();
+	var automationParam5 = $('#paramName5').val();
+	var automationParam6 = $('#paramName6').val();
+	var automationParam7 = $('#paramName7').val();
+	var automationParam8 = $('#paramName8').val();
+	var automationParam9 = $('#paramName9').val();
+	var automationParam10 = $('#paramName10').val();
+	var automationParam11 = $('#paramName11').val();
+	var automationParam12 = $('#paramName12').val();
+	var automationParam13 = $('#paramName13').val();
+	var automationParam14 = $('#paramName14').val();
+	var automationParam15 = $('#paramName15').val();
+	var automationParam16 = $('#paramName16').val();
+	var automationParam17 = $('#paramName17').val();
+	var automationParam18 = $('#paramName18').val();
+	var automationParamVal1 = $('#paramval1').val();
+	var automationParamVal2 = $('#paramval2').val();
+	var automationParamVal3 = $('#paramval3').val();
+	var automationParamVal4 = $('#paramval4').val();
+	var automationParamVal5 = $('#paramval5').val();
+	var automationParamVal6 = $('#paramval6').val();
+	var automationParamVal7 = $('#paramval7').val();
+	var automationParamVal8 = $('#paramval8').val();
+	var automationParamVal9 = $('#paramval9').val();
+	var automationParamVal10 = $('#paramval10').val();
+	var automationParamVal11 = $('#paramval11').val();
+	var automationParamVal12 = $('#paramval12').val();
+	var automationParamVal13 = $('#paramval13').val();
+	var automationParamVal14 = $('#paramval14').val();
+	var automationParamVal15 = $('#paramval15').val();
+	var automationParamVal16 = $('#paramval16').val();
+	var automationParamVal17 = $('#paramval17').val();
+	var automationParamVal18 = $('#paramval18').val();
+	var ipSoftObj = {
+			"automationName" : ipsoftAutomationName,
+			"automationPath" : ipsoftAutomationPath,
+			"automationDesc" :  ipsoftautomationDescription,
+			"osType" : ipsoftOSType,
+			"severity" : ipsoftSeverity,
+			"assignedGroup" : ipsoftAssGroup,
+			"targetHost" : ipsoftTargetHost
+		};
+		for(var i = 1; i <= 100; i++ ){
+			var automationParam =  $('#paramName'+i).val();
+	    	var automationParamVal = $('#paramval'+i).val();
+	    	if(typeof(automationParam) != 'undefined' || automationParam != null){
+	    		ipSoftObj[automationParam] = automationParamVal ;
+	    	}
+		}
+	console.log("ipsoftParamObj: "+ipSoftObj );
+	var dashloop1= dashloop2=dashloop3=dashloop4=dashloop5=dashloop6=dashloop7=dashloop8=dashloop9=dashloop10=dashloop11=dashloop12=dashloop13=dashloop14=dashloop15=dashloop16=dashloop17=dashloop18='</span><span style="float:left; width:400px;">';
+
+	if(ipsoftAutomationName !='' && ipsoftTargetHost !=''){
+		if(typeof(automationParam1) == 'undefined' || automationParam1 == null){
+			automationParam1 = '';
+			dashloop1= '';
+		}
+		if(typeof(automationParam2) == 'undefined' || automationParam2 == null){
+			automationParam2 = '';
+			dashloop2= '';
+		}
+		if(typeof(automationParam3) == 'undefined' || automationParam3 == null){
+			automationParam3 = '';
+			dashloop3= '';
+		}
+		if(typeof(automationParam4) == 'undefined' || automationParam4 == null){
+			automationParam4 = '';
+			dashloop4= '';
+		}
+		if(typeof(automationParam5) == 'undefined' || automationParam5 == null){
+			automationParam5 = '';
+			dashloop5= '';
+		}
+		if(typeof(automationParam6) == 'undefined' || automationParam6 == null){
+			automationParam6 = '';
+			dashloop6= '';
+		}
+		if(typeof(automationParam7) == 'undefined' || automationParam7 == null){
+			automationParam7 = '';
+			dashloop7= '';
+		}
+		if(typeof(automationParam8) == 'undefined' || automationParam8 == null){
+			automationParam8 = '';
+			dashloop8= '';
+		}
+		if(typeof(automationParam9) == 'undefined' || automationParam9 == null){
+			automationParam9 = '';
+			dashloop9= '';
+		}
+		if(typeof(automationParam10) == 'undefined' || automationParam10 == null){
+			automationParam10 = '';
+			dashloop10= '';
+		}
+		if(typeof(automationParam11) == 'undefined' || automationParam11 == null){
+			automationParam11 = '';
+			dashloop11= '';
+		}
+		if(typeof(automationParam12) == 'undefined' || automationParam12 == null){
+			automationParam12 = '';
+			dashloop12= '';
+		}
+		if(typeof(automationParam13) == 'undefined' || automationParam13 == null){
+			automationParam13 = '';
+			dashloop13= '';
+		}
+		if(typeof(automationParam14) == 'undefined' || automationParam14 == null){
+			automationParam14 = '';
+			dashloop14= '';
+		}
+		if(typeof(automationParam15) == 'undefined' || automationParam15 == null){
+			automationParam15 = '';
+			dashloop15= '';
+		}
+		if(typeof(automationParam16) == 'undefined' || automationParam16 == null){
+			automationParam16 = '';
+			dashloop16= '';
+		}
+		if(typeof(automationParam17) == 'undefined' || automationParam17 == null){
+			automationParam17 = '';
+			dashloop17= '';
+		}
+		if(typeof(automationParam18) == 'undefined' || automationParam18 == null){
+			automationParam18 = '';
+			dashloop18= '';
+		}
+		if(typeof(automationParamVal1) == 'undefined' || automationParamVal1 == null){
+			automationParamVal1 = '';
+		}
+		if(typeof(automationParamVal2) == 'undefined' || automationParamVal2 == null){
+			automationParamVal2 = '';
+		}
+		if(typeof(automationParamVal3) == 'undefined' || automationParamVal3 == null){
+			automationParamVal3 = '';
+		}
+		if(typeof(automationParamVal4) == 'undefined' || automationParamVal4 == null){
+			automationParamVal4 = '';
+		}
+		if(typeof(automationParamVal5) == 'undefined' || automationParamVal5 == null){
+			automationParamVal5 = '';
+		}
+		if(typeof(automationParamVal6) == 'undefined' || automationParamVal6 == null){
+			automationParamVal6 = '';
+		}
+		if(typeof(automationParamVal7) == 'undefined' || automationParamVal7 == null){
+			automationParamVal7 = '';
+		}
+		if(typeof(automationParamVal8) == 'undefined' || automationParamVal8 == null){
+			automationParamVal8 = '';
+		}
+		if(typeof(automationParamVal9) == 'undefined' || automationParamVal9 == null){
+			automationParamVal9 = '';
+		}
+		if(typeof(automationParamVal10) == 'undefined' || automationParamVal10 == null){
+			automationParamVal10 = '';
+		}
+		if(typeof(automationParamVal11) == 'undefined' || automationParamVal11 == null){
+			automationParamVal11 = '';
+		}
+		if(typeof(automationParamVal612) == 'undefined' || automationParamVal12 == null){
+			automationParamVal12 = '';
+		}
+		if(typeof(automationParamVal13) == 'undefined' || automationParamVal13 == null){
+			automationParamVal13 = '';
+		}
+		if(typeof(automationParamVal14) == 'undefined' || automationParamVal14 == null){
+			automationParamVal14 = '';
+		}
+		if(typeof(automationParamVal15) == 'undefined' || automationParamVal15 == null){
+			automationParamVal15 = '';
+		}
+		if(typeof(automationParamVal16) == 'undefined' || automationParamVal16 == null){
+			automationParamVal16 = '';
+		}
+		if(typeof(automationParamVal17) == 'undefined' || automationParamVal17 == null){
+			automationParamVal17 = '';
+		}
+		if(typeof(automationParamVal18) == 'undefined' || automationParamVal18 == null){
+			automationParamVal18 = '';
+		}
+
+		$('#autoParamContainer').html('');
+		if(automationParam1 != ''){
+			console.log("param value: "+automationParamVal10);
+			var paramListDom = '<tr id="paramrowId'+rowVal+'"><td style="visibility:hidden;">'+rowVal+'</td><td><span style="float:left; width:200px;">'+automationParam1 +dashloop1+ automationParamVal1+'</span><span style="float:left; width:200px;">'+automationParam2 +dashloop2+ automationParamVal2+'</span><span style="float:left; width:200px;">'+automationParam3 +dashloop3+ automationParamVal3+'</span><span style="float:left; width:200px;">'+automationParam4 +dashloop4+ automationParamVal4+'</span><span style="float:left; width:200px;">'+automationParam5 +dashloop5+ automationParamVal5+'</span><span style="float:left; width:200px;">'+automationParam6 +dashloop6+ automationParamVal6+'</span><span style="float:left; width:200px;">'+automationParam7 +dashloop7+ automationParamVal7+'</span><span style="float:left; width:200px;">'+automationParam8 +dashloop8+ automationParamVal8+'</span><span style="float:left; width:200px;">'+automationParam9 +dashloop9+ automationParamVal9+'</span><span style="float:left; width:200px;">'+automationParam10 +dashloop10+ automationParamVal10+'</span><span style="float:left; width:200px;">'+automationParam11 +dashloop11+ automationParamVal11+'</span><span style="float:left; width:200px;">'+automationParam12 +dashloop12+ automationParamVal12+'</span><span style="float:left; width:200px;">'+automationParam13 +dashloop13+ automationParamVal13+'</span><span style="float:left; width:200px;">'+automationParam14 +dashloop14+ automationParamVal14+'</span><span style="float:left; width:200px;">'+automationParam15 +dashloop15+ automationParamVal15+'</span><span style="float:left; width:200px;">'+automationParam16 +dashloop16+ automationParamVal16+'</span><span style="float:left; width:200px;">'+automationParam17 +dashloop17+ automationParamVal17+'</span><span style="float:left; width:200px;">'+automationParam18 +dashloop18+ automationParamVal18+'</span><td><a class="deleteParam" title="Delete Parameter" onclick="removeParamCreate(\''+(rowVal)+'\');" href="javascript:void(0)"><span class="glyphicon glyphicon-remove-sign"></span></td></tr>';
+			$('#paramList').append(paramListDom);
+			rowVal = rowVal +1;
+			$('#appParamTable').show();
+			ipsoftAutomationInput.push(ipSoftObj);
+			/*for (var i = 0; i < ipsoftAutomationInput.length; i++) {
+			    delete ipsoftAutomationInput[i].nullparam;
+			}*/
+
+			paramP = 1;
+		}else{
+			var r = confirm("Are you sure to create Automation Request without Parameter Set.");
+		    if (r == true) {
+		    	ipsoftAutomationInput.push(ipSoftObj);
+		    	paramP = 1;
+		    } else {
+		       return false;
+		    }
+		}
+		console.log(ipsoftAutomationInput);
+	}else{
+		alert('Please enter all required feilds.');
+	}
+}
+
+function createAutoJSONResp(){
+	var ipsoftAutomationName = $('#ipsoftAutomationNameResp').val();
+	var ipsoftAutomationPath = $('#ipsoftAutomationPathResp').val();
+	var ipsoftautomationDescription = $('#ipsoftautomationDescriptionResp').val();
+	var ipsoftOSType = $('#ipsoftOSTypeResp option:selected').val();
+	var ipsoftSeverity = $('#ipsoftSeverityResp option:selected').val();
+	var ipsoftAssGroup = $('#ipsoftAssGroupResp').val();
+	var ipsoftTargetHost = $('#ipsoftTargetHostResp').val();
+	//var ipsoftTimeOut = $('#ipsoftTimeOut').val();
+	var automationParam1 = $('#paramNameRes1').val();
+	var automationParam2 = $('#paramNameRes2').val();
+	var automationParam3 = $('#paramNameRes3').val();
+	var automationParam4 = $('#paramNameRes4').val();
+	var automationParam5 = $('#paramNameRes5').val();
+	var automationParam6 = $('#paramNameRes6').val();
+	var automationParamVal1 = $('#paramvalRes1').val();
+	var automationParamVal2 = $('#paramvalRes2').val();
+	var automationParamVal3 = $('#paramvalRes3').val();
+	var automationParamVal4 = $('#paramvalRes4').val();
+	var automationParamVal5 = $('#paramvalRes5').val();
+	var automationParamVal6 = $('#paramvalRes6').val();
+	var ipSoftObjResp = {
+			"automationName" : ipsoftAutomationName,
+			"automationPath" : ipsoftAutomationPath,
+			"automationDesc" :  ipsoftautomationDescription,
+			"osType" : ipsoftOSType,
+			"severity" : ipsoftSeverity,
+			"assignedGroup" : ipsoftAssGroup,
+			"targetHost" : ipsoftTargetHost
+		};
+		for(var i = 1; i <= 6; i++ ){
+			var automationParam =  $('#paramNameRes'+i).val();
+	    	var automationParamVal = $('#paramvalRes'+i).val();
+	    	if(typeof(automationParam) != 'undefined' || automationParam != null){
+	    		ipSoftObjResp[automationParam] = automationParamVal ;
+	    	}
+		}
+	console.log("ipsoftParamObj: "+ipSoftObjResp );
+	var dashloop1= dashloop2=dashloop3=dashloop4=dashloop5=dashloop6='</span><span style="float:left; width:400px;">';
+
+	if(ipsoftAutomationName !='' && ipsoftTargetHost !=''){
+		if(typeof(automationParam1) == 'undefined' || automationParam1 == null){
+			automationParam1 = '';
+			dashloop1= '';
+		}
+		if(typeof(automationParam2) == 'undefined' || automationParam2 == null){
+			automationParam2 = '';
+			dashloop2= '';
+		}
+		if(typeof(automationParam3) == 'undefined' || automationParam3 == null){
+			automationParam3 = '';
+			dashloop3= '';
+		}
+		if(typeof(automationParam4) == 'undefined' || automationParam4 == null){
+			automationParam4 = '';
+			dashloop4= '';
+		}
+		if(typeof(automationParam5) == 'undefined' || automationParam5 == null){
+			automationParam5 = '';
+			dashloop5= '';
+		}
+		if(typeof(automationParam6) == 'undefined' || automationParam6 == null){
+			automationParam6 = '';
+			dashloop6= '';
+		}
+		if(typeof(automationParamVal1) == 'undefined' || automationParamVal1 == null){
+			automationParamVal1 = '';
+		}
+		if(typeof(automationParamVal2) == 'undefined' || automationParamVal2 == null){
+			automationParamVal2 = '';
+		}
+		if(typeof(automationParamVal3) == 'undefined' || automationParamVal3 == null){
+			automationParamVal3 = '';
+		}
+		if(typeof(automationParamVal4) == 'undefined' || automationParamVal4 == null){
+			automationParamVal4 = '';
+		}
+		if(typeof(automationParamVal5) == 'undefined' || automationParamVal5 == null){
+			automationParamVal5 = '';
+		}
+		if(typeof(automationParamVal6) == 'undefined' || automationParamVal6 == null){
+			automationParamVal6 = '';
+		}
+
+
+		$('#autoParamContainerResp').html('');
+		if(automationParam1 != ''){
+			var paramListDom = '<tr id="paramrowIdRes'+rowVal+'"><td>'+rowVal+'</td><td><span style="float:left; width:200px;">'+automationParam1 +dashloop1+ automationParamVal1+'</span><span style="float:left; width:200px;">'+automationParam2 +dashloop2+ automationParamVal2+'</span><span style="float:left; width:200px;">'+automationParam3 +dashloop3+ automationParamVal3+'</span><span style="float:left; width:200px;">'+automationParam4 +dashloop4+ automationParamVal4+'</span><span style="float:left; width:200px;">'+automationParam5 +dashloop5+ automationParamVal5+'</span><span style="float:left; width:200px;">'+automationParam6 +dashloop6+ automationParamVal6+'</span></td><td><a class="deleteParam" title="Delete Parameter" onclick="removeParamCreateRes(\''+(rowVal)+'\');" href="javascript:void(0)"><span class="glyphicon glyphicon-remove-sign"></span></td></tr>';
+			$('#paramListRes').append(paramListDom);
+			rowVal = rowVal +1;
+			$('#appParamTableRes').show();
+			ipsoftAutomationResInput.push(ipSoftObjResp);
+			/*for (var i = 0; i < ipsoftAutomationInput.length; i++) {
+			    delete ipsoftAutomationInput[i].nullparam;
+			}*/
+
+			paramP = 1;
+		}else{
+			var r = confirm("Are you sure to create Automation Request without Parameter Set.");
+		    if (r == true) {
+		    	ipsoftAutomationResInput.push(ipSoftObjResp);
+		    	paramP = 1;
+		    } else {
+		       return false;
+		    }
+		}
+		console.log(ipsoftAutomationResInput);
+	}else{
+		alert('Please enter all required feilds.');
+	}
+}
+function removeParamCreate(rowVal){
+	var confirmParamDelete = confirm("This Parameter Set will be permanently deleted and cannot be recovered. Are you sure?");
+    if (confirmParamDelete == true) {
+		$('#paramrowId'+rowVal).remove();
+		ipsoftAutomationInput.splice(rowVal - 1,1);
+		console.log(ipsoftAutomationInput);
+    }
+}
+function removeParamCreateRes(rowVal){
+	var confirmParamDelete = confirm("This Parameter Set will be permanently deleted and cannot be recovered. Are you sure?");
+    if (confirmParamDelete == true) {
+		$('#paramrowIdRes'+rowVal).remove();
+		ipsoftAutomationResInput.splice(rowVal - 1,1);
+		console.log(ipsoftAutomationResInput);
+    }
+}
+
+
+/*Code for BluePrism Start Here*/
+
+function addParamDomB(){
+	if(paramP <= 6){
+		var domResult = '<div><div class="col-sm-4"><input class="form-control" type="text" ng-model="createsop.sopparamName'+paramP+'" id="paramNameB'+paramP+'" placeholder="Enter Parameter"  /></div><div class="col-sm-4" id="addSubParamB'+paramP+'"><input class="form-control" type="text" ng-model="createsop.sopparamVal'+paramP+'" id="paramvalB'+paramP+'" placeholder="Enter Parameter Value"  /></div><span style="display:none;" onclick="addSubparamB(\'addSubParamB'+paramP+'\');" class="col-sm-5 glyphicon glyphicon-plus-sign"></span></div><br /><br />';
+		$('#autoParamContainerB').append(domResult);
+		paramP = paramP + 1;
+	}else{
+		alert('Maximum 6 parameters are allowed.');
+		return false;
+	}
+}
+function addParamDomRespB(){
+	if(paramP <= 6){
+		var domResult = '<div><div class="col-sm-4"><input class="form-control" type="text" ng-model="createsop.sopparamName'+paramP+'" id="paramNameRespB'+paramP+'" placeholder="Enter Parameter"  /></div><div class="col-sm-4" id="addSubParamRespB'+paramP+'"><input class="form-control" type="text" ng-model="createsop.sopparamValResp'+paramP+'" id="paramvalRespB'+paramP+'" placeholder="Enter Parameter Value"  /></div><span style="display:none;" onclick="addSubparamRespB(\'addSubParamRespB'+paramP+'\');" class="col-sm-5 glyphicon glyphicon-plus-sign"></span></div><br /><br />';
+		$('#autoParamContainerRespB').append(domResult);
+		paramP = paramP + 1;
+	}else{
+		alert('Maximum 6 parameters are allowed.');
+		return false;
+	}
+}
+function addSubparamRespB(id){
+	var domResultParam = '<br /><input class="form-control" type="text" ng-model="createsop.sopparamRespVal'+paramPm+'" id="paramvalRespB'+paramPm+'" placeholder="Enter Parameter Value"  />';
+	$('#'+id).append(domResultParam);
+	paramPm = paramPm + 1;
+}
+
+function createAutoJSONRespB(){
+	var blueprismProcessName = $('#blueprismProcessNameResp').val();
+	var automationParam1 = $('#paramNameRespB1').val();
+	var automationParam2 = $('#paramNameRespB2').val();
+	var automationParam3 = $('#paramNameRespB3').val();
+	var automationParam4 = $('#paramNameRespB4').val();
+	var automationParam5 = $('#paramNameRespB5').val();
+	var automationParam6 = $('#paramNameRespB6').val();
+	var automationParamVal1 = $('#paramvalRespB1').val();
+	var automationParamVal2 = $('#paramvalRespB2').val();
+	var automationParamVal3 = $('#paramvalRespB3').val();
+	var automationParamVal4 = $('#paramvalRespB4').val();
+	var automationParamVal5 = $('#paramvalRespB5').val();
+	var automationParamVal6 = $('#paramvalRespB6').val();
+
+	var ipSoftObjResp = {
+			"processName" : blueprismProcessName
+		};
+		for(var i = 1; i <= 6; i++ ){
+			var automationParam =  $('#paramNameRespB'+i).val();
+	    	var automationParamVal = $('#paramvalRespB'+i).val();
+	    	if(typeof(automationParam) != 'undefined' || automationParam != null){
+	    		ipSoftObjResp[automationParam] = automationParamVal ;
+	    	}
+		}
+	console.log("ipsoftParamObj: "+ipSoftObjResp );
+	var dashloop1= dashloop2=dashloop3=dashloop4=dashloop5=dashloop6='</span><span style="float:left; width:360px;">';
+
+	if(typeof(automationParam1) == 'undefined' || automationParam1 == null){
+		automationParam1 = '';
+		dashloop1= '';
+	}
+	if(typeof(automationParam2) == 'undefined' || automationParam2 == null){
+		automationParam2 = '';
+		dashloop2= '';
+	}
+	if(typeof(automationParam3) == 'undefined' || automationParam3 == null){
+		automationParam3 = '';
+		dashloop3= '';
+	}
+	if(typeof(automationParam4) == 'undefined' || automationParam4 == null){
+		automationParam4 = '';
+		dashloop4= '';
+	}
+	if(typeof(automationParam5) == 'undefined' || automationParam5 == null){
+		automationParam5 = '';
+		dashloop5= '';
+	}
+	if(typeof(automationParam6) == 'undefined' || automationParam6 == null){
+		automationParam6 = '';
+		dashloop6= '';
+	}
+	if(typeof(automationParamVal1) == 'undefined' || automationParamVal1 == null){
+		automationParamVal1 = '';
+	}
+	if(typeof(automationParamVal2) == 'undefined' || automationParamVal2 == null){
+		automationParamVal2 = '';
+	}
+	if(typeof(automationParamVal3) == 'undefined' || automationParamVal3 == null){
+		automationParamVal3 = '';
+	}
+	if(typeof(automationParamVal4) == 'undefined' || automationParamVal4 == null){
+		automationParamVal4 = '';
+	}
+	if(typeof(automationParamVal5) == 'undefined' || automationParamVal5 == null){
+		automationParamVal5 = '';
+	}
+	if(typeof(automationParamVal6) == 'undefined' || automationParamVal6 == null){
+		automationParamVal6 = '';
+	}
+
+		$('#autoParamContainerRespB').html('');
+		if(automationParam1 != ''){
+			var paramListDom = '<tr id="paramrowRespId'+rowVal+'"><td>'+rowVal+'</td><td><span style="float:left; width:200px;">'+automationParam1 +dashloop1+ automationParamVal1+'</span><span style="float:left; width:200px;">'+automationParam2 +dashloop2+ automationParamVal2+'</span><span style="float:left; width:200px;">'+automationParam3 +dashloop3+ automationParamVal3+'</span><span style="float:left; width:200px;">'+automationParam4 +dashloop4+ automationParamVal4+'</span><span style="float:left; width:200px;">'+automationParam5 +dashloop5+ automationParamVal5+'</span><span style="float:left; width:200px;">'+automationParam6 +dashloop6+ automationParamVal6+'</span></td><td><a class="deleteParam" title="Delete Parameter" onclick="removeParamCreateResB(\''+(rowVal)+'\');" href="javascript:void(0)"><span class="glyphicon glyphicon-remove-sign"></span></td></tr>';
+			$('#paramListBResp').append(paramListDom);
+			rowVal = rowVal +1;
+			$('#appParamTableBResp').show();
+			ipsoftAutomationResInput.push(ipSoftObjResp);
+			$('#autoGenDoneResp').show();
+			/*for (var i = 0; i < ipsoftAutomationInput.length; i++) {
+			    delete ipsoftAutomationInput[i].nullparam;
+			}*/
+
+			paramP = 1;
+		}else{
+			var r = confirm("Are you sure to create IPSoft Automation Request without Parameter Set.");
+		    if (r == true) {
+		    	ipsoftAutomationResInput.push(ipSoftObjResp);
+		    	paramP = 1;
+		    } else {
+		       return false;
+		    }
+		}
+		console.log(ipsoftAutomationResInput);
+
+}
+function createAutoJSONB(){
+	var blueprismProcessName = $('#blueprismProcessName').val();
+	var automationParam1 = $('#paramNameB1').val();
+	var automationParam2 = $('#paramNameB2').val();
+	var automationParam3 = $('#paramNameB3').val();
+	var automationParam4 = $('#paramNameB4').val();
+	var automationParam5 = $('#paramNameB5').val();
+	var automationParam6 = $('#paramNameB6').val();
+	var automationParamVal1 = $('#paramvalB1').val();
+	var automationParamVal2 = $('#paramvalB2').val();
+	var automationParamVal3 = $('#paramvalB3').val();
+	var automationParamVal4 = $('#paramvalB4').val();
+	var automationParamVal5 = $('#paramvalB5').val();
+	var automationParamVal6 = $('#paramvalB6').val();
+
+	var ipSoftObj = {
+			"processName" : blueprismProcessName
+		};
+		for(var i = 1; i <= 6; i++ ){
+			var automationParam =  $('#paramNameB'+i).val();
+	    	var automationParamVal = $('#paramvalB'+i).val();
+	    	if(typeof(automationParam) != 'undefined' || automationParam != null){
+	    		ipSoftObj[automationParam] = automationParamVal ;
+	    	}
+		}
+	console.log("ipsoftParamObj: "+ipSoftObj );
+	var dashloop1= dashloop2=dashloop3=dashloop4=dashloop5=dashloop6='</span><span style="float:left; width:360px;">';
+
+	if(typeof(automationParam1) == 'undefined' || automationParam1 == null){
+		automationParam1 = '';
+		dashloop1= '';
+	}
+	if(typeof(automationParam2) == 'undefined' || automationParam2 == null){
+		automationParam2 = '';
+		dashloop2= '';
+	}
+	if(typeof(automationParam3) == 'undefined' || automationParam3 == null){
+		automationParam3 = '';
+		dashloop3= '';
+	}
+	if(typeof(automationParam4) == 'undefined' || automationParam4 == null){
+		automationParam4 = '';
+		dashloop4= '';
+	}
+	if(typeof(automationParam5) == 'undefined' || automationParam5 == null){
+		automationParam5 = '';
+		dashloop5= '';
+	}
+	if(typeof(automationParam6) == 'undefined' || automationParam6 == null){
+		automationParam6 = '';
+		dashloop6= '';
+	}
+	if(typeof(automationParamVal1) == 'undefined' || automationParamVal1 == null){
+		automationParamVal1 = '';
+	}
+	if(typeof(automationParamVal2) == 'undefined' || automationParamVal2 == null){
+		automationParamVal2 = '';
+	}
+	if(typeof(automationParamVal3) == 'undefined' || automationParamVal3 == null){
+		automationParamVal3 = '';
+	}
+	if(typeof(automationParamVal4) == 'undefined' || automationParamVal4 == null){
+		automationParamVal4 = '';
+	}
+	if(typeof(automationParamVal5) == 'undefined' || automationParamVal5 == null){
+		automationParamVal5 = '';
+	}
+	if(typeof(automationParamVal6) == 'undefined' || automationParamVal6 == null){
+		automationParamVal6 = '';
+	}
+
+		$('#autoParamContainerB').html('');
+		if(automationParam1 != ''){
+			var paramListDom = '<tr id="paramrowId'+rowVal+'"><td style="visibility:hidden;">'+rowVal+'</td><td><span style="float:left; width:200px;">'+automationParam1 +dashloop1+ automationParamVal1+'</span><span style="float:left; width:200px;">'+automationParam2 +dashloop2+ automationParamVal2+'</span><span style="float:left; width:200px;">'+automationParam3 +dashloop3+ automationParamVal3+'</span><span style="float:left; width:200px;">'+automationParam4 +dashloop4+ automationParamVal4+'</span><span style="float:left; width:200px;">'+automationParam5 +dashloop5+ automationParamVal5+'</span><span style="float:left; width:200px;">'+automationParam6 +dashloop6+ automationParamVal6+'</span></td><td><a class="deleteParam" title="Delete Parameter" onclick="removeParamCreateB(\''+(rowVal)+'\');" href="javascript:void(0)"><span class="glyphicon glyphicon-remove-sign"></span></td></tr>';
+			$('#paramListB').append(paramListDom);
+			rowVal = rowVal +1;
+			$('#appParamTableB').show();
+			ipsoftAutomationInput.push(ipSoftObj);
+			$('#autoGenDone').show();
+			/*for (var i = 0; i < ipsoftAutomationInput.length; i++) {
+			    delete ipsoftAutomationInput[i].nullparam;
+			}*/
+
+			paramP = 1;
+		}else{
+			var r = confirm("Are you sure to create IPSoft Automation Request without Parameter Set.");
+		    if (r == true) {
+		    	ipsoftAutomationInput.push(ipSoftObj);
+		    	paramP = 1;
+		    } else {
+		       return false;
+		    }
+		}
+		console.log(ipsoftAutomationInput);
+
+}
+function removeParamCreateB(rowVal){
+	var confirmParamDelete = confirm("This Parameter Set will be permanently deleted and cannot be recovered. Are you sure?");
+    if (confirmParamDelete == true) {
+		$('#paramrowId'+rowVal).remove();
+		ipsoftAutomationInput.splice(rowVal - 1,1);
+		console.log(ipsoftAutomationInput);
+    }
+}
+function removeParamCreateResB(rowVal){
+	var confirmParamDelete = confirm("This Parameter Set will be permanently deleted and cannot be recovered. Are you sure?");
+    if (confirmParamDelete == true) {
+		$('#paramrowId'+rowVal).remove();
+		ipsoftAutomationResInput.splice(rowVal - 1,1);
+		console.log(ipsoftAutomationResInput);
+    }
+}
+/*COde for WLA add param*/
+
+function addParamDomWLA(){
+	if(paramP <= 6){
+		var domResult = '<div><div class="col-sm-4"><input class="form-control" type="text" ng-model="createsop.sopparamNameWLA'+paramP+'" id="paramNameWLA'+paramP+'" placeholder="Enter Parameter"  /></div><div class="col-sm-4" id="addSubParamWLA'+paramP+'"><input class="form-control" type="text" ng-model="createsop.sopparamValWLA'+paramP+'" id="paramvalWLA'+paramP+'" placeholder="Enter Parameter Value"  /></div></div><br /><br />';
+		$('#autoParamContainerWLA').append(domResult);
+		paramP = paramP + 1;
+	}else{
+		alert('Maximum 6 parameters are allowed.');
+		return false;
+	}
+}
+
+
+function createAutoJSONWLA(){
+	var workLoadProcess = $('#workLoadProcess').val();
+	var workLoadLib = $('#workLoadLib').val();
+	var automationParam1 = $('#paramNameWLA1').val();
+	var automationParam2 = $('#paramNameWLA2').val();
+	var automationParam3 = $('#paramNameWLA3').val();
+	var automationParam4 = $('#paramNameWLA4').val();
+	var automationParam5 = $('#paramNameWLA5').val();
+	var automationParam6 = $('#paramNameWLA6').val();
+	var automationParamVal1 = $('#paramvalWLA1').val();
+	var automationParamVal2 = $('#paramvalWLA2').val();
+	var automationParamVal3 = $('#paramvalWLA3').val();
+	var automationParamVal4 = $('#paramvalWLA4').val();
+	var automationParamVal5 = $('#paramvalWLA5').val();
+	var automationParamVal6 = $('#paramvalWLA6').val();
+	if(workLoadLib != '' && workLoadProcess != '')  {
+        $('#autoGenDone').show();
+		wlaJSONobj = {
+			   "LibraryName": workLoadLib,
+               "ProcessName": workLoadProcess
+		};
+		for(var i = 1; i <= 6; i++ ){
+			var automationParam =  $('#paramNameWLA'+i).val();
+	    	var automationParamVal = $('#paramvalWLA'+i).val();
+	    	if(typeof(automationParam) != 'undefined' || automationParam != null){
+	    		wlaJSONobj[automationParam] = automationParamVal ;
+	    	}
+		}
+	}
+	console.log("wlaJSONobj: "+wlaJSONobj );
+	var dashloop1= dashloop2=dashloop3=dashloop4=dashloop5=dashloop6='</span><span style="float:left; width:400px;">';
+	if(typeof(automationParam1) == 'undefined' || automationParam1 == null){
+		automationParam1 = '';
+		dashloop1= '';
+	}
+	if(typeof(automationParam2) == 'undefined' || automationParam2 == null){
+		automationParam2 = '';
+		dashloop2= '';
+	}
+	if(typeof(automationParam3) == 'undefined' || automationParam3 == null){
+		automationParam3 = '';
+		dashloop3= '';
+	}
+	if(typeof(automationParam4) == 'undefined' || automationParam4 == null){
+		automationParam4 = '';
+		dashloop4= '';
+	}
+	if(typeof(automationParam5) == 'undefined' || automationParam5 == null){
+		automationParam5 = '';
+		dashloop5= '';
+	}
+	if(typeof(automationParam6) == 'undefined' || automationParam6 == null){
+		automationParam6 = '';
+		dashloop6= '';
+	}
+	if(typeof(automationParamVal1) == 'undefined' || automationParamVal1 == null){
+		automationParamVal1 = '';
+	}
+	if(typeof(automationParamVal2) == 'undefined' || automationParamVal2 == null){
+		automationParamVal2 = '';
+	}
+	if(typeof(automationParamVal3) == 'undefined' || automationParamVal3 == null){
+		automationParamVal3 = '';
+	}
+	if(typeof(automationParamVal4) == 'undefined' || automationParamVal4 == null){
+		automationParamVal4 = '';
+	}
+	if(typeof(automationParamVal5) == 'undefined' || automationParamVal5 == null){
+		automationParamVal5 = '';
+	}
+	if(typeof(automationParamVal6) == 'undefined' || automationParamVal6 == null){
+		automationParamVal6 = '';
+	}
+	$('#autoParamContainerWLA').html('');
+	if(automationParam1 != ''){
+		var paramListDom = '<tr id="paramrowId'+rowVal+'"><td style="visibility:hidden;">'+rowVal+'</td><td><span style="float:left; width:200px;">'+automationParam1 +dashloop1+ automationParamVal1+'</span><span style="float:left; width:200px;">'+automationParam2 +dashloop2+ automationParamVal2+'</span><span style="float:left; width:200px;">'+automationParam3 +dashloop3+ automationParamVal3+'</span><span style="float:left; width:200px;">'+automationParam4 +dashloop4+ automationParamVal4+'</span><span style="float:left; width:200px;">'+automationParam5 +dashloop5+ automationParamVal5+'</span><span style="float:left; width:200px;">'+automationParam6 +dashloop6+ automationParamVal6+'</span></td><td><a class="deleteParam" title="Delete Parameter" onclick="removeParamCreate(\''+(rowVal)+'\');" href="javascript:void(0)"><span class="glyphicon glyphicon-remove-sign"></span></td></tr>';
+		$('#paramListWLA').append(paramListDom);
+		rowVal = rowVal +1;
+		$('#appParamTableWLA').show();
+		ipsoftAutomationInput.push(wlaJSONobj);
+		paramP = 1;
+	}else{
+		var r = confirm("Are you sure to create Automation Request without Parameter Set.");
+	    if (r == true) {
+	    	ipsoftAutomationInput.push(wlaJSONobj);
+	    	paramP = 1;
+	    } else {
+	       return false;
+	    }
+	}
+	console.log(ipsoftAutomationInput);
+}
+
+function removeOutputParam(rowVal){
+	var confirmParamDelete = confirm("This Output Parameter Set will be permanently deleted and cannot be recovered. Are you sure?");
+    if (confirmParamDelete == true) {
+		$('#outputRow'+rowVal).remove();
+		automataJSONobjRes.splice(rowVal,1);
+		console.log(automataJSONobjRes);
+    }
+}
+
+
+function updateDiv(){
+   var editorText = CKEDITOR.instances.editor.getData();
+   $('#taskDescRTE').val(editorText);
+   $("#taskEditor").dialog('close');
+   CKEDITOR.instances.editor.setData('');
+}
+function CKupdate(){
+    for ( instance in CKEDITOR.instances ){
+        CKEDITOR.instances[instance].updateElement();
+    }
+}
+function genarateCron(){
+		var cronSecVar;
+		var cronMinVar;
+		var cronHrsVar;
+		var cronDayVar;
+		var cronMonVar;
+		var cronWkdVar;
+		var cronSecText;
+		var cronMinText;
+		var cronHrsText;
+		var cronDayText;
+		var cronMonText;
+		var cronWkdText;
+		if ($("input[name='seccron']:checked").val() == 'evsec') {
+			var everySecSelect = $("#everySecSelect option:selected").text();
+			if(everySecSelect == '1'){
+				cronSecVar = '*';
+				cronSecText = ' Every Second,';
+			}else if(everySecSelect == '2'){
+				cronSecVar = '2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58';
+				cronSecText = ' Every Two Second,';
+			}else if(everySecSelect == '3'){
+				cronSecVar = '3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57';
+				cronSecText = ' Every Three Second,';
+			}else if(everySecSelect == '4'){
+				cronSecVar = '4,8,12,16,20,24,28,32,36,40,44,48,52,56';
+				cronSecText = ' Every Four Second,';
+			}else if(everySecSelect == '5'){
+				cronSecVar = '5,10,15,20,25,30,35,40,45,50,55';
+				cronSecText = ' Every Five Second,';
+			}else if(everySecSelect == '6'){
+				cronSecVar = '6,12,18,24,30,36,42,48,54';
+				cronSecText = ' Every Six Second,';
+			}else if(everySecSelect == '7'){
+				cronSecVar = '7,14,21,28,35,42,49,56';
+				cronSecText = ' Every Seven Second,';
+			}else if(everySecSelect == '8'){
+				cronSecVar = '8,16,24,32,40,48,56';
+				cronSecText = ' Every Eight Second,';
+			}else if(everySecSelect == '9'){
+				cronSecVar = '9,18,27,36,45,54';
+				cronSecText = ' Every Nine Second,';
+			}else if(everySecSelect == '10'){
+				cronSecVar = '10,20,30,40,50';
+				cronSecText = ' Every Ten Second,';
+			}else if(everySecSelect == '11'){
+				cronSecVar = '11,22,33,44,55';
+				cronSecText = ' Every Eleven Second,';
+			}else if(everySecSelect == '12'){
+				cronSecVar = '12,24,36,48';
+				cronSecText = ' Every Twelve Second,';
+			}else if(everySecSelect == '13'){
+				cronSecVar = '13,26,39,52';
+				cronSecText = ' Every Thirteen Second,';
+			}else if(everySecSelect == '14'){
+				cronSecVar = '14,28,42,56';
+				cronSecText = ' Every Fourteen Second,';
+			}else if(everySecSelect == '15'){
+				cronSecVar = '15,30,45';
+				cronSecText = ' Every Fifteen Second,';
+			}else if(everySecSelect == '16'){
+				cronSecVar = '16,32,48';
+				cronSecText = ' Every Sixteen Second,';
+			}else if(everySecSelect == '17'){
+				cronSecVar = '17,34,51';
+				cronSecText = ' Every Seventeen Second,';
+			}else if(everySecSelect == '18'){
+				cronSecVar = '18,36,54';
+				cronSecText = ' Every Eighteen Second,';
+			}else if(everySecSelect == '19'){
+				cronSecVar = '19,38,57';
+				cronSecText = ' Every Nineteen Second,';
+			}else if(everySecSelect == '20'){
+				cronSecVar = '20,40';
+				cronSecText = ' Every Twenty Second,';
+			}else if(everySecSelect == '21'){
+				cronSecVar = '21,42';
+				cronSecText = ' Every Twentyone Second,';
+			}else if(everySecSelect == '22'){
+				cronSecVar = '22,44';
+				cronSecText = ' Every Twentytwo Second,';
+			}else if(everySecSelect == '23'){
+				cronSecVar = '23,46';
+				cronSecText = ' Every Twentythree Second,';
+			}else if(everySecSelect == '24'){
+				cronSecVar = '24,48';
+				cronSecText = ' Every Twentyfour Second,';
+			}else if(everySecSelect == '25'){
+				cronSecVar = '25,50';
+				cronSecText = ' Every TwentyFive Second,';
+			}else if(everySecSelect == '26'){
+				cronSecVar = '26,52';
+				cronSecText = ' Every TwentySix Second,';
+			}else if(everySecSelect == '27'){
+				cronSecVar = '27,54';
+				cronSecText = ' Every Twentyseven Second,';
+			}else if(everySecSelect == '28'){
+				cronSecVar = '28,56';
+				cronSecText = ' Every TwentyEight Second,';
+			}else if(everySecSelect == '29'){
+				cronSecVar = '29,58';
+				cronSecText = ' Every TwentyNine Second,';
+			}else if(parseInt(everySecSelect) >= 30){
+				cronSecVar = everySecSelect;
+				cronSecText = ' Every '+everySecSelect+' Second,';
+			}
+
+		}else{
+			var secmulArray = [];
+			$('#secmultiple :selected').each(function(i, selected){
+				secmulArray[i] = $(selected).text();
+			});
+			cronSecVar = getRanges(secmulArray);
+			var secStr = cronSecVar.toString();
+			cronSecText = 'At '+secStr.replace('-',' to ')+' Second, ';
+		}
+		if ($("input[name='mincron']:checked").val() == 'evmin') {
+			var everyMinSelect = $("#everyMinSelect option:selected").text();
+			if(everyMinSelect == '1'){
+				cronMinVar = '*';
+				cronMinText = ' Every Minute,';
+			}else if(everyMinSelect == '2'){
+				cronMinVar = '2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58';
+				cronMinText = ' Every Two Minute,';
+			}else if(everyMinSelect == '3'){
+				cronMinVar = '3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57';
+				cronMinText = ' Every Three Minute,';
+			}else if(everyMinSelect == '4'){
+				cronMinVar = '4,8,12,16,20,24,28,32,36,40,44,48,52,56';
+				cronMinText = ' Every Four Minute,';
+			}else if(everyMinSelect == '5'){
+				cronMinVar = '5,10,15,20,25,30,35,40,45,50,55';
+				cronMinText = ' Every Five Minute,';
+			}else if(everyMinSelect == '6'){
+				cronMinVar = '6,12,18,24,30,36,42,48,54';
+				cronMinText = ' Every Six Minute,';
+			}else if(everyMinSelect == '7'){
+				cronMinVar = '7,14,21,28,35,42,49,56';
+				cronMinText = ' Every Seven Minute,';
+			}else if(everyMinSelect == '8'){
+				cronMinVar = '8,16,24,32,40,48,56';
+				cronMinText = ' Every Eight Minute,';
+			}else if(everyMinSelect == '9'){
+				cronMinVar = '9,18,27,36,45,54';
+				cronMinText = ' Every Nine Minute,';
+			}else if(everyMinSelect == '10'){
+				cronMinVar = '10,20,30,40,50';
+				cronMinText = ' Every Ten Minute,';
+			}else if(everyMinSelect == '11'){
+				cronMinVar = '11,22,33,44,55';
+				cronMinText = ' Every Eleven Minute,';
+			}else if(everyMinSelect == '12'){
+				cronMinVar = '12,24,36,48';
+				cronMinText = ' Every Twelve Minute,';
+			}else if(everyMinSelect == '13'){
+				cronMinVar = '13,26,39,52';
+				cronMinText = ' Every Thirteen Minute,';
+			}else if(everyMinSelect == '14'){
+				cronMinVar = '14,28,42,56';
+				cronMinText = ' Every Fourteen Minute,';
+			}else if(everyMinSelect == '15'){
+				cronMinVar = '15,30,45';
+				cronMinText = ' Every Fifteen Minute,';
+			}else if(everyMinSelect == '16'){
+				cronMinVar = '16,32,48';
+				cronMinText = ' Every Sixteen Minute,';
+			}else if(everyMinSelect == '17'){
+				cronMinVar = '17,34,51';
+				cronMinText = ' Every Seventeen Minute,';
+			}else if(everyMinSelect == '18'){
+				cronMinVar = '18,36,54';
+				cronMinText = ' Every Eighteen Minute,';
+			}else if(everyMinSelect == '19'){
+				cronMinVar = '19,38,57';
+				cronMinText = ' Every Nineteen Minute,';
+			}else if(everyMinSelect == '20'){
+				cronMinVar = '20,40';
+				cronMinText = ' Every Twenty Minute,';
+			}else if(everyMinSelect == '21'){
+				cronMinVar = '21,42';
+				cronMinText = ' Every Twentyone Minute,';
+			}else if(everyMinSelect == '22'){
+				cronMinVar = '22,44';
+				cronMinText = ' Every Twentytwo Minute,';
+			}else if(everyMinSelect == '23'){
+				cronMinVar = '23,46';
+				cronMinText = ' Every Twentythree Minute,';
+			}else if(everyMinSelect == '24'){
+				cronMinVar = '24,48';
+				cronMinText = ' Every Twentyfour Minute,';
+			}else if(everyMinSelect == '25'){
+				cronMinVar = '25,50';
+				cronMinText = ' Every Twentyfive Minute,';
+			}else if(everyMinSelect == '26'){
+				cronMinVar = '26,52';
+				cronMinText = ' Every Twentysix Minute,';
+			}else if(everyMinSelect == '27'){
+				cronMinVar = '27,54';
+				cronMinText = ' Every Twentyseven Minute,';
+			}else if(everyMinSelect == '28'){
+				cronMinVar = '28,56';
+				cronMinText = ' Every TwentyEight Minute,';
+			}else if(everyMinSelect == '29'){
+				cronMinVar = '29,58';
+				cronMinText = ' Every TwentyNine Minute,';
+			}else if(parseInt(everyMinSelect) >= 30){
+				cronMinVar = everyMinSelect;
+				cronMinText = ' Every '+everyMinSelect+' Second,';
+			}
+		}else{
+			var minmulArray = [];
+			$('#minmultiple :selected').each(function(i, selected){
+				minmulArray[i] = $(selected).text();
+			});
+			cronMinVar = getRanges(minmulArray);
+			var minStr = cronMinVar.toString();
+			cronMinText = minStr.replace('-',' to ')+' Minute,';
+		}
+		if ($("input[name='hourcron']:checked").val() == 'evhrs') {
+			var everyHourSelect = $("#everyHourSelect option:selected").val();
+			if(everyHourSelect == '1'){
+				cronHrsVar = '*';
+				cronHrsText = ' Every Hours,';
+			}else if(everyHourSelect == '2'){
+				cronHrsVar = '2,4,6,8,10,12,14,16,18,20,22';
+				cronHrsText = ' Every Two Hours,';
+			}else if(everyHourSelect == '3'){
+				cronHrsVar = '3,6,9,12,15,18,21';
+				cronHrsText = ' Every Three Hours,';
+			}else if(everyHourSelect == '4'){
+				cronHrsVar = '4,8,12,16,20';
+				cronHrsText = ' Every Four Hours,';
+			}else if(everyHourSelect == '5'){
+				cronHrsVar = '5,10,15,20';
+				cronHrsText = ' Every Five Hours,';
+			}else if(everyHourSelect == '6'){
+				cronHrsVar = '6,12,18';
+				cronHrsText = ' Every Six Hours,';
+			}else if(everyHourSelect == '7'){
+				cronHrsVar = '7,14,21';
+				cronHrsText = ' Every Seven Hours,';
+			}else if(everyHourSelect == '8'){
+				cronHrsVar = '8,16';
+				cronHrsText = ' Every Eight Hours,';
+			}else if(everyHourSelect == '9'){
+				cronHrsVar = '9,18';
+				cronHrsText = ' Every Nine Hours,';
+			}else if(everyHourSelect == '10'){
+				cronHrsVar = '10,20';
+				cronHrsText = ' Every Ten Hours,';
+			}else if(everyHourSelect == '11'){
+				cronHrsVar = '11,22';
+				cronHrsText = ' Every Eleven Hours,';
+			}else if(parseInt(everyHourSelect) >= 12){
+				cronHrsVar = everyHourSelect;
+				cronHrsText = ' Every '+everyHourSelect+' Hour,';
+			}
+		}else{
+			var hrsmulArray = [];
+			$('#hrsmultiple :selected').each(function(i, selected){
+				hrsmulArray[i] = $(selected).val();
+			});
+			cronHrsVar = getRanges(hrsmulArray);
+			var hrsStr = cronHrsVar.toString();
+			cronHrsText = ' at ' + hrsStr.replace('-',' to ') + ' Hour,';
+		}
+		if ($("input[name='daycron']:checked").val() == 'evday') {
+			cronDayVar = '*';
+			cronDayText = ' Every Day,';
+		}else{
+			var daymulArray = [];
+			$('#daymultiple :selected').each(function(i, selected){
+				daymulArray[i] = $(selected).text();
+			});
+			cronDayVar = getRanges(daymulArray);
+			var datStr = cronDayVar.toString();
+			cronDayText = ' on '+datStr.replace('-',' to ') + ' Day,';
+		}
+		if ($("input[name='monthcron']:checked").val() == 'evmon') {
+			cronMonVar = '*';
+			cronMonText = ' Every Month,';
+		}else{
+			var monmulArray = [];
+			var monmulTxtArray = [];
+			$('#monthmultiple :selected').each(function(i, selected){
+				monmulArray[i] = $(selected).val();
+				monmulTxtArray[i] = $(selected).text();
+			});
+			cronMonVar = getRanges(monmulArray);
+			cronMonText = ' on the month of ' + monmulTxtArray +',';
+		}
+		if ($("input[name='weekcron']:checked").val() == 'evwkd') {
+			cronWkdVar = '*';
+			cronWkdText =  ' Every Week,';
+		}else{
+			var weekmulArray = [];
+			var weekmulTxtArray = [];
+			$('#weekmultiple :selected').each(function(i, selected){
+				weekmulArray[i] = $(selected).val();
+				weekmulTxtArray[i] = $(selected).text();
+			});
+			cronWkdVar = getRanges(weekmulArray);
+			cronWkdText = ' on the week of ' + weekmulTxtArray +'.';
+		}
+		cronResultVar = cronSecVar+' '+cronMinVar+' '+cronHrsVar+' '+cronDayVar+' '+cronMonVar+' '+cronWkdVar;
+		cronResultTextVar = cronSecText + cronMinText + cronHrsText + cronDayText + cronMonText + cronWkdText;
+		$('#cronGenResult').val(cronResultVar);
+}
+function fetchCronData(){
+	if($('#cronGenResult').val() !=''){
+		$('#triggerOnVal').val(cronResultVar);
+		//$('#triggerOnValText').val(cronResultTextVar);
+		$('#triggerOnValText').val(cronResultVar);
+		dialogCronExpModel.dialog('close');
+	}else{
+		alert('Please Create Cron Expression');
+	}
+}
+function getRanges(array) {
+	  var ranges = [], rstart, rend;
+	  for (var i = 0; i < array.length; i++) {
+	    rstart = array[i];
+	    rend = rstart;
+	    while (array[i + 1] - array[i] == 1) {
+	      rend = array[i + 1]; // increment the index if the numbers sequential
+	      i++;
+	    }
+	    ranges.push(rstart == rend ? rstart+'' : rstart + '-' + rend);
+	  }
+	  return ranges;
+}
+
+function closeGenDialog(){
+	$('#showAutoBackContainer').hide();
+	$('#showAutomationRequest').hide();
+	$('#showAutomationResponse').hide();
+}
+function cancelSOPFlag(){
+	$('#wholesopFlagErrorDialog').hide();
+	wholesopFlag = "true";
+	sameautomationFlag = 'true';
+	$('#showAutoBackContainer').hide();
+}
+$(function() {
+	$('#tab-sop-text').html(uiconfig.SOPEditortab2);
+	$('#tab-task-text').html(uiconfig.SOPEditortab3);
+	$('#name-text').html(uiconfig.SOPEditorname);
+	$('#name-text-type').html(uiconfig.SOPEditortype);
+	$('#cancel-text').html(uiconfig.AdminPortalcancel);
+	$('#automation-provider-text').html(uiconfig.SOPEditorautomationprovider);
+	$('#type-text').html(uiconfig.SOPEditortype);
+	$('#description-text').html(uiconfig.SOPEditordescription);
+	$('#owner-text').html(uiconfig.SOPEditorowner);
+	checkSystemLogOut();
+});
+
+var output='<select class="form-control" ng-model="createsop.autoProvider" id="selectProviderValue"  ng-change="chooseProviderValue();">';
+output+='<option disabled value="">Select Automation Provider</option>';
+for (var i in automationProvidersData.automationProviders) {
+
+    output+='<option value="' + automationProvidersData.automationProviders[i].value + '">' + automationProvidersData.automationProviders[i].name + '</option>';
+}
+output+='</select>';
+
+document.getElementById("automationProviderListPlaceholder").innerHTML=output;
+
+
+/* $(data.users).each(function() {
+    var output = "<ul><li>" + this.firstName + " " + this.lastName + "</li></ul>";
+    $('#placeholder').append(output);
+}); */
+</script>

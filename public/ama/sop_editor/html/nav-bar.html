@@ -1,0 +1,66 @@
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#home">SOP EDITOR</a>
+
+		</div><!-- /.navbar-header -->
+
+		<div id="navbar-container">
+			<ul class="nav navbar-nav" bs-active-link>
+				<li><a href="../index.html" id="homeNav">HOME</a></li>
+				<li><a href="#clients" id="clientsNav">CLIENT</a></li>
+				<li><a href="#account" id="accountNav">ACCOUNT</a></li>
+				<li><a href="#application" id="applicationNav">APPLICATION</a></li>
+			<!--	<li><a href="alert-page.html">Alerts</a></li>
+				<li><a href="create-sop-defination.html">SOP</a></li>-->
+			</ul>
+			<!--  <ul class="nav navbar-nav" style="padding-left: 260px; padding-top: 22px; color: #00b299; font-weight: bold;"><li id="accountNameNav"></li></ul>-->
+			<ul class="nav navbar-nav navbar-right" style="margin: 5px 5px;">
+			  <li><span class="navbar-brand brand-client" id="clientNameNav" style="position: relative; left: -207px;"></span></li>				
+			   <!--
+			   <li>		        
+			   	<button type="button" id="logout-controller" ng-controller="logoutController" class="btn btn-success btn-sm" style="float:right;" ng-click="logout()">
+			       	<span class="glyphicon glyphicon-user"></span>
+			     </button>
+			    </li>
+				-->
+				<li class="dropdown"><!-- style="position:absolute;" -->
+              <button class="dropdown-toggle btn btn-success" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></span></button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header" style="color:#00b299; font:bold 14px arial;">User Account</li>
+                <li id="sop-username" style="cursor:pointer; padding:5px 20px; font: 14px arial;"></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Support</a></li>
+                <li role="separator" class="divider"></li>
+                <li id="logout-controller" ng-controller="logoutController" ng-click="logout();" style="cursor:pointer; padding-left:20px;">Log Out</li>	
+              </ul>
+            </li>				
+			</ul>		  
+		</div>
+
+	</div>
+	<div id="showAutoBackContainerNavBar" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>  
+	<div id="waitContainerNavBar" style="display:none;height:300px; width:500px; top:153px; left:540px; z-index:4;background-color:#ffffff; position:absolute;color:#000000;border:1px solid gray;"><div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f; padding-left:100px;">Please Wait.....</div></div>
+	 <script type="text/javascript">
+        	$(document).ready(function() { 
+        		var checkUserType = localStorage.getItem("type");
+        		console.log("Administrator type : "+checkUserType);
+    			if(checkUserType =='Normal'){
+    				$('#clientsNav').hide();
+    				$('#accountNav').hide();
+    			}else if(checkUserType =='Admin' ){
+    				$('#clientsNav').show();
+    				$('#accountNav').show();
+    			}else if(checkUserType == 'Superadmin'){
+    				$('#clientsNav').show();
+    				$('#accountNav').show();
+    			}    			
+    			var checkToken = localStorage.getItem("tokenId");
+    			$('#homeNav').attr('href','../index.html?token='+checkToken);    
+    			document.getElementById("sop-username").innerHTML =  localStorage.getItem("username"); 
+				$('#logout-controller').html(uiconfig.SOPEditorlogout);
+				$('#homeNav').html(uiconfig.SOPEditorhome);
+				$('#clientsNav').html(uiconfig.SOPEditorclient);
+				$('#accountNav').html(uiconfig.SOPEditoraccount);
+				$('#applicationNav').html(uiconfig.SOPEditorapplication);
+		});	
+	</script>

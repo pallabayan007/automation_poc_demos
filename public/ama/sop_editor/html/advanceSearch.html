@@ -1,0 +1,122 @@
+<div class="container-fluid ama-container-style" style="height:536px;">
+<h4>Search</h4>
+ <div class="panel panel-info" style="height: 474px;">
+		<div class="panel-heading">Advance Search [full search of the entire SOP repository]</div>
+		  <div class="panel-body ama-panel-out" style="max-height: 474px;">
+		  	<div class=" ama-panel-in" ng-controller="advanceSearchCtrl" style="max-height:400px;">
+				<form class="form-horizontal" name="createAccountForm" ng-submit="">
+					<div class="form-group">
+					  <div class="col-sm-10" style="top:6px;">
+						<input type="radio" id="byTextRadio" name="searchType" value="byText" checked>&nbsp;By Text
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="searchType" value="query">&nbsp;Query
+						&nbsp;&nbsp;&nbsp;<input type="radio" name="searchType" value="savedSearch" ng-click="fetchSavedSearchData();">&nbsp;Saved Search
+						&nbsp;&nbsp;&nbsp;<select ng-model="advanceSearch.savedSearch" style="width:250px; display:none;" id="savedSearchList" ng-change="selectSavedSearch();">
+											<option disabled value="" label="">Select Saved Search</option>
+										</select>								
+					  </div>						 							  
+					</div>	
+					<div style="border:1px solid #d9edf7; margin:10px; padding:10px; border-radius:9px;">
+						<div id="findByText">
+							<div style="margin:0 0 10px 0;">Find SOP with ..... </div>
+							<div class="form-group">
+								  <label class="col-sm-2 control-label">these words : </label>
+								  <div class="col-sm-10">
+										<input type="text" ng-model="advanceSearch.text" id="serachbyTextVal" placeholder="Search Text" style="width:270px;" />
+										<a id="searchTextTip" style="text-decoration:none;" class="glyphicon glyphicon-info-sign" href="javascript:void(0);" 
+										title="For exact phrase search use &#34;&#34; eg. &#34;search this exact phrase&#34; &#013;For wild character/like searches use * eg. *disk*"></a>								
+								</div>
+							</div>
+						</div>
+						<div id="findByQuery" style="display:none;">
+							<div style="margin:0 0 10px 0;">Find SOP when ..... </div>
+							<div class="form-group">
+								  <label class="col-sm-2 control-label">SOP Name : </label>
+								  <div class="col-sm-10">
+									<input type="text" ng-model="advanceSearch.sopname" placeholder="SOP Name" id="searchSOPName" style="width:270px;" />											
+								  </div>
+							</div>
+							<div class="form-group">
+								  <label class="col-sm-2 control-label">Alert Name : </label>
+								  <div class="col-sm-10">
+									<input type="text" ng-model="advanceSearch.alertname" placeholder="Alert Name" id="searchAlertName" style="width:270px;" />	
+									&nbsp; with severity
+									&nbsp;							 
+										<select ng-model="advanceSearch.alertseverity" id="searchSeverity">
+											<option disabled value="" label="">Select Severity</option>
+											<option value="High">High</option>
+											<option value="Medium">Medium</option>
+											<option value="Low">Low</option>
+										</select>
+								  </div>
+							</div>
+							<div class="form-group">
+								  <label class="col-sm-2 control-label">Task Name : </label>
+								  <div class="col-sm-10">
+									<input type="text" ng-model="advanceSearch.taskname" id="searchTaskName" placeholder="Task Name" style="width:270px;" />												
+								  </div>
+							</div>
+						</div>
+						<div id="findBySaved" style="display:none;"></div>
+						<div style="float:right;  margin:20px 0 10px;">
+							<button class="btn btn-info" type="button" onclick="callDataTable();">
+								<span class="glyphicon glyphicon-screenshot"></span> Find
+							</button>	
+							<button class="btn btn-info" type="button" onclick="clearDataTable();">
+								<span class="glyphicon glyphicon-share-alt"></span> Clear
+							</button>
+							<button id="saveSearchDelete" class="btn btn-info" type="button" style="display:none;" ng-click="deleteSavedSearch();">
+								<span class="glyphicon glyphicon-remove"></span> Delete
+							</button>
+						</div>
+					</div>
+					<div id="searchResultContainer" style="display:none; margin:30px 10px 0 0;">
+						<div style="font-weight:bold;">Result</div>
+						<table id="searchResultTable" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="txtCenter">Alert Name</th>
+									<th class="txtCenter">SOP Name</th>
+									<th class="txtCenter">Description</th>
+								</tr>
+							</thead>
+							<tbody id="searchResultData">
+				
+							</tbody>
+						</table>
+						<div style="float:right; margin:20px;">
+							<button class="btn btn-info" type="button" onclick="$('#searchWaitContainer').show();$('#saveSearchMsg').show();">
+								<span class="glyphicon glyphicon-save"></span> Save Search
+							</button>	
+							<button class="btn btn-info" type="button" onclick="backToSearch();">
+								<span class="glyphicon glyphicon-backward"></span> Back to Search
+							</button>	
+						</div>
+					</div>									
+			</form>
+			<div id="saveSearchMsg" style="display:none;height:251px; width:400px; top:110px; left:300px; z-index:3;background-color:#ffffff; position:absolute;" title="Save Search">			
+				<div class="panel panel-info" style="height: 42px;">
+					<div class="panel-heading">Save Search</div>
+				</div>
+				<div style="border:1px solid #d9edf7; margin:10px; padding:10px; border-radius:9px; ">
+					<div style="margin:10px 20px; font-weight:bold;">Name this search:</div> <input type="text" placeholder="Search Name" id="savedSearchName" style="margin:10px 20px;"/>						
+				</div>
+				<div style="float:right; margin:20px;">
+					<button class="btn btn-info" type="button" ng-click="saveSearchWithName();">
+						<span class="glyphicon  glyphicon-ok-circle"></span> Ok
+					</button>	
+					<button class="btn btn-info" type="button" ng-click="cancelSaveSearch();">
+						<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+					</button>	
+				</div>
+			</div>
+			</div>
+		</div>
+  </div>				
+</div>
+
+ <div id="searchWaitContainer" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>													  	
+<div id="WaitAlertMsg" style="display:none;height:270px; width:400px; top:110px; left:300px; z-index:2;background-color:#ffffff; position:absolute;">
+		<div style="margin:80px 20px 20px 20px; font:18px verdana; color:#31708f;">Please Wait.....</div>
+</div>	
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+<script type="text/javascript" src="js/advanceSearch.js"></script>

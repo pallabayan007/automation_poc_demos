@@ -1,0 +1,16 @@
+POST /engine-rest/process-definition/key/CHO_Ticket1/start HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: ccacd5e9-11f8-3ac4-0762-50238cb585bb
+
+{
+"variables": 
+    {"ticket":{
+        "value": "{\"iod\" : \"iod_string_with_pid_as-process-instance-id\"}", 
+        "type": "json", 
+        "valueInfo":{"serializationDataFormat":"application/json"}
+        }
+    }
+}
+

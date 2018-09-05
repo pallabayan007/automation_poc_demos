@@ -1,0 +1,8 @@
+{
+   "monitorToolName" : "CognitiveAssistant",
+   "ticketToolName" : "CognitiveAssistant",
+   "status" : "0",
+   "urgency" : "1",
+   "type" : "incident",
+   "application" : "Solutioning Workbench"
+}

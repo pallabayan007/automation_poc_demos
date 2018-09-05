@@ -1,0 +1,4 @@
+{
+	"deployment_type":"CLOUD",
+	"base_uri":"https://dcg-camunda-gb.mybluemix.net"
+}

@@ -1,0 +1,142 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+	
+<div class="container-fluid ama-container-style" ng-controller="getacclist">
+	<h4>Account Management</h4>
+	<div id="messg2" ng-show='message' style="color:#337ab7; font-weight:bold;">{{message}}</div>
+
+	<div class="panel panel-primary" id="acclist">
+		<!--<div class="panel-heading">Account List</div>-->
+		<div class="panel-body ama-pagination-panel">
+		  	<!-- <div class="ama-panel-in">		 -->										
+				<table class="table-responsive table table-striped">
+				  <thead><tr>
+					<th><span id="name-text"> </span></th>
+					<!-- <th>Company</th> -->
+				  </tr></thead>
+				  <tbody><tr ng-repeat="acclistitems in acclist">
+					<td><a href="{{applistitems._id }}">{{applistitems.accountName }}</a>
+						<span class="dropdown" dropdown on-toggle="toggled(open)">
+						  <a href class="dropdown-toggle" dropdown-toggle>
+							{{acclistitems.accountName}}
+						  </a>
+						  <ul class="dropdown-menu" role="menu">
+							<li> <a href="javascript:void(0);" ng-click="AccountDataView(acclistitems._id);">View<span id="view-menu-text"></span></a></li>
+							<li><a href="javascript:void(0);" ng-click="AccountDataEdit(acclistitems._id);" id="edit-menu-text"></a></li>
+							<li><a href="javascript:void(0);" ng-click="AccountDataDelete(acclistitems._id);" id="delete-menu-text"></a></li>
+						  </ul>
+						</span>				
+					</td>
+					<!-- <td>{{acclistitems.accountOwningCompany}} </td> -->
+				  </tr></tbody>
+				</table>
+			</div>    
+			  <div style="text-align:center;">      		
+				<pagination 
+			      ng-model="currentPage"
+			      total-items="receivedData.length"
+			      max-size="maxSize"  
+			      items-per-page="numPerPage" 
+			      boundary-links="true">
+			    </pagination>
+	    	</div>
+
+			<div class="tab-button-pos">
+						<button class="btn btn-info" id="add-button-text" ng-click="goToAccountCreate();">
+							<span class="glyphicon glyphicon-plus-sign"></span> 
+						</button>
+			</div>
+	</div>
+		 <div class="panel panel-primary" id="accountDetails" style="display:none;">
+			<!--<div class="panel-heading">Account Details</div>-->
+			<div class="panel-body">
+				
+				<table class="table-responsive table table-striped">			  
+				  <tbody>
+					  <tr><td style="width:50%;"><label> Name	:</label><td>{{accountdetails.accountName}} </td></tr>
+					 <!--  <tr><td><label> Company :</label>	</td><td>{{accountdetails.accountOwningCompany}} </td></tr> -->
+					  <tr><td><label> Client :</label>	</td><td>{{accountdetails.clientName}} </td></tr>			  
+				  </tbody>
+				</table>															
+	
+			</div>
+		</div>
+		  <div class="panel panel-primary" id="accountEdit" style="display:none;">
+			 <!--<div class="panel-heading">Account Update</div>-->
+			  <div class="panel-body">		  	
+				<form role="form" class="form-horizontal" name="updateAccountForm">					
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Client : </label>
+					  <div class="col-sm-5">
+						<select class="form-control" ng-model="updateAccount.clientName" id="updateAccountClientName">
+							<option selected disabled value="">Select Client</option>
+							<option ng-repeat="client in clients" value="{{client._id}}" label="{{client.clientName}}">{{client.clientName}}</option>
+						</select>
+					  </div> 														    
+					</div>							
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Name :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="updateAccount.accountName" id="updateAccountName" placeholder="Enter Account name" required /> 
+						</div>
+						<div class="col-sm-2">							
+						<span style="color:red;"> * required</span>				
+					  </div>
+					</div>
+<!-- 					<div class="form-group">
+					  <label class="col-sm-3 control-label">Company :</label>
+					  <div class="col-sm-5">
+						<input type="text" ng-model="updateAccount.company" id="updateAccountCompany" placeholder="Enter Company" /> 											
+					  </div>									  
+					</div> -->
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Comment :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="updateAccount.comment" id="updateAccountComment" required /> 	 
+						</div>
+						<div class="col-sm-2">							
+						
+						<span style="color:red;"> * required</span>										
+					  </div>									  
+					</div>
+					<div style="float:right">  
+						<button class="btn btn-info" type="button" ng-click="updateAccount.saveAccount()">
+							<span class="glyphicon glyphicon-save"></span> Save
+						</button>	
+						<button class="btn btn-info" type="button" ng-click="updateAccount.cancelUpdate()"><!-- ng-disabled="error || incomplete"-->
+							<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+						</button>
+					</div>								
+				</form>
+			</div>
+		</div>		
+		<div id="showApplicationList" class="panel-info" style="background-color: #ffffff; color: black; height: 320px; left: 376px; display:none; position: absolute; top: 160px; width: 450px; z-index: 5; border:1px solid #ffffff;">
+			<div class="panel-heading">Please delete application/s which are associated with this Account</div>
+			<div class="panel panel-primary" style="height:207px; overflow-y:scroll; color:#000000;">
+				<div style="border-bottom:1px solid gray; margin:5px 0; height:30px;">
+					<button class="btn btn-info" id="" type="button" style="font:8px verdana; float:right;" ng-click="deleteAppAsAcc();">
+						<span class="glyphicon glyphicon-remove-circle"></span> Delete 
+					</button>
+				</div>
+				<div id="applListData">
+				</div>
+			</div>
+			<div style="margin:0px 20px; float:right;">
+				<button class="btn btn-info" type="button" onclick="$('#showApplicationList').hide(); $('#waitAlertContainer').hide();">
+							<span class="glyphicon glyphicon-remove-circle"></span> Cancel
+				</button>
+			</div>
+		</div>	  
+  	</div>
+  	<div id="waitAlertContainer" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>													    
+
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#add-button-text').html(uiconfig.SOPEditoradd);
+			$('#edit-menu-text').html(uiconfig.SOPEditoredit);
+			$('#delete-menu-text').html(uiconfig.SOPEditordelete);
+			$('#view-menu-text').html(uiconfig.SOPEditorview);
+			$('#name-text').html(uiconfig.SOPEditorname);
+			$('#cancel-text').html(uiconfig.SOPEditorcancel);
+			checkSystemLogOut();
+		});	
+	</script>

@@ -1,0 +1,18 @@
+{
+    "general-properties": {
+        "monitoringAgentSchedulerCron": "00 */5 * * * *"
+    },
+    "deployment-specific-properties": {
+        "CLOUD": {
+            "name": "swarnasetu-db",
+            "label": "user-provided",
+            "credentials": {
+                "uri": "mongodb://IbmCloud_h65aeqju_lm95s3it_qcobq5ft:-pnC2fSAqdtx7hptLNJsRK1u71inRBWo@ds041190.mongolab.com:41190/IbmCloud_h65aeqju_lm95s3it"
+            }
+        },
+        "ON_PREM": {
+            "authenticationProtocol": "",
+            "dbConnectionURL":"mongodb://localhost:27017/swarnasetudb"
+        }
+    }
+}

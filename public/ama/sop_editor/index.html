@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AMA">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Application Monitoring</title>
+	<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="../../lib/jquery-ui/themes/base/jquery-ui.min.css">	
+	<link rel="stylesheet" href="../../ama/sop_editor/stylesheets/app.css">
+	<link rel="stylesheet" href="../../ama/sop_editor/stylesheets/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css"  href="stylesheets/dataTables.jqueryui.css" />
+	<script type="text/javascript" src="../../lib/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="../../lib/angular/angular.js"></script>
+	<script type="text/javascript" src="../../lib/angular-route/angular-route.min.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/angular-idle.js"></script>
+	<script type="text/javascript" src="../../lib/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../ama/adminPortal/js/configuration.editor.js"></script>
+	<script type="text/javascript" src="../../lib/angular-ui-sortable/sortable.min.js"></script>
+	<script type="text/javascript" src="../../lib/raphael.js"></script>
+	<script type="text/javascript" src="../../lib/Treant.js"></script>
+	<script type="text/javascript" src="../../lib/system_properties.js"></script>
+	<script type="text/javascript" src="../../lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/ui-bootstrap-tpls-0.12.1.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/jquery.tabletojson.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/routePage.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/main.js"></script>	
+	<script type="text/javascript" src="../../ama/sop_editor/js/restAPP.js"></script>
+    <script type="text/javascript" src="../../ama/sop_editor/js/updateSOPModules.js"></script> 
+    <script type="text/javascript" src="../../ama/sop_editor/js/jsToPdf.min.js"></script>
+    <script type="text/javascript" src="../../lib/timezone.js"></script>
+    <script type="text/javascript" src="../../lib/ui_config.json"></script>
+    <script type="text/javascript" src="../../lib/rtEditor/ckeditor.js"></script>	
+    <script type="text/javascript" src="../../lib/rtEditor/evaluateRTE.js"></script>
+    <script type="text/javascript" src="../../ama/sop_editor/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="../../ama/sop_editor/js/dataTable.js"></script>		
+   
+ 	<script> 	
+	  window.onbeforeunload = confirmExit()
+	  function confirmExit()
+	  {
+	    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+	  }	 
+	  
+		$(function() { 
+			checkSystemLogOut();
+		});
+  	</script>
+</head>
+<body ng-controller="EventsCtrl">
+<div id="showAutoBackContainer" style="display:none;top:0px; left:0px; position:absolute; height:100%; width:100%; background-color:black; opacity:0.5; z-index:2;"></div>
+<div class="" id="wrap" ng-controller="mainController">
+ 	<div ng-include src="'html/nav-bar.html'"></div>	  
+    <div class="container-fluid" style="padding-top:50px;">
+      	<div class="row">	  
+		     <div class="col-sm-2 sidebar ama-left-pane">
+				<div ng-include src="'html/crud.html'"></div>		
+				<div ng-include src="'html/ama-typeahead.html'"></div>	  
+	        </div>		
+			<div class="col-sm-10 col-sm-offset-2 content ama-right-pane">
+				<div ng-include src="'html/userarea.html'"></div> 
+	        	<p id="messg" style="height:60px;color:lightblue;"></p>
+	        	 <!-- this is the place content of every page are injected -->
+	        	<div ng-view style="margin : 10px;"></div>
+	        </div>
+		</div>
+		<!-- <div class="row"><a href="https://swarnasetu.mybluemix.net/rest/v1/sopmeta/download?fileName=authorization.js">Test Link</a></div> -->    
+   	</div>
+ 	<div ng-include src="'html/footer.html'"></div>
+ </div>
+ <div ng-include src="'html/cronDialog.html'"></div>
+ <div ng-include src="'html/choreoGraph.html'"></div>
+
+</body>
+</html>

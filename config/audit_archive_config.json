@@ -1,0 +1,7 @@
+{
+  "alert_audit_log_threshold_in_mb": 50,
+  "ticket_audit_log_threshold_in_mb": 50,
+  "transaction_audit_log_threshold_in_mb": 50,
+  "percentage_of_records_to_be_retained" : 3,
+  "archive_age_auto_deteletion_in_years": 3
+}

@@ -1,0 +1,29 @@
+{
+	"adapters" : {
+		"RESTAdapter" : {
+			"connections" : [ {
+				"connection" : {
+					"connectionId" : "2",
+					"connectionProperties" : {
+						"toolName" : "ServiceNow", 
+						"protocol" : "https",
+						"domain" : "dev17403.service-now.com",
+						"port" : "",
+						"path" : "api/now/v1/table/em_alert?active=true",
+						"ticketPaths" : [ 
+						         "api/now/v1/table/task?sysparm_query=active=true^state=1&sys_class_name=incident"
+						 ], 
+						"authetication" : {
+							"userId" : "admin2",
+							"password" : "2997859e3265797e334cc43edc"
+						},
+						"account" : "IBM Global Account 1",
+						"client" : "IGA"
+					},
+					"contentType" : "XML"
+				}
+			}]
+		}
+		
+	}
+}

@@ -1,0 +1,133 @@
+<div ng-include src="'html/error_exception_tmpl.html'"></div>
+	
+<div class="container-fluid ama-container-style" ng-controller="getclientlist">
+
+	<h4>Client Management</h4>
+	<div id="messg2" ng-show='message' style="color:#337ab7; font-weight:bold;">{{message}}</div>
+	<div class="panel panel-primary" id="clientlist">
+		<!--<div class="panel-heading">Client List</div> -->
+		<div class="panel-body ama-pagination-panel">
+		  	<!-- <div class="ama-panel-in">			 -->									
+				<table class="table-responsive table table-striped">
+				  <thead><tr>
+					<th><span id="name-text"> </span></th>
+					 <th>Short Description</th> 
+				  </tr></thead>
+				  <tbody><tr ng-repeat="clientlistitems in clientlist">
+					<td><a href="{{applistitems._id }}">{{applistitems.applicationName }}</a>
+						<span class="dropdown" dropdown on-toggle="toggled(open)">
+						  <a href class="dropdown-toggle" dropdown-toggle>
+							{{clientlistitems.clientName }}
+						  </a>
+			
+						  <ul class="dropdown-menu" role="menu">
+							<li><a href="javascript:void(0);" ng-click="ClientDataView(clientlistitems._id);">View<span id="view-menu-text"></span></a></li>
+							<li><a href="javascript:void(0);" ng-click="ClientDataEdit(clientlistitems._id);" id="edit-menu-text"></a></li>
+							<li><a href="javascript:void(0);" ng-click="ClientDataDelete(clientlistitems._id);" id="delete-menu-text"></a></li>
+						  </ul>
+						</span>				
+					</td>
+					  <td>{{clientlistitems.clientShortDescription}} </td>  
+				  </tr></tbody>
+				</table>
+
+        </div>
+			
+		  <div style="text-align:center;">      		
+			<pagination 
+		      ng-model="currentPage"
+		      total-items="receivedData.length"
+		      max-size="maxSize"  
+		      items-per-page="numPerPage" 
+		      boundary-links="true">
+		    </pagination>
+    	  </div>
+    	
+		<div class="tab-button-pos">
+					<button class="btn btn-info" id="add-button-text" ng-click="goToCreateClient();"><!-- ng-disabled="error || incomplete"-->
+						<span class="glyphicon glyphicon-plus-sign"></span> Add
+					</button>
+		</div>
+	</div> 	
+
+		 <div class="panel panel-primary" id="clientDetails" style="display:none;">
+			<!--<div class="panel-heading">Client Details</div>-->
+			<div class="panel-body">
+						<table class="table-responsive table table-striped"><!--  ng-controller="viewappcontroller" -->
+						  <!-- <thead><tr><th>Application</th><th>Details</th></tr></thead> -->
+						  <tbody>
+						  <tr><td style="width:50%;"><label> Name	:</label><td>{{clientdetails.clientName}} </td></tr>
+						  <tr><td><label> Description :</label>	</td><td>{{clientdetails.clientShortDescription}} </td></tr>
+						  <tr><td><label> Code :</label>	</td><td>{{clientdetails.clientID}} </td></tr>
+						  <!-- <tr><td colspan="2" align="center"> <a href="javascript:void(0);" ng-click="showClientList();">Go back to Client List</a></td></tr> -->
+						 	</tbody>
+						</table>												
+
+			</div>
+		</div>
+
+			  
+			  
+			  
+		<div class="panel panel-primary" id="clientEdit" style="display:none;">
+			  <!--<div class="panel-heading">Client Update</div>-->
+			  <div class="panel-body">
+				<form role="form" class="form-horizontal" name="updateClientForm">
+					<div ng-show='message' style="color:#337ab7; font-weight:bold; padding:10px 0;">{{message}}</div>							
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Name :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="updateClient.ClientName" id="updateClientName" required /> 
+						</div>
+						<div class="col-sm-2">							
+						
+						<span style="color:red;"> * required</span>				
+					  </div>
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Description :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="updateClient.clientDescription" id="updateClientDescription" /> 											
+					  </div>									  
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Code :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="updateClient.ClientCode" id="updateClientCode" /> 											
+					  </div>									  
+					</div>
+					<div class="form-group">
+					  <label class="col-sm-3 control-label">Comment :</label>
+					  <div class="col-sm-5">
+						<input class="form-control" type="text" ng-model="updateClient.updateCommnet" id="updateClientComment" required />  
+						</div>
+						<div class="col-sm-2">							
+						
+						<span style="color:red;"> * required</span>											
+					  </div>									  
+					</div>
+					 
+													
+					<div style="float:right">  
+						<button class="btn btn-info" type="Submit" ng-click="updateClient.saveClient()">
+							<span class="glyphicon glyphicon-save"></span> Save
+						</button>	
+						<button class="btn btn-info" type="button" ng-click="updateClient.cancelClient()"><!-- ng-disabled="error || incomplete"-->
+							<span class="glyphicon glyphicon-remove-circle"></span> <span id="cancel-text"></span>
+						</button>
+					</div>									
+				</form>
+			</div>
+			
+		</div>
+</div>
+  	 <script type="text/javascript">
+		$(function() { 
+			$('#add-button-text').html(uiconfig.SOPEditoradd);
+			$('#edit-menu-text').html(uiconfig.SOPEditoredit);
+			$('#delete-menu-text').html(uiconfig.SOPEditordelete);
+			$('#view-menu-text').html(uiconfig.SOPEditorview);
+			$('#name-text').html(uiconfig.SOPEditorname);
+			$('#cancel-text').html(uiconfig.SOPEditorcancel);
+		});	
+	</script>	

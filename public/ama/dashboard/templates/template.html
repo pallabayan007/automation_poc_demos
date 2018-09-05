@@ -1,0 +1,1277 @@
+<div id="alterMessageBox" class="alert alert-danger" role="alert"
+	style="border-radius: 0px; display: none; margin: 0px 25%; width: 50%; position: fixed; top: 0px; left: 0px; z-index: 9999999;">
+	<button type="button" class="close" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<div>
+		<strong>Error Message :</strong>
+		<div style="max-height: 200px; overflow: auto;">
+			<div ng-repeat="alert in alerts">{{alert.msg}}</div>
+		</div>
+	</div>
+</div>
+<div>
+	<nav class="header navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/ama/index.html" id="homeNav"
+					style="padding: 8px 5px;"> <span>Home</span>
+				</a>
+			</div>
+			<!--  <ul class="nav navbar-nav navbar-middle">
+        		<li id="accountNameNav" style="color:#00b299; font-weight: bold; padding-left:400px;"></li>
+  			</ul>-->
+			<ul class="nav navbar-nav navbar-right">
+				<li><a title="service and component status" ng-click="showServiceHealthDialog()" style="cursor:pointer;"><div class="health {{overall_health}}"></div></a></li>
+				<li class="dropdown"><a class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-expanded="false"><span
+						id="dashboard-username"></span> <span class="caret"></span></a>
+				</li>
+				<li>				
+					<!--<div class="col-sm-1" ng-controller="logoutController">
+						<span
+							style="line-height: 40px; font-weight: bold; color: lightblue;">
+							<button type="button" id="logOutSOP"
+								class="btn btn-success btn-sm" ng-click="logout()">
+								<span class="glyphicon glyphicon-off"></span> Logout
+							</button>
+						</span>
+					</div>-->
+				</li>
+				<li><span class="navbar-brand brand-client" style="color:#00b299; position: relative; left: -207px;" id="clientNameNav"></span></li>				
+				<li class="dropdown">
+				  <button class="dropdown-toggle btn btnuser-success" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></span></button>
+				  <ul class="dropdown-menu">
+					<li class="dropdown-header" style="font-weight:bold;">User Account</li>
+					<li id="loggedUserName" style="cursor:pointer; padding-left:20px; font: bold 12px arial; color:#000000;"></li>
+					<li><a href="#">About</a></li>
+					<li><a href="#">Support</a></li>
+					<li role="separator" class="divider"></li>
+					<li ng-controller="logoutController" ng-click="logout();" style="cursor:pointer; padding-left:20px; color:#000000;">Log Out</li>	
+				  </ul>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+								/*document.getElementById("dashboard-username").innerHTML = localStorage
+										.getItem("username");
+				    			var checkLoggedUser = localStorage.getItem("TestUserID");
+				    			$('#homeNav').attr('href','../index.html);  
+				    			*/
+								$('#loggedUserName').html(localStorage.getItem("username"));
+								//$('#accountNameNav').html(localStorage.getItem("accountName"));
+								//$('#clientNameNav').html(localStorage.getItem("clientName"));
+								var checkToken = localStorage.getItem("tokenId");
+								$('#homeNav').attr('href','../index.html?token='+checkToken);
+			});
+		</script>
+
+	</nav>
+	<div id="tabs" style="margin-top:50px;">
+		<ul>
+			<li><a href="#fragment-1"><span>Alerts</span></a></li>
+			<li><a href="#fragment-2"><span>Tickets</span></a></li>
+		</ul>
+		<div id="fragment-1">
+			<div class="container">
+				<div class="row">
+					<h2 style="display: inline-block;">Alerts Automation Process Monitor</h2>
+					<!-- 			<span style="display:inline-block;">&nbsp;&nbsp;&nbsp;Account&nbsp;: <a>{{account.account_name}}</a></span>
+		 -->
+					<br />
+		
+					<nav class="navbar navbar-default"
+						style="border: 1px solid rgba(122, 137, 145, 0.3); margin: 0; background: none repeat scroll 0 0 #26343f !important;">
+						<div class="container-fluid">
+							<ul class="nav navbar-nav navbar-right">
+								<li style="padding: 10px 10px;"><button id="showAnalyticsBtn"
+										class="btn btn-success rm-relish" ng-click="showAnalytics()"
+										style="display: none;">Show Analytics</button></li>
+								<!-- 
+		 				        <li><a ng-click="download(filter)" style="padding:10px 10px;"><img style="padding:0;margin:0;cursor:pointer;"src="images/download-import_32_white.png" title="Download"></img></a></li>
+		-->
+		 						<li><a ng-click="showAlertsWithoutSOPsDialog()"
+									style="padding: 10px 0px;align:left"><img
+										style="padding: 0; margin: 0; cursor: pointer; height:35px;"
+		
+										src="images/messagebox_warning.png" title="Alerts Without Matched SOPs"></img></a></li>
+								<li><a ng-click="showAlertsWithoutSOPsDialog()"
+									style="padding: 10px 0px;color: red;">{{auditLogsWithoutSOPs.length }}</a></li>
+													
+								<li><a data-toggle="modal" data-target="#DownloadDialog"
+									style="padding: 10px 10px;" ng-hide="download_access"><img
+										style="padding: 0; margin: 0; cursor: pointer;"
+										src="images/download-import_32_white.png" title="Download"></img></a></li>
+								<li><a ng-click="showFilterDialog()"
+									style="padding: 10px 10px;"><img
+										style="padding: 0; margin: 0; cursor: pointer;"
+										src="images/filter_32_white.png" title="Filter"></img></a></li>
+								<!-- 				         <li><a data-toggle="modal" data-target="#FilterDialog" style="padding:10px 10px;"><img style="padding:0;margin:0;cursor:pointer;"src="images/filter_32_white.png" title="Filter"></img></a></li> -->
+								<li><a ng-click="refreshAlerts(filter)"
+									style="padding: 10px 10px;"><img
+										style="padding: 0; margin: 0; cursor: pointer;"
+										src="images/refresh-redo_32_white.png" title="Refresh"></img></a></li>
+							</ul>
+							<ul class="nav navbar-nav navbar-left">
+								<li>
+									<div style="padding: 10px 10px;">
+										<select id="selectAccount" class="selectpicker" data-size="5"
+											data-title="Select Account" data-header="Select Account">
+											<!-- 
+										  <option>Account1</option>
+										  <option>Account2</option>
+										  <option>Account3</option>
+		 -->
+										</select>
+									</div>
+								</li>
+								<li>
+									<div style="padding: 10px 10px;">
+										<select id="selectApplication" class="selectpicker"
+											data-size="5" data-title="Select Application"
+											data-header="Select Application">
+											<!-- 
+										  <option>Application1</option>
+										  <option>Application2</option>
+		 -->
+										</select>
+									</div>
+								</li>
+								<li>
+									<div style="padding: 10px 10px;">
+										<select id="selectAlert" class="selectpicker" data-size="5"
+											data-title="Select Alert" data-header="Select Alert">
+											<!-- 
+										  <option>Alert1</option>
+										  <option>Alert2</option>
+										  <option>Alert3</option>
+		 -->
+										</select>
+									</div>
+								</li>
+		
+								
+							</ul>
+						</div>
+					</nav>
+					<div id="alertmonitoringtable">
+						<table class="table">
+							<thead
+								style="background: none repeat scroll 0 0 #26343f !important;1px solid rgba(122, 137, 145, 0.3);">
+								<th>Account Name</th>
+								<th>Application Name</th>
+								<th>Alert Name</th>
+								<th>Alert Description</th>
+								<th>Raised Time</th>
+								<th>Monitoring System</th>
+								<th>Automation System</th>
+								<th>Completed Time</th>
+								<th>Status</th>
+								<th>Log</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="auditLog in auditLogs">
+									<td>{{accounts[auditLog.accountID].account_name}}</td>
+									<td>{{auditLog.applicationName}}</td>
+									<td><a ng-click="showAlertDetailsDialog(auditLog)">{{auditLog.alertName}}</a></td>
+									<td>{{auditLog.alertDesc}}</td>
+									<td>{{auditLog.createTime | formatDateTime}}</td>
+									<td>{{auditLog.monitoringToolName}}</td>
+									<td>{{auditLog.iodID}}</td>
+									<td>{{auditLog.completedTime | formatDateTime }}</td>
+									<td style="padding-right:50px;"><a id="Status{{auditLog._id}}" href="#"
+										data-toggle="popover"
+										data-template='<div class=popover role=tooltip><div class=arrow></div><h3 class=popover-title style=color:black;></h3></div>'
+										title="{{auditLog.status}} -{{auditLog.errorMessage}}" data-trigger="hover"
+										data-placement="left"> <img  width="20" src="images/{{auditLog.status}}.png" alt="{{auditLog.status}}" style="padding-top:0;padding-bottom:0" /></a></td>
+									<td><a id="log{{auditLog._id}}" tabindex="{{$index}}"
+										role="button" class="btn btn-success" data-toggle="popover"
+										data-trigger="click" data-placement="left"
+										title='Service flow for "{{auditLog.alertName}}"'
+										data-html="true"
+										data-template='<div class=popover role=tooltip style=width:100%;max-width:1024px><div class=arrow></div><h3 class=popover-title style=color:black;></h3><div class=log-console><table class=popover-content></table></div></div>'
+										data-content="{{assembleLogDetails(auditLog)}}"
+										data-delay="{'hide':10000}">Logger</a> <!-- 
+										<a id="chart{{auditLog._id}}" tabindex="{{$index}}" role="button" class="btn btn-success" ng-click="showAlertProcessingChart(auditLog)">C</a>
+										<a id="chart2{{auditLog._id}}" tabindex="{{$index}}" role="button" class="btn btn-success" ng-click="showAlertProcessingChart2(auditLog)">C</a>
+		 --></td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row" style="margin: 10px 0; height: 120px;">Total
+							: {{auditLogs.length}}</div>
+					</div>
+					<div id="accountanalyticschart" style="display: none;">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-6" style="height: 350px;">
+									<div id="accountalertpiechart"></div>
+								</div>
+								<div class="col-xs-6">
+									<div id="accountcolumn"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Alert Processing Status for {{account.account_name}} Past
+											4 Hours</b><br>(All Applications)
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Day-wise Alert Volume for {{account.account_name}}</b><br>(Top
+										5 Applications)
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="applicationanalyticschart" style="display: none;">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-6" style="height: 350px;">
+									<div id="applicationalertpiechart"></div>
+								</div>
+								<div class="col-xs-6">
+									<div id="applicationbar"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Alert Processing Status for
+											{{applications[0].application_name}} Past 4 Hours</b>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Alert Volume for Top 5 Alerts for
+											{{applications[0].application_name}}</b>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12" style="height: 350px;">
+									<div id="applicationcolumn"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div style="width: 100%; text-align: center;">
+										<b>Day-wise Alert Volume for
+											{{applications[0].application_name}} - Top 5 Alerts</b>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div style="height: 120px;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="fragment-2">
+			<div class="container">
+				<div class="row">
+					<h2 style="display: inline-block;">Tickets Automation Process Monitor</h2>
+					<!-- 			<span style="display:inline-block;">&nbsp;&nbsp;&nbsp;Account&nbsp;: <a>{{account.account_name}}</a></span>
+		 -->
+					<br />
+		
+					<nav class="navbar navbar-default"
+						style="border: 1px solid rgba(122, 137, 145, 0.3); margin: 0; background: none repeat scroll 0 0 #26343f !important;">
+						<div class="container-fluid">
+							<ul class="nav navbar-nav navbar-right">
+								<li style="padding: 10px 10px;"><button id="showAnalyticsBtn"
+										class="btn btn-success rm-relish" ng-click="showAnalytics()"
+										style="display: none;">Show Analytics</button></li>
+								<!-- 
+		 				        <li><a ng-click="download(filter)" style="padding:10px 10px;"><img style="padding:0;margin:0;cursor:pointer;"src="images/download-import_32_white.png" title="Download"></img></a></li>
+		-->
+		 						<li><a ng-click="showTicketsWithoutSOPsDialog()"
+									style="padding: 10px 0px;align:left"><img
+										style="padding: 0; margin: 0; cursor: pointer; height:35px;"
+		
+										src="images/messagebox_warning.png" title="Tickets Without Matched SOPs"></img></a></li>
+								<li><a ng-click="showTicketsWithoutSOPsDialog()"
+									style="padding: 10px 0px;color: red;">{{ticketAuditLogsWithoutSOPs.length }}</a></li>
+													
+								<li><a data-toggle="modal" data-target="#DownloadDialog"
+									style="padding: 10px 10px;" ng-hide="download_access"><img
+										style="padding: 0; margin: 0; cursor: pointer;"
+										src="images/download-import_32_white.png" title="Download"></img></a></li>
+								<li><a ng-click="showTicketsFilterDialog()"
+									style="padding: 10px 10px;"><img
+										style="padding: 0; margin: 0; cursor: pointer;"
+										src="images/filter_32_white.png" title="Filter"></img></a></li>
+								<!-- 				         <li><a data-toggle="modal" data-target="#FilterDialog" style="padding:10px 10px;"><img style="padding:0;margin:0;cursor:pointer;"src="images/filter_32_white.png" title="Filter"></img></a></li> -->
+								<li><a ng-click="refreshAlerts(filter)"
+									style="padding: 10px 10px;"><img
+										style="padding: 0; margin: 0; cursor: pointer;"
+										src="images/refresh-redo_32_white.png" title="Refresh"></img></a></li>
+							</ul>
+							<ul class="nav navbar-nav navbar-left">
+								<li>
+									<div style="padding: 10px 10px;">
+										<select id="selectAccount" class="selectpicker" data-size="5"
+											data-title="Select Account" data-header="Select Account">
+											<!-- 
+										  <option>Account1</option>
+										  <option>Account2</option>
+										  <option>Account3</option>
+		 -->
+										</select>
+									</div>
+								</li>
+								<li>
+									<div style="padding: 10px 10px;">
+										<select id="selectApplication" class="selectpicker"
+											data-size="5" data-title="Select Application"
+											data-header="Select Application">
+											<!-- 
+										  <option>Application1</option>
+										  <option>Application2</option>
+		 -->
+										</select>
+									</div>
+								</li>
+								<li>
+									<div style="padding: 10px 10px;">
+										<select id="selectTicket" class="selectpicker" data-size="5"
+											data-title="Select Ticket" data-header="Select Ticket">
+											<!-- 
+										  <option>Ticket1</option>
+										  <option>Ticket2</option>
+										  <option>Ticket3</option>
+		 -->
+										</select>
+									</div>
+								</li>
+		
+								
+							</ul>
+						</div>
+					</nav>
+					<div id="alertmonitoringtable">
+						<table class="table">
+							<thead
+								style="background: none repeat scroll 0 0 #26343f !important;1px solid rgba(122, 137, 145, 0.3);">
+								<th>Account Name</th>
+								<th>Application Name</th>
+								<th>Ticket</th>
+								<th>Ticket Description</th>
+								<th>Raised Time</th>
+								<th>Ticketing System</th>
+								<th>Automation System</th>
+								<th>Completed Time</th>
+								<th>Status</th>
+								<th>Log</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="auditLog in ticketAuditLogs">
+									<td>{{auditLog.account}}</td>
+									<td>{{auditLog.application}}</td>
+									<td><a ng-click="showTicketDetailsDialog(auditLog)">{{auditLog.ticketNumber}}</a></td>
+									<td>{{auditLog.subject}}</td>
+									<td>{{auditLog.createTime | formatDateTime}}</td>
+									<td>{{auditLog.ticketingToolName}}</td>
+									<td>{{auditLog.iodID}}</td>
+									<td>{{auditLog.completedTime | formatDateTime }}</td>
+									<td style="padding-right:50px;"><a id="Status{{auditLog._id}}" href="#"
+										data-toggle="popover"
+										data-template='<div class=popover role=tooltip><div class=arrow></div><h3 class=popover-title style=color:black;></h3></div>'
+										title="{{auditLog.remediationState}} -{{auditLog.errorMessage}}" data-trigger="hover"
+										data-placement="left"><img width="20" src="images/{{auditLog.remediationState}}.png" alt="{{auditLog.remediationState}}" style="padding-top:0;padding-bottom:0;" /> </a></td>
+									<td><!-- <a id="ticketlog{{auditLog._id}}" tabindex="{{$index}}"
+										role="button" class="btn btn-success" data-toggle="popover"
+										data-trigger="click" data-placement="left"
+										title='Service flow for "{{auditLog.ticketKey}}"'
+										data-html="true"
+										data-template='<div class="popover" style=position:fixed;width:100%;max-width:1024px><div class=arrow></div><h3 class=popover-title style=color:black;></h3><div class=log-console><table class=popover-content></table></div></div>'
+										data-content="{{assembleLogDetails(auditLog)}}">Logger</a> -->
+										<a id="ticketlog{{auditLog._id}}" tabindex="{{$index}}" role="button" class="btn btn-success" ng-click="showLogContent(auditLog)">Logger
+										</a>
+											<img ng-show="auditLog.automationProvider=='Workflow'" src="images/orchestration24.png" title="Orchestrated Automation" style="float:right;padding-top:4px;padding-bottom:4px;"/>
+		 </td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row" style="margin: 10px 0; height: 120px;">Total
+							: {{ticketAuditLogs.length}}</div>
+					</div>
+					<div id="accountanalyticschart" style="display: none;">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-6" style="height: 350px;">
+									<div id="accountalertpiechart"></div>
+								</div>
+								<div class="col-xs-6">
+									<div id="accountcolumn"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Alert Processing Status for {{account.account_name}} Past
+											4 Hours</b><br>(All Applications)
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Day-wise Alert Volume for {{account.account_name}}</b><br>(Top
+										5 Applications)
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="applicationanalyticschart" style="display: none;">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-6" style="height: 350px;">
+									<div id="applicationalertpiechart"></div>
+								</div>
+								<div class="col-xs-6">
+									<div id="applicationbar"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Alert Processing Status for
+											{{applications[0].application_name}} Past 4 Hours</b>
+									</div>
+								</div>
+								<div class="col-xs-6">
+									<div style="width: 100%; text-align: center;">
+										<b>Alert Volume for Top 5 Alerts for
+											{{applications[0].application_name}}</b>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12" style="height: 350px;">
+									<div id="applicationcolumn"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div style="width: 100%; text-align: center;">
+										<b>Day-wise Alert Volume for
+											{{applications[0].application_name}} - Top 5 Alerts</b>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12">
+									<div style="height: 120px;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function() {
+//			$( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+//			$( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+			$( "#tabs" ).tabs();
+		});
+	</script>
+	
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container"
+			style="color: black; margin-bottom: 10px; height: 105px;">
+			<div class="row">
+				<div class="col-xs-6" style="border-right: 1px solid grey;">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-4">
+								<h3>IT Service Management Systems</h3>
+							</div>
+							<div class="col-xs-2">
+								<div style="padding-bottom: 10px; padding-top: 20px; font-size: 12pt;">
+									<span ng-show="monitoring_interval > 0">Next pull in (seconds)</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-5">
+								<span id="SolManODataAlert" class="health red"
+									style="display: none;"><strong>SAP SolMan</strong></span> <span
+									id="ITMRESTAlert" class="health red" style="display: none;"><strong>IBM
+										Tivoli</strong></span> <span
+									id="ServiceNowRESTAlert" class="health red" style="display: none;"><strong>ServiceNow</strong></span> <span id="SQLAlert" class="health red"
+									style="display: none;"><strong>Database</strong></span> <span id="NetCoolHttpOSLCAlert" class="health red"
+									style="display: none;"><strong>Netcool</strong></span> <span
+									id="ScheduledMaintenanceAlert" class="health red" style="display: none;"><strong>Scheduled
+										Job</strong></span> <span id="MoreAdapters" style="display: none;"><a
+									ng-click="showAllAdapters()" href="#">&nbsp;&nbsp;more...</a></span>
+							</div>
+							<div class="col-xs-1">
+								<div class="pull-right"
+									style="padding-right: 20px; font-size: 16pt;">
+									<span ng-show="monitoring_interval > 0">{{monitoring_interval}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-4">
+								<h3>Automation Systems</h3>
+							</div>
+							<div class="col-xs-2">
+								<div
+									style="padding-bottom: 10px; padding-top: 20px; font-size: 14pt;">Running
+									...</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6">
+								<span class="health {{ipsoft.status_color}}" title="{{ipsoft.error_message}}"><strong>IPSoft</strong></span> <span
+									class="health {{blue_prism.status_color}}" title="{{blue_prism.error_message}}"><strong>Blue Prism</strong></span> <span
+									class="health {{workload_automation.status_color}}" title="{{workload_automation.error_message}}"><strong>WA</strong></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<nav class="navbar navbar-inverse navbar-fixed-bottom"
+		style="min-height: 30px;">
+		<div class="container">
+			<div>Swarnasetu &copy; 2015. All Rights Reserved.</div>
+		</div>
+	</nav>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="SimulateAlertDialog" tabindex="-1"
+	role="dialog" aria-labelledby="dialog_title" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal"
+				ng-init="newAlert = {account_id:'account001',application_id:'acc001application001', alert_id:'acc001app001alert001', alert_name:'High File System Usage', alert_description:'acc001app001alertShortDesc001', alert_type: 'File System Usage', alert_status:'Yellow', alert_severity:'High', alert_raisedtime: Date()}"
+				ng-submit="onAlert(newAlert)">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="dialog_title" style="color: black;">Simulate
+						Alert</h4>
+				</div>
+				<div class="modal-body" style="color: black;">
+					<div class="form-group">
+						<label for="account" class="col-sm-3 control-label">Account</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="account"
+								ng-model="newAlert.account_id">
+								<option value="SAP Account">SAP Account</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="application" class="col-sm-3 control-label">Application</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="application"
+								ng-model="newAlert.application_id">
+								<option value="acc001application001">Application001</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="alert_name" class="col-sm-3 control-label">Alert
+							Name</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="alert_name"
+								ng-model="newAlert.alert_name" ng-change="onChange(newAlert)">
+								<option value="High File System Usage">High File System
+									Usage</option>
+								<option value="Java Server Node Status: RED">Java
+									Server Node Status: RED</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="alert_description" class="col-sm-3 control-label">Description</label>
+						<div class="col-sm-9">
+							<textarea class="form-control" id="alert_description"
+								ng-model="newAlert.alert_description" row="3">
+							</textarea>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="alert_type" class="col-sm-3 control-label">Alert
+							Type</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="alert_type"
+								ng-model="newAlert.alert_type">
+								<option value="File System Usage">File System Usage</option>
+								<option value="Java Server Node Status">Java Server
+									Node Status</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="alert_status" class="col-sm-3 control-label">Alert
+							Status</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="alert_status"
+								ng-model="newAlert.alert_status">
+								<option value="Green">Green</option>
+								<option value="Yellow">Yellow</option>
+								<option value="Red">Red</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="alert_severity" class="col-sm-3 control-label">Alert
+							Severity</label>
+						<div class="col-sm-9">
+							<select class="form-control" id="alert_severity"
+								ng-model="newAlert.alert_severity">
+								<option value="High">High</option>
+								<option value="Medium">Medium</option>
+								<option value="Low">Low</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="alert_raisedtime" class="col-sm-3 control-label">Raised
+							Time</label>
+						<div class="col-sm-9">
+							<span class="form-control" id="alert_raisedtime">
+								{{newAlert.alert_raisedtime}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Simulate</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="FilterDialog" title="Filter"
+	style="display: none; overflow: hidden; position: relative;">
+	<form id="filterForm" class="form-horizontal"
+		ng-submit="refreshAlerts()">
+		<div style="display: table; width: 100%;">
+			<div style="display: table-cell; width: 50%">
+				<div class="form-group" hidden>
+					<label for="filter_applications_select"
+						class="col-md-2 control-label">Applications</label>
+					<div class="col-md-10">
+						<select multiple id="filter_applications_select"
+							class="form-control" ng-model="filterCriteria.selected_apps"
+							ng-options="app.application_name for app in applications track by app.application_id">
+						</select>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-cell; width: 50%">
+				<div id="filter_from_input-wrap" class="form-group">
+					<label for="filter_from_input" class="col-md-2 control-label">From</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_from_input"
+							ng-model="filterCriteria.from">
+					</div>
+				</div>
+
+				<div id="filter_to_input-wrap" class="form-group">
+					<label for="filter_to_input" class="col-md-2 control-label">To</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_to_input"
+							ng-model="filterCriteria.to">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div
+			style="text-align: right; border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
+			<div class="dropdown" style="display: inline-block;">
+				<button class="btn btn-default dropdown-toggle" type="button"
+					id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"
+					ng-hide="download_access">
+					Download <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu"
+					aria-labelledby="dropdownMenu1">
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click="downloadByFilter('excel')">Excel(*.xlsx)</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click_disabled="downloadByFilter('pdf')"
+						style="color: #cccccc;">PDF(*.pdf)</a></li>
+				</ul>
+			</div>
+			<button type="button" class="btn btn-primary"
+				ng-click="RefreshTableByFilter()">Filter</button>
+			<button type="button" class="btn btn-default"
+				ng-click="clearFilter()">Clear</button>
+		</div>
+	</form>
+	<div style="max-height: 350px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Account Name</th>
+				<th>Application Name</th>
+				<th>Alert Name</th>
+				<th>Alert Description</th>
+				<th>Raised Time</th>
+				<th>Monitoring System</th>
+				<th>Automation System</th>
+				<th>Completed Time</th>
+				<th>Status</th>
+				<th>Log</th>
+			</thead>
+			<tbody>
+				<tr ng-show="auditLogsByFilter.length == 0 && showNoAlertData">
+					<td colspan="11"
+						style="font-size: 120%; font-weight: bold; vertical-align: middle; text-align: center;">No
+						Data !</td>
+				</tr>
+				<tr ng-show="auditLogsByFilter.length"
+					ng-repeat="auditLog in auditLogsByFilter">
+					<td>{{accounts[auditLog.accountID].account_name}}</td>
+					<td>{{auditLog.applicationName}}</td>
+					<td><a ng-click="showAlertDetailsDialog(auditLog)">{{auditLog.alertName}}</a></td>
+					<td>{{auditLog.alertDesc}}</td>
+					<td>{{auditLog.createTime | formatDateTime}}</td>
+					<td>{{auditLog.monitoringToolName}}</td>
+					<td>{{auditLog.iodID}}</td>
+					<td>{{auditLog.completedTime | formatDateTime }}</td>
+					<td style="padding-right: 50px;"><a href="javascript:void(0);" title="{{auditLog.status}}"><img width="20" src="images/{{auditLog.status}}.png" alt="{{auditLog.status}}" style="padding-top:0;padding-bottom:0;" /></a></td>
+					<td><a id="log{{auditLog._id}}" tabindex="{{$index}}"
+						role="button" class="btn btn-success" data-toggle="popover"
+						data-trigger="click" data-placement="left"
+						title="Alert Processing" data-html="true"
+						data-template='<div class="popover" style=position:fixed;width:1024px;max-width:1024px><div class=arrow></div><h3 class=popover-title style=color:black;></h3><div class=log-console><table class=popover-content></table></div></div>'
+						data-content="{{assembleLogDetails(auditLog)}}"
+						data-delay="{'hide':10000}">Logger</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="TicketsFilterDialog" title="Filter"
+	style="display: none; overflow: hidden; position: relative;">
+	<form id="filterForm" class="form-horizontal"
+		ng-submit="refreshAlerts()">
+		<div style="display: table; width: 100%;">
+			<div style="display: table-cell; width: 50%">
+				<div class="form-group" hidden>
+					<label for="filter_applications_select"
+						class="col-md-2 control-label">Applications</label>
+					<div class="col-md-10">
+						<select multiple id="filter_applications_select"
+							class="form-control" ng-model="filterCriteria.selected_apps"
+							ng-options="app.application_name for app in applications track by app.application_id">
+						</select>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-cell; width: 50%">
+				<div id="filter_from_input-wrap" class="form-group">
+					<label for="filter_from_input" class="col-md-2 control-label">From</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_from_input"
+							ng-model="filterCriteria.from">
+					</div>
+				</div>
+
+				<div id="filter_to_input-wrap" class="form-group">
+					<label for="filter_to_input" class="col-md-2 control-label">To</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_to_input"
+							ng-model="filterCriteria.to">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div
+			style="text-align: right; border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
+			<div class="dropdown" style="display: inline-block;">
+				<button class="btn btn-default dropdown-toggle" type="button"
+					id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"
+					ng-hide="download_access">
+					Download <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu"
+					aria-labelledby="dropdownMenu1">
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click="downloadByFilter('excel')">Excel(*.xlsx)</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click_disabled="downloadByFilter('pdf')"
+						style="color: #cccccc;">PDF(*.pdf)</a></li>
+				</ul>
+			</div>
+			<button type="button" class="btn btn-primary"
+				ng-click="RefreshTableByFilter()">Filter</button>
+			<button type="button" class="btn btn-default"
+				ng-click="clearFilter()">Clear</button>
+		</div>
+	</form>
+	<div style="max-height: 350px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Account Name</th>
+				<th>Application Name</th>
+				<th>Ticket</th>
+				<th>Ticket Description</th>
+				<th>Raised Time</th>
+				<th>Ticketing System</th>
+				<th>Automation System</th>
+				<th>Completed Time</th>
+				<th>Status</th>
+				<th>Log</th>
+			</thead>
+			<tbody>
+				<tr ng-show="ticketAuditLogsByFilter.length == 0 && showNoTicketData">
+					<td colspan="11"
+						style="font-size: 120%; font-weight: bold; vertical-align: middle; text-align: center;">No
+						Data !</td>
+				</tr>
+				<tr ng-show="ticketAuditLogsByFilter.length"
+					ng-repeat="auditLog in ticketAuditLogsByFilter">
+					<td>{{auditLog.account}}</td>
+					<td>{{auditLog.application}}</td>
+					<td><a ng-click="showTicketDetailsDialog(auditLog)">{{auditLog.ticketNumber}}</a></td>
+					<td>{{auditLog.subject}}</td>
+					<td>{{auditLog.createTime | formatDateTime}}</td>
+					<td>{{auditLog.ticketingToolName}}</td>
+					<td>{{auditLog.iodID}}</td>
+					<td>{{auditLog.completedTime | formatDateTime }}</td>
+					<td style="padding-right: 50px;"><a href="javascript:void(0);" title="{{auditLog.remediationState}}"><img width="20" src="images/{{auditLog.remediationState}}.png" alt="{{auditLog.remediationState}}" style="padding-top:0;padding-bottom:0;" /></a></td>
+					<td><a id="log{{auditLog._id}}" tabindex="{{$index}}"
+						role="button" class="btn btn-success" data-toggle="popover"
+						data-trigger="click" data-placement="left"
+						title="Ticket Processing" data-html="true"
+						data-template='<div class="popover" style=position:fixed;width:1024px;max-width:1024px><div class=arrow></div><h3 class=popover-title style=color:black;></h3><div class=log-console><div class=popover-content></div></div></div>'
+						data-content="{{assembleLogDetails(auditLog)}}">Logger
+						</a>
+						<img ng-show="auditLog.automationProvider=='Workflow'" src="images/orchestration24.png" title="Orchestrated Automation" style="float:right;padding-top:4px;padding-bottom:4px;"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="AlertsWithoutSOPsDialog" title="Alerts w/o SOP"
+	style="display: none; overflow: hidden; position: relative;">
+	<form id="filterForm" class="form-horizontal"
+		ng-submit="refreshAlerts()">
+		<div style="display: table; width: 100%;">
+			<div style="display: table-cell; width: 50%">
+				<div class="form-group" hidden>
+					<label for="filter_applications_select"
+						class="col-md-2 control-label">Applications</label>
+					<div class="col-md-10">
+						<select multiple id="filter_applications_select"
+							class="form-control" ng-model="filterCriteria.selected_apps"
+							ng-options="app.application_name for app in applications track by app.application_id">
+						</select>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-cell; width: 50%">
+				<div id="filter_from_input-wrap" class="form-group">
+					<label for="filter_from_input" class="col-md-2 control-label">From</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_from_input"
+							ng-model="filterCriteria.from">
+					</div>
+				</div>
+
+				<div id="filter_to_input-wrap" class="form-group">
+					<label for="filter_to_input" class="col-md-2 control-label">To</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_to_input"
+							ng-model="filterCriteria.to">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div
+			style="text-align: right; border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
+<!--
+			<div class="dropdown" style="display: inline-block;">
+				<button class="btn btn-default dropdown-toggle" type="button"
+					id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"
+					ng-hide="download_access">
+					Download <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu"
+					aria-labelledby="dropdownMenu1">
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click="downloadByFilter('excel')">Excel(*.xlsx)</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click_disabled="downloadByFilter('pdf')"
+						style="color: #cccccc;">PDF(*.pdf)</a></li>
+				</ul>
+			</div>
+-->
+			<button type="button" class="btn btn-primary"
+				ng-click="RefreshTableByFilter()">Filter</button>
+			<button type="button" class="btn btn-default"
+				ng-click="clearFilter()">Clear</button>
+		</div>
+	</form>
+	<div style="max-height: 200px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Account Name</th>
+				<th>Application Name</th>
+				<th>Alert Name</th>
+				<th>Monitoring System</th>
+				<th>Raised Time</th>
+			</thead>
+			<tbody>
+				<tr ng-show="auditLogsWithoutSOPsByFilter.length == 0">
+					<td colspan="11"
+						style="font-size: 120%; font-weight: bold; vertical-align: middle; text-align: center;">No
+						Data !</td>
+				</tr>
+				<tr ng-show="auditLogsWithoutSOPsByFilter.length"
+					ng-repeat="auditLog in auditLogsWithoutSOPsByFilter">
+					<td>{{auditLog.accountName}}</td>
+					<td>{{auditLog.applicationName}}</td>
+					<td><a ng-click="showAlertDetailsDialog(auditLog)">{{auditLog.alertName}}</a></td>
+					<td>{{auditLog.monitoringToolName}}</td>
+					<td>{{auditLog.createTime | formatDateTime}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="TicketsWithoutSOPsDialog" title="Tickets w/o SOP"
+	style="display: none; overflow: hidden; position: relative;">
+	<form id="filterForm" class="form-horizontal"
+		ng-submit="refreshAlerts()">
+		<div style="display: table; width: 100%;">
+			<div style="display: table-cell; width: 50%">
+				<div class="form-group" hidden>
+					<label for="filter_applications_select"
+						class="col-md-2 control-label">Applications</label>
+					<div class="col-md-10">
+						<select multiple id="filter_applications_select"
+							class="form-control" ng-model="filterCriteria.selected_apps"
+							ng-options="app.application_name for app in applications track by app.application_id">
+						</select>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-cell; width: 50%">
+				<div id="filter_from_input-wrap" class="form-group">
+					<label for="filter_from_input" class="col-md-2 control-label">From</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_from_input"
+							ng-model="filterCriteria.from">
+					</div>
+				</div>
+
+				<div id="filter_to_input-wrap" class="form-group">
+					<label for="filter_to_input" class="col-md-2 control-label">To</label>
+					<div class="col-md-10">
+						<input type="text" class="form-control" id="filter_to_input"
+							ng-model="filterCriteria.to">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div
+			style="text-align: right; border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;">
+<!--
+			<div class="dropdown" style="display: inline-block;">
+				<button class="btn btn-default dropdown-toggle" type="button"
+					id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"
+					ng-hide="download_access">
+					Download <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu"
+					aria-labelledby="dropdownMenu1">
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click="downloadByFilter('excel')">Excel(*.xlsx)</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1"
+						href="#" ng-click_disabled="downloadByFilter('pdf')"
+						style="color: #cccccc;">PDF(*.pdf)</a></li>
+				</ul>
+			</div>
+-->
+			<button type="button" class="btn btn-primary"
+				ng-click="RefreshTableByFilter()">Filter</button>
+			<button type="button" class="btn btn-default"
+				ng-click="clearFilter()">Clear</button>
+		</div>
+	</form>
+	<div style="max-height: 200px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Account Name</th>
+				<th>Category</th>
+				<th>Ticket Number</th>
+				<th>Urgency</th>
+				<th>Ticketing System</th>
+				<th>Raised Time</th>
+				<th>Notification</th>
+			</thead>
+			<tbody>
+				<tr ng-show="ticketAuditLogsWithoutSOPsByFilter.length == 0">
+					<td colspan="11"
+						style="font-size: 120%; font-weight: bold; vertical-align: middle; text-align: center;">No
+						Data !</td>
+				</tr>
+				<tr ng-show="ticketAuditLogsWithoutSOPsByFilter.length"
+					ng-repeat="auditLog in ticketAuditLogsWithoutSOPsByFilter">
+					<td>{{auditLog.account}}</td>
+					<td>{{auditLog.category}}</td>
+					<td><a ng-click="showTicketDetailsDialog(auditLog)">{{auditLog.ticketNumber}}</a></td>
+					<td>{{auditLog.urgency}}</td>
+					<td>{{auditLog.ticketingToolName}}</td>
+					<td>{{auditLog.openedAt | formatDateTime}}</td>
+					<td>{{auditLog.lastNotifiedTime}}<button id="notifyBtn_{{auditLog._id}}" class="btn btn-success rm-relish" ng-click="notify(auditLog)">Notify</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="ChartDetailsDialog" title="Details"
+	style="display: none; overflow: hidden; position: relative;">
+	<div style="max-height: 350px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Account Name</th>
+				<th>Application Name</th>
+				<th>Alert Name</th>
+				<th>Alert Description</th>
+				<th>Raised Time</th>
+				<th>Monitoring System</th>
+				<th>Automation System</th>
+				<th>Completed Time</th>
+				<th>Status</th>
+				<th>Log</th>
+			</thead>
+			<tbody>
+				<tr ng-show="chartDetails.length"
+					ng-repeat="auditLog in chartDetails">
+					<td>{{accounts[auditLog.accountID].account_name}}</td>
+					<td>{{auditLog.applicationName}}</td>
+					<td><a ng-click="showAlertDetailsDialog(auditLog)">{{auditLog.alertName}}</a></td>
+					<td>{{auditLog.alertDesc}}</td>
+					<td>{{auditLog.createTime | formatDateTime}}</td>
+					<td>{{auditLog.monitoringToolName}}</td>
+					<td>{{auditLog.iodID}}</td>
+					<td>{{auditLog.completedTime | formatDateTime }}</td>
+					<td>{{auditLog.status}}</td>
+					<td><a id="log{{auditLog._id}}" tabindex="{{$index}}"
+						role="button" class="btn btn-success" data-toggle="popover"
+						data-trigger="click" data-placement="left"
+						title="Alert Processing" data-html="true"
+						data-template='<div class="popover" style=position:fixed;width:1024px;max-width:1024px><div class=arrow></div><h3 class=popover-title style=color:black;></h3><div class=log-console><table class=popover-content></table></div></div>'
+						data-content="{{assembleLogDetails(auditLog)}}"
+						data-delay="{'hide':10000}">Logger</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="AdaptersDialog" title="Monitor Systems"
+	style="display: none; overflow: hidden; position: relative;">
+	<div style="max-height: 350px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Name</th>
+				<th>Status</th>
+			</thead>
+			<tbody>
+				<tr ng-show="adapters.length" ng-repeat="adapter in adapters">
+					<td>{{adapter.name}}</td>
+					<td><span class="health {{adapter.status}}">&nbsp;</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="AuditLogChart"
+	style="display: none; overflow: hidden; position: relative;"></div>
+
+<div class="modal fade" id="DownloadDialog" tabindex="-1" role="dialog"
+	aria-labelledby="dialog_title" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form class="form-horizontal" ng-submit="download(filter)">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="dialog_title" style="color: black;">Download</h4>
+				</div>
+				<div class="modal-body" style="color: black;">
+					<div class="form-group">
+						<label for="file_format" class="col-sm-3 control-label">File
+							Format</label>
+						<div class="col-sm-9">
+							<select id="file_format" class="form-control">
+								<option value="excel" selected>Excel (*.xlsx)</option>
+								<!-- <option value="pdf" disabled="disabled">PDF (*.pdf)</option> -->
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Download</button>
+					<button type="button" class="btn btn-default pull right"
+						data-dismiss="modal">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="ServiceStatusDialog" title="Service and Component Status Dialog"
+	style="display: none; overflow: hidden; position: relative;">
+	<div style="color: #fff;font-size: 14px;">
+		<table style="width:100%;" class="table">
+			<thead>
+				<tr>
+				    <th colspan="2" style="background-color: #1b252d;border-top: 1px solid #11181d;padding: 12px 10px;text-transform: uppercase;">Service and Component</th>
+				 </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="health_item in health_items" class="service-row" ng-class-even="service-even">
+				    <td width="20%">
+				    	<div>
+				    		<div class="health-image health-image-{{health_item.status_color}}" title="{{health_item.error_message}}"></div>
+				    	</div>
+				    </td>
+					<td width="80%">{{health_item.display_name}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="AlertDetailsDialog" title="Alert Details"
+	style="display: none; overflow: hidden; position: relative;">
+	<div style="max-height: 350px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Name</th>
+				<th>Value</th>
+			</thead>
+			<tbody>
+				<tr><td>Alert ID</td><td>{{alert.alertID}}</td></tr>
+				<tr><td>Alert Name</td><td>{{alert.alertName}}</td></tr>
+				<tr><td>Account Name</td><td>{{alert.accountName}}</td></tr>
+				<tr><td>Application Name</td><td>{{alert.applicationName}}</td></tr>
+				<tr><td>Alert Description</td><td>{{alert.alertDesc}}</td></tr>
+				<tr><td>Raised Time</td><td>{{alert.alertRaisedTime}}</td></tr>
+				<tr><td>Monitoring System</td><td>{{alert.monitoringToolName}}</td></tr>
+				<tr><td>Automation System</td><td>{{alert.automationProvider}}</td></tr>
+				<tr><td>Completed Time</td><td>{{alert.completedTime}}</td></tr>
+				<tr><td>Status</td><td>{{alert.status}}</td></tr>
+				
+				<!-- added by YaBin for #193599 in RTC -->
+				
+				<tr><td>IOD</td><td>{{alert.iodID}}</td></tr>
+				<tr><td>Severity</td><td>{{alert.alertSeverity}}</td></tr>
+				<tr><td>Category</td><td>{{alert.alertType}}</td></tr>
+				<tr><td>Originated By</td><td>{{alert.alertSource}}</td></tr>
+				
+				<!-- end of #193599 in RTC -->
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="TicketDetailsDialog" title="Ticket Details"
+	style="display: none; overflow: hidden; position: relative;">
+	<div style="max-height: 350px; overflow: auto; margin-top: 15px;">
+		<table class="table" style="width: 95%;">
+			<thead>
+				<th>Name</th>
+				<th>Value</th>
+			</thead>
+			<tbody>
+				<tr><td>Ticket</td><td>{{ticket.ticketNumber}}</td></tr>
+				<tr><td>Ticket Description</td><td>{{ticket.subject}}</td></tr>
+				<tr><td>Account Name</td><td>{{ticket.account}}</td></tr>
+				<tr><td>Application Name</td><td>{{ticket.application}}</td></tr>
+				<tr><td>Raised Time</td><td>{{ticket.openedAt}}</td></tr>
+				<tr><td>Ticketing System</td><td>{{ticket.ticketingToolName}}</td></tr>
+				<tr><td>Automation System</td><td>{{ticket.automationProvider}}</td></tr>
+				<tr><td>Completed Time</td><td>{{ticket.completedTime}}</td></tr>
+				<tr><td>Status</td><td>{{ticket.remediationState}}</td></tr>
+				
+				<!-- added by YaBin for #193599 in RTC -->
+				
+				<tr><td>IOD</td><td>{{ticket.iodID}}</td></tr>
+				<tr><td>Severity</td><td>{{ticket.urgency}}</td></tr>
+				<tr><td>Category</td><td>{{ticket.category}}</td></tr>
+				<tr><td>Originated By</td><td>{{ticket.requester}}</td></tr>
+				
+				<!-- end of #193599 in RTC -->
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="TicketLogDetailsDialog" title=""
+	style="display: none; overflow: hidden; position: relative;">
+	<div id="TicketLogDetailsDialog_console" class="log-console">
+	</div>
+</div>
+
+<div class="modal fade" id="AboutDialog" tabindex="-1" role="dialog"
+	aria-labelledby="dialog_title" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="dialog_title" style="color: black;">About
+					- Dashboard</h4>
+			</div>
+			<div class="modal-body" style="color: black;">version I20150409
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WarningMessageDialog" title="Warning"
+	style="display: none; overflow: hidden;"></div>
+

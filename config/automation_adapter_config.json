@@ -1,0 +1,224 @@
+{
+	"adapters": {
+		 "BluePrismAdapter": {
+            "connections": [{
+                    "connection": {
+						"connectionId": "1",
+						"connectionProperties": {
+							"protocol": "https",
+							"host": "cap-sg-prd-4.integration.ibmcloud.com",
+							"port": "15519",
+							"timeout": "10000",
+							"authetication": {
+								"userId": "IBPAS\\IN004965",
+								"password": "Deb@ibm2"
+							},
+							"client": "POC_3",
+							"account": "IBM Global Account 3",
+							"encoding": "UTF-8",
+							"messageSize": "500"
+						},
+                        "automationProcesses": [{
+								"processId": "IBPGBGateway",
+								"wsdlLocation": "/ws/IBPGBGateway?wsdl",
+								"epuri": "/ws/IBPGBGateway",
+								"schemaLocation": "",
+								"namespace": "",
+								"operation": "IBPGBGateway"
+							}]
+                    }
+                },
+
+                {
+                    "connection": {
+                        "connectionId": "2",
+                        "connectionProperties": {
+                            "protocol": "http",
+                            "host": "9.109.122.221",
+                            "port": "8181",
+                            "timeout": "10000",
+                            "authetication": {
+                                "userId": "admin",
+                                "password": "Admin@123"
+                            },
+                            "client": "Client1",
+                            "account": "SAP Account",
+                            "encoding": "UTF-8",
+                            "messageSize": "500"
+                        },
+                        "automationProcesses": [{
+                            "processId": "Process111",
+                            "wsdlLocation": "/ws/SAPCheckLockEntriesNew?wsdl",
+                            "epuri": "/ws/SAPCheckLockEntriesNew",
+                            "schemaLocation": "",
+                            "namespace": "",
+                            "operation": "SAPCheckLockEntriesNewRequest"
+                        }, 
+                         {
+                        	 "processId": "E2EDetermineUserAccessRightsProcess",
+                        	 "wsdlLocation": "/ws/E2EDetermineUserAccessRightsProcess?wsdl", 
+                        	 "epuri": "/ws/E2EDetermineUserAccessRightsProcess",
+                        	 "schemaLocation": "",
+                        	 "namespace": "",
+                        	 "operation": "E2EDetermineUserAccessRightsProcess",
+                        	 "operationShortDesc":"Get user id details"
+                         }, 
+                         {
+                        	 "processId": "GenerateOTPProcessResponse",
+                             "wsdlLocation": "/ws/GenerateOTPProcess?wsdl",
+                             "epuri": "/ws/GenerateOTPProcess",
+                             "schemaLocation": "",
+                             "namespace": "",
+                             "operation": "GenerateOTPProcess"
+                         }, 
+                         {
+                        	 "processId": "VerifyOTPForUserRequest",
+                             "wsdlLocation": "/ws/VerifyOTPForUser?wsdl",
+                             "epuri": "/ws/VerifyOTPForUser",
+                             "schemaLocation": "",
+                             "namespace": "",
+                             "operation": "VerifyOTPForUser"
+                         }, 
+                         {
+                        	 "processId": "PasswordResetRequest",
+                             "wsdlLocation": "/ws/PasswordReset?wsdl",
+                             "epuri": "/ws/PasswordReset",
+                             "schemaLocation": "",
+                             "namespace": "",
+                             "operation": "PasswordReset"
+                         }, 
+                         {
+                        	 "processId": "GetPersonnelNumberDetailRequest",
+                             "wsdlLocation": "/ws/GetPersonnelNumberDetail?wsdl",
+                             "epuri": "/ws/GetPersonnelNumberDetail",
+                             "schemaLocation": "",
+                             "namespace": "",
+                             "operation": "GetPersonnelNumberDetail"
+                         }]
+                    }
+                },{
+                    "connection": {
+                        "connectionId": "Robo1",
+                        "connectionProperties": {
+                            "protocol": "http",
+                            "host": "cap-sg-prd-4.integration.ibmcloud.com", 
+                            "port": "17758",
+                            "timeout": "10000",
+                          "authetication": {
+                                "userId": "admin",
+                                "password": "UKDCGRPA@SD"
+                            },
+                            "client": "DCG",
+                            "account": "IBM Global Account 1",
+                            "encoding": "UTF-8",
+                            "messageSize": "500"
+                        },
+                        "automationProcesses": [{
+                            "processId": "PIESystemCamundaGB",
+                            "wsdlLocation": "/ws/PIESystemCamundaGB?wsdl",
+                            "epuri": "/ws/PIESystemCamundaGB",
+                            "schemaLocation": "",
+                            "namespace": "",
+                            "operation": "PIESystemCamundaGB"
+                        }]
+                    }
+                    },{
+                    "connection": {
+                        "connectionId": "Robo2",
+                        "connectionProperties": {
+                            "protocol": "http",
+                            "host": "cap-sg-prd-4.integration.ibmcloud.com", 
+                            "port": "17758",
+                            "timeout": "10000",
+                          "authetication": {
+                                "userId": "admin",
+                                "password": "UKDCGRPA@SD"
+                            },
+                            "client": "DCG",
+                            "account": "IBM Global Account 1",
+                            "encoding": "UTF-8",
+                            "messageSize": "500"
+                        },
+                        "automationProcesses": [{
+                            "processId": "RemedyAPIProcessCamundaGB",
+                            "wsdlLocation": "/ws/RemedyAPIProcessCamundaGB?wsdl",
+                            "epuri": "/ws/RemedyAPIProcessCamundaGB",
+                            "schemaLocation": "",
+                            "namespace": "",
+                            "operation": "RemedyAPIProcessCamundaGB"
+                        }]
+                    }
+                    },{
+	                    "connection": {
+	                        "connectionId": "Robo3",
+	                        "connectionProperties": {
+	                            "protocol": "http",
+	                            "host": "localhost", 
+	                            "port": "8181",
+	                            "timeout": "10000", 
+	                            "authetication": {
+									"userId": "admin",
+									"password": "admin125"
+								},                           
+	                            "client": "",
+	                            "account": "",
+	                            "encoding": "UTF-8",
+	                            "messageSize": "500"
+	                        },
+	                        "automationProcesses": [{
+	                            "processId": "TestProcess1",
+	                            "wsdlLocation": "/ws/TestProcess1?wsdl",
+	                            "epuri": "/ws/TestProcess1",
+	                            "schemaLocation": "",
+	                            "namespace": "",
+	                            "operation": "TestProcess1"
+	                         }]
+	                        }
+                       },{
+		                    "connection": {
+		                        "connectionId": "Robo4",
+		                        "connectionProperties": {
+		                            "protocol": "http",
+		                            "host": "localhost", 
+		                            "port": "8181",
+		                            "timeout": "10000", 
+		                            "authetication": {
+										"userId": "admin",
+										"password": "admin125"
+									},                           
+		                            "client": "",
+		                            "account": "",
+		                            "encoding": "UTF-8",
+		                            "messageSize": "500"
+		                        },
+		                        "automationProcesses": [{
+		                            "processId": "TestProcess2",
+		                            "wsdlLocation": "/ws/TestProcess2?wsdl",
+		                            "epuri": "/ws/TestProcess2",
+		                            "schemaLocation": "",
+		                            "namespace": "",
+		                            "operation": "TestProcess2"
+		                        }]
+	                    	}
+                }
+            ]
+        },
+		"AARESTAdapter": {
+			"connections": [
+				{
+					"connection": {
+						"connectionId": "1",
+						"connectionProperties": {
+							"host": "9.195.205.226",
+							"port": "3003",
+							"path": "/account",
+							"fileName": "GBInput",
+							"fileType":"txt"
+						},
+						"contentType": "JSON"
+					}
+				}
+			]
+		}
+	}
+}

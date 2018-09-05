@@ -1,0 +1,35 @@
+{
+  "name": "swarnasetu",
+  "version": "0.0.1",
+  "authors": [
+    "Hao Chen <chhaobj@cn.ibm.com>"
+  ],
+  "description": "Application Monitoring",
+  "main": "app.js",
+  "keywords": [
+    "Application Monitoring"
+  ],
+  "license": "IBM",
+  "homepage": "none",
+  "private": true,
+  "dependencies": {
+	  "socket.io-client" : "*",
+	  "jquery": "*",
+	  "jquery-ui" : "*",
+	  "angular" : "1.4.1",
+	  "angular-resource" : "*",
+	  "angular-ui-router" : "*",
+	  "angular-messages" : "1.4.0-rc.0",
+	  "bootstrap" : "*",
+	  "multiple-select" : "*",
+	  "datetimepicker" : "*",
+	  "moment" : "*",
+	  "moment-timezone" : "*",
+	  "textAngular" : "1.1.2",
+	  "angular-sanitize" : "*",
+	  "angular-route" : "*",
+	  "angular-file-upload" : "*",
+	  "ng-file-upload" : "*",
+	  "underscore" : "*"
+  }
+}

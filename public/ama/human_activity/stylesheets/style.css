@@ -1,0 +1,209 @@
+/* style.css
+ * This file provides css styles.
+ */
+
+body,html {
+	background-color: #3b4b54; width : 100%;
+	height: 100%;
+	margin: 0 auto;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	color: #ffffff;
+}
+
+a {
+	text-decoration: none;
+	color: #00aed1;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+img {
+	padding-top: 10%;
+	display: block;
+	margin: 0 auto;
+	padding-bottom: 2em;
+	max-width:200px;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: 2em;
+}
+
+.leftHalf {
+	float: left;
+	background-color: #26343f;
+	width: 45%;
+	height: 100%;
+}
+
+.rightHalf {
+	float: right;
+	width: 55%;
+	background-color: #313f4a;
+	height: 100%;
+	overflow:auto;
+}
+
+.blue {
+	color: #00aed1;
+}
+
+
+table {
+	table-layout: fixed;
+	margin: 0 auto;
+	word-wrap: break-word;
+	padding-top:10%;
+	width : 100%;
+}
+
+th {
+	border-bottom: 1px solid #000;
+}
+
+th, td {
+	text-align: left;
+	padding: 2px 20px;
+}
+
+.env-var {
+	text-align: right;
+	border-right: 1px solid #000;
+	width: 30%;
+}
+
+pre {
+	padding: 0;
+	margin: 0;
+}
+
+.header {
+    background-color: #26343f; !important
+    box-shadow: 0 0 5pt 1pt rgba(0, 0, 0, 0.3);
+    font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    height: 50px;
+    left: 0;
+    padding-left: 20px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 150;
+}
+
+
+
+.log-console {
+    background-color: #1f2831;
+    border: 0 none;
+    color: #cdcdcd;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 1.4;
+    min-height: calc(100vh - 571px);
+    overflow: hidden;
+    padding-left: 17px !important;
+    padding-top: 15px !important;
+/*    white-space: pre-wrap;*/
+    width : 100%;
+}
+
+.health{
+	display:inline-block;
+	height:16px;
+	font-size:16pt;
+}
+
+.health:before {
+    margin-left: 1em;
+    margin-right: 0.7em;
+	border-radius: 50%;
+    content: "";
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+.health.green:before{
+	background-color: #13dd6d;
+}
+
+.health.yellow:before{
+	background-color: #f3f00a;
+}
+
+.health.red:before{
+	background-color: #ff2c2c;
+}
+
+.health.grey:before{
+	background-color: grey;
+}
+
+.health-image{
+	background-size: 100% auto;
+    display: inline-block;
+    float: left;
+    height: 16px;
+    margin: 2px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+.health-image-green{
+	background-image: url('/ama/dashboard/images/checkmark.svg')
+}
+
+.health-image-red {
+	background-image: url('/ama/dashboard/images/limitedAvailability.svg');
+}
+
+.health-image-grey {
+	background-image : url('/ama/dashboard/images/noState.svg');
+}
+
+.service-even {
+    background-color: #304049 !important;
+}
+.service-row {
+    background-color: #3b4b54;
+    border-top: 1px solid #94a3ab;
+    padding: 12px 0;
+}
+
+.btnuser-success {
+	background-image : linear-gradient(to bottom, #2d3f49 0px, #26343f 100%);/*background-image : linear-gradient(to bottom, #00b299 0px, #009985 100%)*/
+	
+	background-color: #2d3f49;
+	}
+.btnuser-success {
+    background-color: #2d3f49;
+    border-color: #dfdfdf;/*#00b299*/
+    color: #dfdfdf;
+}
+.btnuser-success.active, .btnuser-success.focus, .btnuser-success:active, .btnuser-success:focus, .btnuser-success:hover, .open > .dropdown-toggle.btn-success {
+    background-color: #2d3f49;
+    border-color: #dfdfdf;
+    color: #dfdfdf;
+}
+
+.btnuser-success.disabled, .btnuser-success:disabled, .btnuser-success[disabled] {
+    background-color: grey;
+    border-color: #dfdfdf;
+    background-image: none;
+}
+
+.btnuser-success.active, .btnuser-success:active, .open > .dropdown-toggle.btn-success {
+    background-image: none;
+}
+
+.btnuser-success:hover {
+	background-image : linear-gradient(to bottom, #00b299 0px, #00b299 100%);
+    background-color: #00b299;
+    border-color: #009985;
+    color: #ffffff;
+}

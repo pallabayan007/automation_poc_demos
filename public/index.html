@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+<script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="lib/system_properties.js"></script>
+<script type="text/javascript" src="ama/sop_editor/js/restAPP.js"></script>
+<script>
+$(document).ready(function() {
+	//localStorage.setItem("loginFlag","false");
+	var docDomain = systemProperties.base_uri;
+	var docDomainType = systemProperties.deployment_type;
+	if(docDomainType == 'ON_PREM'){
+	var docDomain_uri = docDomain + '/login.html';
+			window.location.href= docDomain_uri;
+	}
+	else{
+		//window.location.href= AuthLogin;
+		var docDomain_uri = docDomain + '/login.html';
+			window.location.href= docDomain_uri;
+	}
+});
+
+/* $(document).ready(function() {
+		window.location.href= AuthLogin;
+		
+	}); */
+</script> 
+</head>
+</html>
