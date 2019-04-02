@@ -1,0 +1,17 @@
+---
+applications:
+- name: telcodemoforgoogle
+  version: 11.3.0
+  host: telcodemoforgoogle 
+  path: .
+  memory: 256M
+  instances: 1
+  services:
+  
+  - Conversation-k1
+ 
+  env:
+    NPM_CONFIG_PRODUCTION: false
+    NODE_MODULES_CACHE: false
+
+    

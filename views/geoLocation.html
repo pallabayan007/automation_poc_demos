@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	<p>Click the button to get your coordinates.</p>
+
+	<button onclick="getLocation()">Try It</button>
+
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDblUJ9jscUifZjFfyinKV-q4yl8s9EL8"></script>
+	<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+	var mylat = position.coords.latitude;
+	var mylng = position.coords.longitude;
+	
+	//alert(mylat);
+	console.log("Latitude: " + position.coords.latitude);
+	console.log("Longitude: " + position.coords.longitude);
+ 
+ geocoder = new google.maps.Geocoder();
+ 
+ var latlng = new google.maps.LatLng(mylat, mylng);
+ geocoder.geocode({'latLng': latlng}, function(results, status) { 
+ //x.innerHTML = "PIN_CODE : "+results[0].address_components.postal_code;
+ if (status == google.maps.GeocoderStatus.OK) 
+ { 
+	console.log("Full JSON "+JSON.stringify(results[0]));
+	console.log("The user's zipcode is "+results[0].address_components.postal_code); 
+	
+	if (results[0]) {
+                for (j = 0; j < results[0].address_components.length; j++) {
+                    if (results[0].address_components[j].types[0] == 'postal_code')
+                        console.log("Zip Code: " + results[0].address_components[j].short_name);
+                }
+            }
+	
+	
+ }});
+ var fail=function(e){alert("GPS Failed");};
+ 
+}
+</script>
+
+</body>
+</html>

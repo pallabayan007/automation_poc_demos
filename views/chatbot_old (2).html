@@ -1,0 +1,320 @@
+<html>
+<head>
+  
+  <base href="/">
+  <title>Telco Bot</title>  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:image" content="conversation.svg" />
+  <meta property="og:title" content="Conversation Chat Simple" />
+  <meta property="og:description" content="Sample application that shows how to use the Conversation API to identify user intents" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/4gplan.css">
+  <link rel="stylesheet" href="/css/styleForVoice.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body onload="disableTextbox()">
+  <div id="contentParent" class="responsive-columns-wrapper">
+    <div id="chat-column-holder" class="responsive-column content-column">
+    	<div class="chatMenuSection">
+      	<div style="float:left; margin:3px 10px;">
+      		<img src="/img/AutomationCIC.png" alt="Powered by IBM Watson">
+      	</div>
+      	<div style="float:right; margin:7px 24px;">
+      		<img src="/img/telco.png" alt="Telecom Order management">
+      		
+      	</div>
+	</div>
+	
+      <div class="chat-column">
+        <div id="scrollingChat"></div>
+        <label for="textInput" class="inputOutline">	          	
+          <input id="textInput" class="input responsive-column"
+            placeholder="Type something here" type="text" autocomplete='off'
+            onkeydown="ConversationPanel.inputKeyDown(event, this), ConversationPanel.instantiateEventHanders(event)" onKeyPress="enterpressalert(event, this), callSpeechToText()" onfocus="callSpeechToText()"> 		
+        </label>			
+      </div>
+    </div>
+	
+  </div>
+<style>
+</style>
+  <script src="/js/common.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/api.js"></script>
+  <script type="text/javascript"></script>
+  <script src="/js/conversation.js"></script>
+  <script src="/js/payload.js"></script>
+  <script src="/js/global.js"></script>
+  
+  
+ 
+  <script>
+  //
+  isVoiceBasedConv = false;
+  function disableTextbox(){
+	document.getElementById("textInput").style.display = "none";
+  }
+  function enableTextChat(){
+	document.getElementById("textInput").disabled = false;
+	//document.getElementById("voiceChat").style.display = "none";
+	//document.getElementById("textChat").style.display = "none";
+	document.getElementById("voiceChat").disabled = true;
+	document.getElementById("textChat").disabled = true;
+	document.getElementById("textInput").style.display = "block";
+	isVoiceBasedConv = false;
+  }
+	function myFunction0()
+	{
+		var modal1 = document.getElementById('myModal1');
+		var modal2 = document.getElementById('myModal2');
+		var modal3 = document.getElementById('myModal3');
+		
+		modal1.style.display = "block";
+		modal2.style.display = "none";
+		modal3.style.display = "none";
+		
+		var span1 = document.getElementsByClassName("close")[0];
+		
+		document.getElementById("textInput").value=document.getElementById("btnPlatinum").value;
+		span1.onclick = function() {
+			modal1.style.display = "none";	  
+		}
+	}  
+	function myFunction2()
+	{
+		var modal1 = document.getElementById('myModal1');
+		var modal2 = document.getElementById('myModal2');
+		var modal3 = document.getElementById('myModal3');
+		
+		modal1.style.display = "none";
+		modal2.style.display = "block";
+		modal3.style.display = "none";
+		
+		var span2 = document.getElementsByClassName("close")[1];
+		
+		document.getElementById("textInput").value=document.getElementById("btnGold").value;
+		span2.onclick = function() {
+			modal2.style.display = "none";	  
+		}
+	}  
+	function myFunction3()
+	{
+		var modal1 = document.getElementById('myModal1');
+		var modal2 = document.getElementById('myModal2');
+		var modal3 = document.getElementById('myModal3');
+		
+		modal1.style.display = "none";
+		modal2.style.display = "none";
+		modal3.style.display = "block";
+		
+		var span3 = document.getElementsByClassName("close")[2];
+		
+		document.getElementById("textInput").value=document.getElementById("btnSilver").value;
+		span3.onclick = function() {
+			modal3.style.display = "none";	  
+		}
+	}  
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQMP5PcrU6J2yIAfyGBz8G0mM5f4SuTGQ"></script>
+<script>
+var x = document.getElementById("demo");
+var counter = 0;
+function getLocation() {
+	
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, error);	
+	console.log("i'm tracking you!");	
+  }
+  else if(error.PERMISSION_DENIED){
+      alert("you denied me! ");
+    }
+  else { 
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function error(error) { 
+hideDIV();
+}
+
+function showPosition(position) {
+	var mylat = position.coords.latitude;
+	var mylng = position.coords.longitude;
+	
+	console.log("Latitude: " + position.coords.latitude);
+	console.log("Longitude: " + position.coords.longitude);
+ 
+ geocoder = new google.maps.Geocoder();
+ 
+ var latlng = new google.maps.LatLng(mylat, mylng);
+ geocoder.geocode({'latLng': latlng}, function(results, status) { 
+ 
+ if (status == google.maps.GeocoderStatus.OK) 
+ { 
+	console.log("Full JSON "+JSON.stringify(results[0]));
+	
+	
+	if (results[0]) {
+		var address = results[0].formatted_address;
+                for (j = 0; j < results[0].address_components.length; j++) {
+                    if (results[0].address_components[j].types[0] == 'postal_code'){
+						var zipCode = results[0].address_components[j].short_name;
+                        console.log("Zip Code: " + results[0].address_components[j].short_name);						
+							document.getElementById("textInput").value = "My address is: "+results[0].formatted_address;
+					}
+					
+                }
+            }
+	
+	
+ }});
+ var fail=function(e){alert("GPS Failed");};
+ 
+}
+</script>
+<script>
+function searchByPincode(){
+document.getElementById("textInput").placeholder = "Please provide zipcode where you need data access";
+}
+function resetPlaceholder(){
+document.getElementById("textInput").placeholder = "Type something here";
+}
+//to hide div when user deny location access
+var hidden = 0;
+function hideDIV() {
+
+  var x = document.getElementById("myDIV");
+  
+  console.log("-----1 "+x.style.display);
+    x.style.display = "none";
+  //}
+  document.getElementById("divZipcodeMsg").innerHTML = "Please provide zipcode where you need data access";
+  document.getElementById("textInput").placeholder = "Please provide zipcode where you need data access";
+  hidden = 1;
+  
+} 
+console.log("Hidden Value:- "+hidden);
+
+function myFunction1() {
+
+var x = document.getElementById("myDIV");
+x.style.display = "";
+console.log("Hidden Value inside:- "+hidden);
+	if (hidden==1){
+	console.log("In Hidden value chk");
+	console.log("----- 2"+x.style.display);
+  
+    x.style.display = "none";
+  
+  
+  document.getElementById("divZipcodeMsg").innerHTML = "Please provide zipcode where you need data access";
+  document.getElementById("textInput").placeholder = "Please provide zipcode where you need data access";
+	x.style.display = "none";
+}
+} 
+</script>
+
+<!--<script src="bower_components/watson-speech/dist/watson-speech.js"></script>-->
+<!-- window.fetch pollyfill for IE/Edge & Older Chrome/FireFox -->
+<!--<script src="bower_components/fetch/fetch.js"></script>-->
+
+<script>
+document.querySelector('#textInput').addEventListener('keypress', function (e) {
+	  
+		var key = e.which || e.keyCode;
+		if (key === 13) { // 13 is enter	 
+		  if(isVoiceBasedConv){
+				loadVoice();
+			}
+		}
+	 });
+</script>
+
+<script>
+
+let finalTranscript = '';
+function enterpressalert(e, textarea){
+		var code = (e.keyCode ? e.keyCode : e.which);
+		if(code == 13) { //Enter keycode
+		console.log("=============inside enter keypress function============");		
+		 //finalTranscript = '';
+		 //navigator.mediaDevices.getUserMedia({ audio: true });		
+		 	if(isVoiceBasedConv){
+				loadVoice();
+			}
+		 resetPlaceholder();
+		 //voiceMsg(document.getElementById("textVoiceOutput").value);
+		}
+	}
+function loadVoice(){
+//document.getElementById("voiceChat").style.display = "none";
+//document.getElementById("textChat").style.display = "none";
+console.log("=============inside loadVoice loaded========");
+document.getElementById("voiceChat").disabled = true;
+	document.getElementById("textChat").disabled = true;
+	document.getElementById("textInput").style.display = "block";
+//Enable textbox
+document.getElementById("textInput").disabled = false;
+
+		
+	/*if(navigator.vendor.includes("Google")){
+		window.SpeechRecognition = window.webkitSpeechRecognition;
+	}else{
+		window.SpeechRecognition = window.SpeechRecognition;
+	}*/
+	isVoiceBasedConv = true;
+	console.log("=============inside loadVoice========" + isVoiceBasedConv);
+	let finalTranscript = '';
+	let recognition = '';
+	
+	if(navigator.vendor.includes("Google")){
+		window.SpeechRecognition = window.webkitSpeechRecognition;
+		recognition = new window.SpeechRecognition();
+		console.log("======within google log============");
+	}else{
+		window.SpeechRecognition = window.SpeechRecognition;
+		recognition = new window.SpeechRecognition();
+	}
+	
+	recognition.interimResults = true;
+    recognition.maxAlternatives = 10;
+    recognition.continuous = true;
+	recognition.onresult = (event) => {
+	console.log("=============Within On result========");
+      let interimTranscript = '';
+	  finalTranscript = '';
+      for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+		console.log("=============Within On result for loop========");
+        let transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      <!--document.getElementById('textInput').value = finalTranscript + '<i style="color:#ddd;">' + interimTranscript + '</>';-->
+	  <!--document.getElementById("textInput").placeholder = "Please provide zipcode where you need data access";-->
+	  document.getElementById('textInput').value = finalTranscript;
+	  <!--jQuery.event.trigger({ type: 'keydown', which: 13 });-->	  
+    }
+    recognition.start();	
+	//voiceMsg(document.getElementById("textVoiceOutput").value);
+}
+
+function callSpeechToText(){
+
+	if(isVoiceBasedConv){
+		loadVoice();
+	}
+}
+
+
+</script>
+
+  
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+	"automationnames": {
+		"TelcoUCAssessNwProcess": {
+			"gb_username": "sauser",
+			"gb_password": "pass1234",
+			"content_type": "application/json",
+			"authorization": "Basic UW5yY2g4TVdreW1zODVuaw==",
+			"Bot_Url": "https://gb-demo-app-poc.mybluemix.net/",
+			"gb_service_url": "https://gb-demo-app-poc.mybluemix.net/rest/external/v1/ServiceOptimizationAutomation",
+			"gb_token_url": "https://gb-demo-app-poc.mybluemix.net/rest/external/v1/GetAuthToken",
+			"gb_automation_result_url": "https://gb-demo-app-poc.mybluemix.net/rest/external/v1/GetAutomationExeResult",
+			"timeout": 10000,
+			"polling_interval": 15000,
+			"number_of_polling": 60,
+			"accountId": "Telco_Account",
+			"clientId": "Telco_Order_Handling",
+			"applicationName": "TelcoUCAssessNwProcess",
+			"automationInputParameters": [
+				"zipcode",
+				"address"
+			],
+			"statusCode": {
+				"0": "Failed",
+				"1": "Success"
+			}
+		},
+		"TelcoUCCreateLeadProcess": {
+			"gb_username": "sauser",
+			"gb_password": "pass1234",
+			"content_type": "application/json",
+			"authorization": "Basic UW5yY2g4TVdreW1zODVuaw==",
+			"Bot_Url": "https://gb-demo-app-poc.mybluemix.net/",
+			"gb_service_url": "https://gb-demo-app-poc.mybluemix.net/rest/external/v1/ServiceOptimizationAutomation",
+			"gb_token_url": "https://gb-demo-app-poc.mybluemix.net/rest/external/v1/GetAuthToken",
+			"gb_automation_result_url": "https://gb-demo-app-poc.mybluemix.net/rest/external/v1/GetAutomationExeResult",
+			"timeout": 10000,
+			"polling_interval": 15000,
+			"number_of_polling": 60,
+			"accountId": "Telco_Account",
+			"clientId": "Telco_Order_Handling",
+			"applicationName": "TelcoUCCreateLeadProcess",
+			"automationInputParameters": [
+				"fname",
+				"lname",
+				"phone",
+				"zipcode",
+				"address",
+				"planName"
+			],
+			"statusCode": {
+				"0": "Failed",
+				"1": "Success"
+			}
+		}
+	}
+}

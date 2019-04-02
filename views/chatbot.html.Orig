@@ -1,0 +1,116 @@
+<html>
+<head>
+  
+  <base href="/">
+  <title>Conversation Chat App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:image" content="conversation.svg" />
+  <meta property="og:title" content="Conversation Chat Simple" />
+  <meta property="og:description" content="Sample application that shows how to use the Conversation API to identify user intents" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/4gplan.css">
+
+</head>
+<body >
+  <div id="contentParent" class="responsive-columns-wrapper">
+    <div id="chat-column-holder" class="responsive-column content-column">
+    	<div class="chatMenuSection">
+      	<div style="float:left; margin:3px 10px;">
+      		<img src="/img/AutomationCIC.png" alt="Powered by IBM Watson">
+      	</div>
+      	<div style="float:right; margin:7px 24px;">
+      		<img src="/img/telco.png" alt="Telecom Order management">
+      		
+      	</div>
+	</div>
+	
+      <div class="chat-column">
+        <div id="scrollingChat"></div>
+        <label for="textInput" class="inputOutline">
+		
+          <input id="textInput" class="input responsive-column"
+            placeholder="Type something" type="text"
+            onkeydown="ConversationPanel.inputKeyDown(event, this), ConversationPanel.instantiateEventHanders(event)">
+        </label>
+      </div>
+    </div>
+  </div>
+<style>
+</style>
+  <script src="/js/common.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/api.js"></script>
+  <script type="text/javascript"></script>
+  <script src="/js/conversation.js"></script>
+  <script src="/js/payload.js"></script>
+  <script src="/js/global.js"></script>
+  <script>
+/*function myFunction() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+  }
+  function myFunction1() {
+  var popup = document.getElementById("myPopup1");
+  popup.classList.toggle("show");
+  }*/
+  function myFunction() {
+  // Get the modal
+	var modal = document.getElementById('myModal');
+	var modal1 = document.getElementById('myModal1');
+	var modal2 = document.getElementById('myModal2');
+
+	// Get the button that opens the modal
+	var btnSilver = document.getElementById("btnSilver");
+	var btnPlatinum = document.getElementById("btnPlatinum");
+	var btnGold = document.getElementById("btnGold");
+
+	// Get the <span> element that closes the modal
+	var span1 = document.getElementsByClassName("close")[0];
+	var span2 = document.getElementsByClassName("close")[1];
+	var span3 = document.getElementsByClassName("close")[2];
+
+	// When the user clicks the button, open the modal 
+	btnSilver.onclick = function() {
+	  modal.style.display = "block";	  
+	  document.getElementById("textInput").value=document.getElementById("btnSilver").value;
+	}
+	btnPlatinum.onclick = function() {
+	  modal1.style.display = "block";
+	  document.getElementById("textInput").value=document.getElementById("btnPlatinum").value;
+	}
+	btnGold.onclick = function() {
+	  modal2.style.display = "block";
+	  document.getElementById("textInput").value=document.getElementById("btnGold").value;
+	}
+
+	// When the user clicks on <span> (x), close the modal
+	
+	span3.onclick = function() {
+	  modal.style.display = "none";	  
+	}
+	span1.onclick = function() {
+	  modal1.style.display = "none";	  
+	}
+	span2.onclick = function() {
+	  modal2.style.display = "none";	  
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+	  if (event.target == modal) {
+		modal.style.display = "none";
+	  }
+	  else if (event.target == modal1) {
+		modal1.style.display = "none";
+	  }
+	  else if (event.target == modal2) {
+		modal2.style.display = "none";
+	  }
+	}
+	}
+</script>
+  
+</body>
+</html>

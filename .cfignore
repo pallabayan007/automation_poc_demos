@@ -1,0 +1,6 @@
+launchConfigurations/
+node_modules/
+.idea/
+coverage
+.env
+npm-debug.log

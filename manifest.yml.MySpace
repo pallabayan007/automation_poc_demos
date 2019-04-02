@@ -1,0 +1,17 @@
+---
+applications:
+- name: telcochatassist
+  version: 11.3.0
+  host: telcochatassist
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+  command: npm start
+  path: .
+  memory: 256M
+  instances: 1
+  services:
+  
+  - Conversation-k1
+ 
+  env:
+    NPM_CONFIG_PRODUCTION: false
+    NODE_MODULES_CACHE: false
